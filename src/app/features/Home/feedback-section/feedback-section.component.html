@@ -1,0 +1,19 @@
+<h5 class="mx-10 mt-10 text-2xl font-bold tracking-tight text-black mb-6">Recent Feedback</h5>
+<div class="grid grid-cols-2 items-center justify-items-center lg:grid-cols-4 xl:grid-cols-5">
+    @for (item of usersFeedback; track $index) {
+<div class="w-full mb-5 max-w-3xs bg-white border border-gray-200 rounded-lg shadow-sm">
+    
+    <div class="flex flex-row items-center pb-4">
+        <img class="my-3 ml-3 w-12 h-12 rounded-full shadow-lg" [src]="item.userAvatar" alt="user image"/>
+        <div class="flex flex-col items-center justify-center ml-3">
+            
+        <h5 class="mb-1 text-lg font-medium text-gray-900">{{item.UserName}}</h5>
+        <p-rating [(ngModel)]="item.rating" />
+        <span class="text-sm text-gray-500 ">{{item.feedback}}</span>
+        
+        </div>
+    </div>
+</div>
+
+
+}</div>
