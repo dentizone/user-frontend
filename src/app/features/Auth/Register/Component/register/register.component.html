@@ -1,136 +1,336 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
-  <div class="bg-white rounded-2xl shadow-lg flex w-full max-w-5xl overflow-hidden">
-
-    <div class="w-1/2 bg-[#f0f8ff] flex items-center justify-center p-6">
-      <img src="/assets/logo/LogoWithBackground.png" alt="Dentista Logo" class="max-w-[80%]" />
+<div class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+  <div
+    class="bg-white rounded-2xl shadow-lg flex flex-col lg:flex-row w-full max-w-5xl overflow-hidden"
+  >
+    <!-- Logo Section -->
+    <div
+      class="w-full lg:w-1/2 bg-[#f0f8ff] flex items-center justify-center p-6 min-h-[200px] lg:min-h-0"
+    >
+      <img
+        src="/assets/logo/LogoWithBackground.png"
+        alt="Dentista Logo"
+        class="max-w-[80%] h-auto"
+      />
     </div>
 
-
-    <div class="w-1/2 p-8">
-      <h2 class="text-2xl font-bold mb-6 border-b pb-2">Sign Up</h2>
-      <form class="space-y-4">
-
-     
-        <div class="grid grid-cols-2 gap-4">
+    <!-- Form Section -->
+    <div class="w-full lg:w-1/2 p-4 md:p-8">
+      <h2 class="text-2xl font-bold mb-6 border-b pb-2 text-gray-800">
+        Sign Up
+      </h2>
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+        class="space-y-4"
+      >
+        <!-- Name and Academic Year -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block font-semibold mb-1">Name</label>
-            <input type="text" placeholder="Enter Your Name" class="w-full border rounded px-3 py-2" />
+            <label class="block font-semibold mb-1 text-gray-700">Name</label>
+            <input
+              type="text"
+              formControlName="name"
+              placeholder="Enter Your Name"
+              class="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition-all duration-200 hover:border-gray-300"
+              [class.border-red-300]="
+                registerForm.get('name')?.invalid &&
+                registerForm.get('name')?.touched
+              "
+              [class.hover:border-red-200]="
+                registerForm.get('name')?.invalid &&
+                registerForm.get('name')?.touched
+              "
+            />
+            <div
+              *ngIf="
+                registerForm.get('name')?.invalid &&
+                registerForm.get('name')?.touched
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              <span *ngIf="registerForm.get('name')?.errors?.['required']"
+                >Name is required</span
+              >
+              <span *ngIf="registerForm.get('name')?.errors?.['minlength']"
+                >Name must be at least 3 characters</span
+              >
+            </div>
           </div>
           <div>
-            <label class="block font-semibold mb-1">Academic Year</label>
-            <select class="w-full border rounded px-3 py-2">
-              <option disabled selected>Choose</option>
-              <option>Year 1</option>
-              <option>Year 2</option>
-              <option>Year 3</option>
-              <option>Year 4</option>
-              <option>Year 5</option>
+            <label class="block font-semibold mb-1 text-gray-700"
+              >Academic Year</label
+            >
+            <select
+              formControlName="academicYear"
+              class="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition-all duration-200 hover:border-gray-300 appearance-none bg-white"
+              [class.border-red-300]="
+                registerForm.get('academicYear')?.invalid &&
+                registerForm.get('academicYear')?.touched
+              "
+              [class.hover:border-red-200]="
+                registerForm.get('academicYear')?.invalid &&
+                registerForm.get('academicYear')?.touched
+              "
+            >
+              <option value="" disabled>Choose</option>
+              <option *ngFor="let year of academicYears" [value]="year">
+                {{ year }}
+              </option>
             </select>
+            <div
+              *ngIf="
+                registerForm.get('academicYear')?.invalid &&
+                registerForm.get('academicYear')?.touched
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              Academic year is required
+            </div>
           </div>
         </div>
 
-    
+        <!-- Email -->
         <div>
-          <label class="block font-semibold mb-1">Academic Email</label>
-          <input type="email" placeholder="example@alexu.edu.eg" class="w-full border rounded px-3 py-2" />
-        </div>
-
-      
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block font-semibold mb-1">City</label>
-            <select class="w-full border rounded px-3 py-2">
-              <option disabled selected>Choose</option>
-<option>Alexandria</option>
-<option>Aswan</option>
-<option>Asyut</option>
-<option>Cairo</option>
-<option>Damietta</option>
-<option>Fayoum</option>
-<option>Giza</option>
-<option>Ismailia</option>
-<option>Luxor</option>
-<option>Mansoura</option>
-<option>Port Said</option>
-<option>Shubra El-Kheima</option>
-<option>Suez</option>
-<option>Tanta</option>
-<option>Zagazig</option>
-
-            </select>
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">University</label>
-            <select class="w-full border rounded px-3 py-2">
-              <option disabled selected>Choose</option>
-          <option>Ain Shams University</option>
-<option>Alexandria University</option>
-<option>Al-Azhar University (Boys & Girls)</option>
-<option>Assiut University</option>
-<option>Benha University</option>
-<option>Beni Suef University</option>
-<option>Cairo University</option>
-<option>Damanhour University</option>
-<option>Delta University for Science and Technology</option>
-<option>Egyptian Russian University</option>
-<option>Future University in Egypt (FUE)</option>
-<option>Helwan University</option>
-<option>Horus University</option>
-<option>Kafr El-Sheikh University</option>
-<option>Menoufia University</option>
-<option>Minia University</option>
-<option>Misr International University (MIU)</option>
-<option>Modern Sciences and Arts University (MSA)</option>
-<option>October 6 University</option>
-<option>Pharos University in Alexandria</option>
-<option>Sinai University</option>
-<option>Sohag University</option>
-<option>South Valley University</option>
-<option>Suez Canal University</option>
-<option>Tanta University</option>
-<option>University of Sadat City</option>
-<option>Zagazig University</option>
-
-            </select>
+          <label class="block font-semibold mb-1 text-gray-700"
+            >Academic Email</label
+          >
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="example@alexu.edu.eg"
+            class="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition-all duration-200 hover:border-gray-300"
+            [class.border-red-300]="
+              registerForm.get('email')?.invalid &&
+              registerForm.get('email')?.touched
+            "
+            [class.hover:border-red-200]="
+              registerForm.get('email')?.invalid &&
+              registerForm.get('email')?.touched
+            "
+          />
+          <div
+            *ngIf="
+              registerForm.get('email')?.invalid &&
+              registerForm.get('email')?.touched
+            "
+            class="text-red-500 text-sm mt-1"
+          >
+            <span *ngIf="registerForm.get('email')?.errors?.['required']"
+              >Email is required</span
+            >
+            <span *ngIf="registerForm.get('email')?.errors?.['email']"
+              >Please enter a valid email</span
+            >
+            <span *ngIf="registerForm.get('email')?.errors?.['pattern']"
+              >Please enter a valid academic email</span
+            >
           </div>
         </div>
 
-   
+        <!-- City and University -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold mb-1 text-gray-700">City</label>
+            <select
+              formControlName="city"
+              class="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition-all duration-200 hover:border-gray-300 appearance-none bg-white"
+              [class.border-red-300]="
+                registerForm.get('city')?.invalid &&
+                registerForm.get('city')?.touched
+              "
+              [class.hover:border-red-200]="
+                registerForm.get('city')?.invalid &&
+                registerForm.get('city')?.touched
+              "
+            >
+              <option value="" disabled>Choose</option>
+              <option *ngFor="let city of cities" [value]="city">
+                {{ city }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                registerForm.get('city')?.invalid &&
+                registerForm.get('city')?.touched
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              City is required
+            </div>
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-gray-700"
+              >University</label
+            >
+            <select
+              formControlName="university"
+              class="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition-all duration-200 hover:border-gray-300 appearance-none bg-white"
+              [class.border-red-300]="
+                registerForm.get('university')?.invalid &&
+                registerForm.get('university')?.touched
+              "
+              [class.hover:border-red-200]="
+                registerForm.get('university')?.invalid &&
+                registerForm.get('university')?.touched
+              "
+            >
+              <option value="" disabled>Choose</option>
+              <option
+                *ngFor="let university of universities"
+                [value]="university"
+              >
+                {{ university }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                registerForm.get('university')?.invalid &&
+                registerForm.get('university')?.touched
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              University is required
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone Number -->
         <div>
-          <label class="block font-semibold mb-1">Phone Number</label>
+          <label class="block font-semibold mb-1 text-gray-700"
+            >Phone Number</label
+          >
           <div class="flex">
-            <select class="border rounded-l px-2 bg-white">
+            <select
+              class="border-2 border-gray-200 rounded-l-lg px-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition-all duration-200 hover:border-gray-300 appearance-none"
+            >
               <option>+20</option>
             </select>
-            <input type="tel" placeholder="Enter Your Phone Number" class="w-full border-t border-b border-r rounded-r px-3 py-2" />
+            <input
+              type="tel"
+              formControlName="phoneNumber"
+              placeholder="Enter Your Phone Number"
+              class="w-full border-2 border-l-0 border-gray-200 rounded-r-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition-all duration-200 hover:border-gray-300"
+              [class.border-red-300]="
+                registerForm.get('phoneNumber')?.invalid &&
+                registerForm.get('phoneNumber')?.touched
+              "
+              [class.hover:border-red-200]="
+                registerForm.get('phoneNumber')?.invalid &&
+                registerForm.get('phoneNumber')?.touched
+              "
+            />
+          </div>
+          <div
+            *ngIf="
+              registerForm.get('phoneNumber')?.invalid &&
+              registerForm.get('phoneNumber')?.touched
+            "
+            class="text-red-500 text-sm mt-1"
+          >
+            <span *ngIf="registerForm.get('phoneNumber')?.errors?.['required']"
+              >Phone number is required</span
+            >
+            <span *ngIf="registerForm.get('phoneNumber')?.errors?.['pattern']"
+              >Please enter a valid Egyptian phone number</span
+            >
           </div>
         </div>
 
-   
-        <div class="grid grid-cols-2 gap-4">
+        <!-- Password and Confirm Password -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block font-semibold mb-1">Password</label>
-            <input type="password" placeholder="Enter Password" class="w-full border rounded px-3 py-2" />
+            <label class="block font-semibold mb-1 text-gray-700"
+              >Password</label
+            >
+            <input
+              type="password"
+              formControlName="password"
+              placeholder="Enter Password"
+              class="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition-all duration-200 hover:border-gray-300"
+              [class.border-red-300]="
+                registerForm.get('password')?.invalid &&
+                registerForm.get('password')?.touched
+              "
+              [class.hover:border-red-200]="
+                registerForm.get('password')?.invalid &&
+                registerForm.get('password')?.touched
+              "
+            />
+            <div
+              *ngIf="
+                registerForm.get('password')?.invalid &&
+                registerForm.get('password')?.touched
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              <span *ngIf="registerForm.get('password')?.errors?.['required']"
+                >Password is required</span
+              >
+              <span *ngIf="registerForm.get('password')?.errors?.['minlength']"
+                >Password must be at least 8 characters</span
+              >
+            </div>
           </div>
           <div>
-            <label class="block font-semibold mb-1">Confirm</label>
-            <input type="password" placeholder="Confirm Password" class="w-full border rounded px-3 py-2" />
+            <label class="block font-semibold mb-1 text-gray-700"
+              >Confirm</label
+            >
+            <input
+              type="password"
+              formControlName="confirmPassword"
+              placeholder="Confirm Password"
+              class="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition-all duration-200 hover:border-gray-300"
+              [class.border-red-300]="
+                registerForm.get('confirmPassword')?.invalid &&
+                registerForm.get('confirmPassword')?.touched
+              "
+              [class.hover:border-red-200]="
+                registerForm.get('confirmPassword')?.invalid &&
+                registerForm.get('confirmPassword')?.touched
+              "
+            />
+            <div
+              *ngIf="
+                registerForm.get('confirmPassword')?.invalid &&
+                registerForm.get('confirmPassword')?.touched
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              <span
+                *ngIf="registerForm.get('confirmPassword')?.errors?.['required']"
+                >Please confirm your password</span
+              >
+            </div>
           </div>
         </div>
 
-    
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded mt-2">
+        <!-- Password Mismatch Error -->
+        <div
+          *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched"
+          class="text-red-500 text-sm"
+        >
+          Passwords do not match
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg mt-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
+          [disabled]="registerForm.invalid"
+        >
           Sign Up
         </button>
 
-  
-        <p class="text-center text-sm mt-4">Already Have Account?
-          <a href="#" class="text-blue-600 hover:underline">Sign In</a>
+        <!-- Login Link -->
+        <p class="text-center text-sm mt-4 text-gray-600">
+          Already Have Account?
+          <a
+            (click)="navigateToLogin()"
+            class="text-blue-600 hover:text-blue-700 hover:underline cursor-pointer transition-colors duration-200"
+            >Sign In</a
+          >
         </p>
       </form>
     </div>
   </div>
 </div>
-
-
-
