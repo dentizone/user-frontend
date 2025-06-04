@@ -30,6 +30,11 @@ export const routes: Routes = [
       ).then((m) => m.VerificationComponent),
   },
   {
+    path: 'auth/kyc',
+    loadComponent: () =>
+      import('./features/Auth/KYC/kyc.component').then((m) => m.KycComponent),
+  },
+  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full',
