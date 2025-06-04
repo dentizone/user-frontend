@@ -16,6 +16,20 @@ export const routes: Routes = [
       ).then((m) => m.RegisterComponent),
   },
   {
+    path: 'auth/login',
+    loadComponent: () =>
+      import('./features/Auth/Login/components/login.component').then(
+        (m) => m.LoginComponent
+      ),
+  },
+  {
+    path: 'auth/mail-verification',
+    loadComponent: () =>
+      import(
+        './features/Auth/MailVerification/components/verification.component'
+      ).then((m) => m.VerificationComponent),
+  },
+  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full',
