@@ -85,7 +85,7 @@ export class RegisterComponent {
         university: ['', Validators.required],
         phoneNumber: [
           '',
-          [Validators.required, Validators.pattern(/^01[0125][0-9]{8}$/)],
+          [Validators.required, Validators.pattern(/^1[0125][0-9]{8}$/)],
         ],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', Validators.required],
