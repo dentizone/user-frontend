@@ -1,14 +1,13 @@
-import { HomeContainerComponent } from './features/Home/home-container.component';
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [{ path: '', 
-loadComponent: () =>
-        import('./features/Home/home-container.component').then(
-            (m) => m.HomeContainerComponent
-        ),
-    },
-    {
- },
+export const routes: Routes = [
+  {
+    path: '',
+    loadComponent: () =>
+      import('./features/Home/home-container.component').then(
+        (m) => m.HomeContainerComponent
+      ),
+  },
   {
     path: 'auth/register',
     loadComponent: () =>

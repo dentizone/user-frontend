@@ -6,6 +6,7 @@ import { WelcomeCardComponent } from './components/welcome-card/welcome-card.com
 
 @Component({
   selector: 'app-home-container',
+  standalone: true,
   imports: [
     WelcomeCardComponent,
     ServiceSectionComponent,
