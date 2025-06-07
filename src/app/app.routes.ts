@@ -34,11 +34,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/Auth/KYC/kyc.component').then((m) => m.KycComponent),
   },
-  // {
-  //   path: 'profile',
-  //   loadComponent: () =>
-  //     import('./features/Profile/profile-container.component').then((m) => m.ProfileContainerComponent),
-  // },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./features/Profile/profile-container/profile-container.component').then((m) => m.ProfileContainerComponent),
+  },
   {
     path: '**',
     redirectTo: '',
