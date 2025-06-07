@@ -2,10 +2,10 @@
 <div class="w-11/12 justify-center items-center bg-white border border-gray-200 rounded-lg shadow-sm ">
     <div class="sm:hidden">
         <label for="tabs" class="sr-only">Select tab</label>
-        <select id="tabs" class="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm rounded-t-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-            <option>Active Posts</option>
-            <option>Pending Posts</option>
-            <option>Unactive Posts</option>
+        <select [(ngModel)]="selectedTab" (change)="changeCurent(selectedTab)" class="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm rounded-t-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+            <option [value]="1">Active Posts</option>
+            <option [value]="2">Pending Posts</option>
+            <option [value]="3">Unactive Posts</option>
         </select>
     </div>
     <ul class="hidden md:flex text-md font-semibold text-center text-black divide-x divide-gray-200 rounded-lg sm:flex rtl:divide-x-reverse" id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">

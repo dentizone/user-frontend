@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class UserPostsComponent {
   currentTab=0;
+  selectedTab='0'
   ActivePosts:posts[]=[
     {title:"MANI K FILES ( SIZE 6 )",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
@@ -68,8 +69,9 @@ export class UserPostsComponent {
       imagesrc:"/assets/items/image2.png"
     }
   ]
-  changeCurent(input:number){
-    switch(input){
+  changeCurent(input:any){
+    console.log(input)
+    switch(+input){
       case 1: this.Current=this.ActivePosts;this.currentTab=0;
       break;
       case 2:this.Current=this.PendingPosts;this.currentTab=1;
