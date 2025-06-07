@@ -1,0 +1,47 @@
+<div class=" flex justify-center items-center my-10">
+<div class="w-11/12 justify-center items-center bg-white border border-gray-200 rounded-lg shadow-sm ">
+    <div class="sm:hidden">
+        <label for="tabs" class="sr-only">Select tab</label>
+        <select [(ngModel)]="selectedTab" (change)="changeCurent(selectedTab)" class="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm rounded-t-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+            <option [value]="1">Active Posts</option>
+            <option [value]="2">Pending Posts</option>
+            <option [value]="3">Unactive Posts</option>
+        </select>
+    </div>
+    <ul class="hidden md:flex text-md font-semibold text-center text-black divide-x divide-gray-200 rounded-lg sm:flex rtl:divide-x-reverse" id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
+        <li class="w-full">
+            <button type="button" class="inline-block w-full p-4 rounded-ss-lg bg-gray-50 focus:outline-none text-black" [ngClass]="{'text-[#0077B6]': currentTab == 0,'bg-white': currentTab == 0, 'text-black':currentTab!=0}" (click)="changeCurent(1)">Active Posts</button>
+        </li>
+        <li class="w-full">
+            <button type="button" class="inline-block w-full p-4 bg-gray-50 focus:outline-none " [ngClass]="{'text-[#0077B6]': currentTab == 1,'bg-white': currentTab == 1, 'text-black':currentTab!=1}"  (click)="changeCurent(2)">Pending Posts</button>
+        </li>
+        <li class="w-full">
+            <button type="button" class="inline-block w-full p-4 rounded-se-lg bg-gray-50 focus:outline-none " [ngClass]="{'text-[#0077B6]': currentTab == 2,'bg-white': currentTab == 2, 'text-black':currentTab!=2}"  (click)="changeCurent(3)">Unactive Posts</button>
+        </li>
+    </ul>
+    <div id="fullWidthTabContent" class="border-t border-gray-200 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        @if(Current.length==0){
+            <h4>No posts</h4>
+        }
+        @else{
+            @for (item of Current; track $index) {
+        <div class="flex shadow-md rounded-lg p-3 m-3 border-gray-300">
+            <img [src]="item.imagesrc" class="rounded-full w-1/4 bg-cover">
+            <div class="flex flex-col mx-2">
+            <h3 class="text-sm font-medium capitalize">{{item.title}}</h3>
+            <p class="text-gray-500 text-xs">{{item.description}}</p>
+            <div class="grid grid-cols-6 mt-2">
+                <h3 class="font-semibold text-xs col-span-2">{{item.price}} EGP</h3>
+                <div class="flex justify-end col-span-4">
+                <button class="flex mx-3 bg-[#90E0EF] rounded-2xl text-xs px-2 py-1 justify-between items-center font-semibold"><img src="/assets/Icons/edit.png" class="w-1/4 bg-cover">Edit </button>
+                <button class="flex bg-[#3BA3DB] font-semibold rounded-2xl text-xs px-2 py-1 justify-between items-center"><img src="/assets/Icons/view.png" class="w-1/4 bg-cover">View </button>
+            </div></div>
+        </div>
+        </div>
+        }
+        }
+       
+    </div>
+</div>
+
+</div>
