@@ -3,10 +3,11 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PasswordModule } from 'primeng/password';
 import { IftaLabelModule } from 'primeng/iftalabel';
+import { FloatLabelModule } from 'primeng/floatlabel';
 @Component({
   selector: 'app-forget-password',
   standalone:true,
-  imports: [FormsModule, CommonModule,PasswordModule,IftaLabelModule],
+  imports: [FormsModule, CommonModule,PasswordModule,IftaLabelModule,FloatLabelModule],
   templateUrl: './forget-password.component.html',
   styleUrl: './forget-password.component.css'
 })
