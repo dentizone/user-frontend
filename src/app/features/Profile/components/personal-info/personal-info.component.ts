@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
+  standalone:true,
   selector: 'app-personal-info',
   imports: [],
   templateUrl: './personal-info.component.html',
