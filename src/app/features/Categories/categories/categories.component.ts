@@ -2,24 +2,31 @@ import { Component, OnInit } from '@angular/core';
 import { Category } from '../category';
 import { CommonModule } from '@angular/common';
 import { CategoriesService } from '../categories.service';
+import { LoaderComponent } from "../../../shared/components/loader/loader.component";
 
 @Component({
   selector: 'app-categories',
-  imports: [CommonModule],
+  imports: [CommonModule, LoaderComponent],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.css'
 })
 export class CategoriesComponent implements OnInit {
   
   categories:Category[]=[]
+  isLoading:boolean=true;
 
   constructor(private _categoriesService:CategoriesService){}
   
   ngOnInit(): void {
     this._categoriesService.getCategories().subscribe({
-      next: (data: Category[]) => this.categories = data
-      // error: (err) => console.error('Failed to load categories:', err)
-      });
+      next: (data: Category[]) => {
+        this.categories = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load categories:', err);
+        this.isLoading = false; 
+    }});
   }
 
   // categories: Category[] = [
