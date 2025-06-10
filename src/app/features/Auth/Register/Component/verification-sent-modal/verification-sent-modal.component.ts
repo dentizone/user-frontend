@@ -7,10 +7,14 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+    <div 
+      class="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+      (click)="onBackdropClick($event)"
     >
-      <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center">
+      <div 
+        class="bg-white/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full text-center"
+        (click)="$event.stopPropagation()"
+      >
         <div class="mb-6">
           <svg
             class="mx-auto h-16 w-16 text-blue-500"
@@ -31,8 +35,24 @@ import { Router } from '@angular/router';
           We've sent a verification link to your email address. Please check
           your inbox and click the link to verify your account.
         </p>
+        <button
+          (click)="navigateToLogin()"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
+        >
+          Back to Login
+        </button>
       </div>
     </div>
   `,
 })
-export class VerificationSentModalComponent {}
+export class VerificationSentModalComponent {
+  constructor(private router: Router) {}
+
+  onBackdropClick(event: MouseEvent) {
+    this.router.navigate(['/']);
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/auth/login']);
+  }
+}
