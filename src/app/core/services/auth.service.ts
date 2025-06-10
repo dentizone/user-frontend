@@ -39,9 +39,7 @@ export class AuthService {
   }
 
   register(userData: RegisterRequestDto): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/register`, userData).pipe(
-      tap(response => this.handleAuthentication(response))
-    );
+    return this.http.post<AuthResponse>(`${this.API_URL}/register`, userData);
   }
 
   confirmEmail(token: string): Observable<void> {

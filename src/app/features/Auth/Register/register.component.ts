@@ -11,11 +11,12 @@ import { University, UniversityService } from '../../../core/services/university
 import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { VerificationSentModalComponent } from './Component/verification-sent-modal/verification-sent-modal.component';
 
 @Component({
   standalone: true,
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule, ToastrModule],
+  imports: [CommonModule, ReactiveFormsModule, ToastrModule, VerificationSentModalComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
@@ -43,6 +44,7 @@ export class RegisterComponent implements OnInit {
   errorMessage: string = '';
   isLoadingUniversities = false;
   isSubmitting = false;
+  showVerificationModal = false;
 
   constructor(
     private fb: FormBuilder,
@@ -119,9 +121,9 @@ export class RegisterComponent implements OnInit {
       };
 
       this.authService.register(registerData).subscribe({
-        next: () => {
+        next: (response) => {
           this.isSubmitting = false;
-          this.router.navigate(['/auth/verification-sent']);
+          this.showVerificationModal = true;
         },
         error: (error) => {
           this.isSubmitting = false;

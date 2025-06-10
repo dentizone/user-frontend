@@ -23,14 +23,6 @@ export const routes: Routes = [
         canActivate: [NoAuthGuard]
       },
       {
-        path: 'verification-sent',
-        loadComponent: () =>
-          import(
-            './features/Auth/verification-sent/verification-sent.component'
-          ).then((m) => m.VerificationSentComponent),
-        canActivate: [NoAuthGuard]
-      },
-      {
         path: 'forgot-password',
         loadComponent: () =>
           import(
@@ -38,7 +30,6 @@ export const routes: Routes = [
           ).then((m) => m.ForgetPasswordComponent),
         canActivate: [NoAuthGuard]
       },
-
       {
         path: 'mail-verify',
         loadComponent: () =>
