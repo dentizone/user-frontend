@@ -1,22 +1,25 @@
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { University, UniversityService } from '../../../core/services/university.service';
 
+import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ToastrModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   academicYears = ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'];
   cities = [
@@ -36,37 +39,18 @@ export class RegisterComponent {
     'Tanta',
     'Zagazig',
   ];
-  universities = [
-    'Ain Shams University',
-    'Alexandria University',
-    'Al-Azhar University (Boys & Girls)',
-    'Assiut University',
-    'Benha University',
-    'Beni Suef University',
-    'Cairo University',
-    'Damanhour University',
-    'Delta University for Science and Technology',
-    'Egyptian Russian University',
-    'Future University in Egypt (FUE)',
-    'Helwan University',
-    'Horus University',
-    'Kafr El-Sheikh University',
-    'Menoufia University',
-    'Minia University',
-    'Misr International University (MIU)',
-    'Modern Sciences and Arts University (MSA)',
-    'October 6 University',
-    'Pharos University in Alexandria',
-    'Sinai University',
-    'Sohag University',
-    'South Valley University',
-    'Suez Canal University',
-    'Tanta University',
-    'University of Sadat City',
-    'Zagazig University',
-  ];
+  universities: University[] = [];
+  errorMessage: string = '';
+  isLoadingUniversities = false;
+  isSubmitting = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService,
+    private universityService: UniversityService,
+    private toastr: ToastrService
+  ) {
     this.registerForm = this.fb.group(
       {
         name: ['', [Validators.required, Validators.minLength(3)]],
@@ -82,7 +66,7 @@ export class RegisterComponent {
           ],
         ],
         city: ['', Validators.required],
-        university: ['', Validators.required],
+        universityId: ['', Validators.required],
         phoneNumber: [
           '',
           [Validators.required, Validators.pattern(/^1[0125][0-9]{8}$/)],
@@ -96,6 +80,25 @@ export class RegisterComponent {
     );
   }
 
+  ngOnInit() {
+    this.loadUniversities();
+  }
+
+  loadUniversities() {
+    this.isLoadingUniversities = true;
+    this.universityService.getSupportedUniversities().subscribe({
+      next: (universities) => {
+        this.universities = universities;
+        this.isLoadingUniversities = false;
+      },
+      error: (error) => {
+        console.error('Failed to load universities:', error);
+        this.toastr.error('Failed to load universities. Please try again.');
+        this.isLoadingUniversities = false;
+      }
+    });
+  }
+
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password')?.value;
     const confirmPassword = form.get('confirmPassword')?.value;
@@ -104,8 +107,28 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      // TODO: Implement registration logic
-      console.log(this.registerForm.value);
+      this.isSubmitting = true;
+      const { name, email, password, academicYear, universityId } = this.registerForm.value;
+      const registerData = {
+        email,
+        password,
+        fullName: name,
+        username: email.split('@')[0], // Using email prefix as username
+        academicYear: parseInt(academicYear.split(' ')[1]),
+        universityId
+      };
+
+      this.authService.register(registerData).subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          this.router.navigate(['/auth/verification-sent']);
+        },
+        error: (error) => {
+          this.isSubmitting = false;
+          console.error('Registration failed:', error);
+          this.toastr.error(error.error?.Message || 'Registration failed. Please try again.');
+        }
+      });
     } else {
       this.markFormGroupTouched(this.registerForm);
     }

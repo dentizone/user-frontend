@@ -40,6 +40,7 @@
                 registerForm.get('name')?.invalid &&
                 registerForm.get('name')?.touched
               "
+              [disabled]="isSubmitting"
             />
             <div
               *ngIf="
@@ -71,6 +72,7 @@
                 registerForm.get('academicYear')?.invalid &&
                 registerForm.get('academicYear')?.touched
               "
+              [disabled]="isSubmitting"
             >
               <option value="" disabled>Choose</option>
               <option *ngFor="let year of academicYears" [value]="year">
@@ -107,6 +109,7 @@
               registerForm.get('email')?.invalid &&
               registerForm.get('email')?.touched
             "
+            [disabled]="isSubmitting"
           />
           <div
             *ngIf="
@@ -142,6 +145,7 @@
                 registerForm.get('city')?.invalid &&
                 registerForm.get('city')?.touched
               "
+              [disabled]="isSubmitting"
             >
               <option value="" disabled>Choose</option>
               <option *ngFor="let city of cities" [value]="city">
@@ -162,34 +166,34 @@
             <label class="block font-semibold mb-1 text-gray-700"
               >University</label
             >
-            <select
-              formControlName="university"
-              class="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition-all duration-200 hover:border-gray-300 appearance-none bg-white"
-              [class.border-red-300]="
-                registerForm.get('university')?.invalid &&
-                registerForm.get('university')?.touched
-              "
-              [class.hover:border-red-200]="
-                registerForm.get('university')?.invalid &&
-                registerForm.get('university')?.touched
-              "
-            >
-              <option value="" disabled>Choose</option>
-              <option
-                *ngFor="let university of universities"
-                [value]="university"
+            <div class="relative">
+              <select
+                id="university"
+                formControlName="universityId"
+                class="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition-all duration-200 hover:border-gray-300 appearance-none bg-white"
+                [class.is-invalid]="
+                  registerForm.get('universityId')?.invalid &&
+                  registerForm.get('universityId')?.touched
+                "
+                [disabled]="isLoadingUniversities || isSubmitting"
               >
-                {{ university }}
-              </option>
-            </select>
+                <option value="">Select University</option>
+                <option *ngFor="let university of universities" [value]="university.id">
+                  {{ university.name }}
+                </option>
+              </select>
+              <div *ngIf="isLoadingUniversities" class="absolute right-3 top-1/2 -translate-y-1/2">
+                <div class="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+              </div>
+            </div>
             <div
               *ngIf="
-                registerForm.get('university')?.invalid &&
-                registerForm.get('university')?.touched
+                registerForm.get('universityId')?.invalid &&
+                registerForm.get('universityId')?.touched
               "
               class="text-red-500 text-sm mt-1"
             >
-              University is required
+              Please select a university
             </div>
           </div>
         </div>
@@ -218,6 +222,7 @@
                 registerForm.get('phoneNumber')?.invalid &&
                 registerForm.get('phoneNumber')?.touched
               "
+              [disabled]="isSubmitting"
             />
           </div>
           <div
@@ -255,6 +260,7 @@
                 registerForm.get('password')?.invalid &&
                 registerForm.get('password')?.touched
               "
+              [disabled]="isSubmitting"
             />
             <div
               *ngIf="
@@ -288,6 +294,7 @@
                 registerForm.get('confirmPassword')?.invalid &&
                 registerForm.get('confirmPassword')?.touched
               "
+              [disabled]="isSubmitting"
             />
             <div
               *ngIf="
@@ -315,10 +322,14 @@
         <!-- Submit Button -->
         <button
           type="submit"
-          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg mt-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
-          [disabled]="registerForm.invalid"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg mt-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 relative"
+          [disabled]="registerForm.invalid || isSubmitting"
         >
-          Sign Up
+          <div *ngIf="isSubmitting" class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <div class="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+          </div>
+          <span *ngIf="!isSubmitting">Sign Up</span>
+          <span *ngIf="isSubmitting" class="ml-6">Signing up...</span>
         </button>
 
         <!-- Login Link -->
