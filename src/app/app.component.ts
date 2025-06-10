@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
+import { ForgetPasswordComponent } from './features/Auth/forget-password/forget-password.component';
 
 @Component({
   selector: 'app-root',
