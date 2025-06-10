@@ -50,7 +50,6 @@ export class LoginComponent {
   }
 
   onForgotPassword() {
-    // TODO: Implement forgot password logic
-    console.log('Forgot password clicked');
+    this.router.navigate(['/auth/forget-password']);
   }
 }

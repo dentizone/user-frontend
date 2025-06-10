@@ -29,6 +29,13 @@ export const routes: Routes = [
         './features/Auth/MailVerification/components/verification.component'
       ).then((m) => m.VerificationComponent),
   },
+   {
+    path: 'auth/forget-password',
+    loadComponent: () =>
+      import(
+        './features/Auth/forget-password/forget-password.component'
+      ).then((m) => m.ForgetPasswordComponent),
+  },
   {
     path: 'auth/kyc',
     loadComponent: () =>
