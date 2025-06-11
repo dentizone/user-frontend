@@ -8,7 +8,7 @@ import { inject } from '@angular/core';
 export const AuthInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  const isRefreshing = false;
+  let isRefreshing = false;
   const refreshTokenSubject = new BehaviorSubject<any>(null);
 
   const accessToken = authService.getAccessToken();

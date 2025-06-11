@@ -1,22 +1,37 @@
-import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  Router,
+  UrlTree,
+} from '@angular/router';
 
 import { AuthService } from '../services/auth.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(
+    route: ActivatedRouteSnapshot
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
     const isAuthenticated = this.authService.isAuthenticated();
-    const isAuthRoute = route.routeConfig?.path?.startsWith('auth');
-    const isMailVerifyRoute = route.routeConfig?.path === 'auth/mail-verify';
 
+    const fullPath = route.pathFromRoot
+      .map((s) => s.routeConfig?.path)
+      .filter(Boolean)
+      .join('/');
+
+    const isAuthRoute = fullPath.startsWith('auth/');
+    const isMailVerifyRoute = fullPath === 'auth/mail-verify';
     if (!isAuthenticated) {
-      // If user is not authenticated, redirect to login
       return this.router.createUrlTree(['/auth/login']);
     }
 
@@ -28,4 +43,4 @@ export class AuthGuard implements CanActivate {
 
     return true;
   }
-} 
+}

@@ -62,7 +62,6 @@ export class VerificationComponent implements OnInit {
     this.isResending = true;
     this.authService.sendVerificationEmail().subscribe({
       next: () => {
-        this.errorMessage = 'Verification email has been resent. Please check your inbox.';
         this.isResending = false;
       },
       error: (error: { error?: { Message?: string; Details?: string; StatusCode?: number } }) => {

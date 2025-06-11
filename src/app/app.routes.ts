@@ -38,20 +38,8 @@ export const routes: Routes = [
           ),
         canActivate: [AuthGuard]
       },
-      {
-        path: 'mail-verification',
-        loadComponent: () =>
-          import(
-            './features/Auth/MailVerification/verification.component'
-          ).then((m) => m.VerificationComponent),
-      },
-      {
-        path: 'forget-password',
-        loadComponent: () =>
-          import(
-            './features/Auth/forget-password/forget-password.component'
-          ).then((m) => m.ForgetPasswordComponent),
-      },
+    
+  
       {
         path: 'kyc',
         loadComponent: () =>
