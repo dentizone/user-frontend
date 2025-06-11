@@ -7,6 +7,10 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { PasswordModule } from 'primeng/password';
 import { AuthService } from '../../../core/services/auth.service';
+import { CheckEmailCardComponent } from './components/check-email-card.component';
+import { EmailInputCardComponent } from './components/email-input-card.component';
+import { ResetPasswordCardComponent } from './components/reset-password-card.component';
+import { SuccessCardComponent } from './components/success-card.component';
 
 @Component({
   selector: 'app-forget-password',
@@ -17,6 +21,10 @@ import { AuthService } from '../../../core/services/auth.service';
     PasswordModule,
     IftaLabelModule,
     FloatLabelModule,
+    EmailInputCardComponent,
+    CheckEmailCardComponent,
+    ResetPasswordCardComponent,
+    SuccessCardComponent,
   ],
   templateUrl: './forget-password.component.html',
   styleUrl: './forget-password.component.css',
