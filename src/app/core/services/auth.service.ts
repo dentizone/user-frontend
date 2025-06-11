@@ -1,3 +1,4 @@
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import {
   AuthResponse,
   LoginRequestDto,
@@ -7,7 +8,6 @@ import {
   ResetPasswordDto,
   User
 } from '../models/auth.models';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -54,10 +54,12 @@ export class AuthService {
     return this.http.post<void>(`${this.API_URL}/send-forget-password-email`, null, {
       params: { email }
     });
-  }
-
-  resetPassword(resetData: ResetPasswordDto): Observable<void> {
-    return this.http.post<void>(`${this.API_URL}/reset-password`, resetData);
+  }  resetPassword(resetData: ResetPasswordDto): Observable<void> {
+    return this.http.post<void>(`${this.API_URL}/reset-password`, {
+      newPassword: resetData.newPassword,
+      token: resetData.token ? encodeURIComponent(resetData.token) : resetData.token,
+      email: resetData.email
+    });
   }
 
   refreshToken(refreshData: RefreshTokenRequest): Observable<AuthResponse> {

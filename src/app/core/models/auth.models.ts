@@ -14,8 +14,8 @@ export interface RegisterRequestDto {
 
 export interface ResetPasswordDto {
   newPassword: string;
-  token: string;
-  email: string;
+  token: string | null;
+  email: string | null;
 }
 
 export interface RefreshTokenRequest {
