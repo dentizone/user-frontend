@@ -15,28 +15,9 @@
   overflow: hidden;
 }
 
-/* Ensure consistent card heights in grid */
-.grid > div {
-  display: flex;
-  flex-direction: column;
-}
-
 /* Smooth transitions for better user experience */
 .transition-all {
   transition: all 0.2s ease-in-out;
-}
-
-/* Responsive image sizing */
-@media (min-width: 1024px) {
-  .card-image {
-    height: 12rem; /* 48 in Tailwind */
-  }
-}
-
-@media (min-width: 1280px) {
-  .card-image {
-    height: 14rem; /* 56 in Tailwind */
-  }
 }
 
 /* Enhanced hover effects for larger screens */
