@@ -33,6 +33,7 @@
             [class.hover:border-red-200]="
               loginForm.get('email')?.invalid && loginForm.get('email')?.touched
             "
+            [disabled]="isLoading"
           />
           <div
             *ngIf="
@@ -65,6 +66,7 @@
               loginForm.get('password')?.invalid &&
               loginForm.get('password')?.touched
             "
+            [disabled]="isLoading"
           />
           <div
             *ngIf="
@@ -97,10 +99,14 @@
         <!-- Submit Button -->
         <button
           type="submit"
-          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg mt-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
-          [disabled]="loginForm.invalid"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg mt-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 relative"
+          [disabled]="loginForm.invalid || isLoading"
         >
-          Sign In
+          <div *ngIf="isLoading" class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <div class="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+          </div>
+          <span *ngIf="!isLoading">Sign In</span>
+          <span *ngIf="isLoading" class="ml-6">Signing in...</span>
         </button>
 
         <!-- Sign Up Link -->
