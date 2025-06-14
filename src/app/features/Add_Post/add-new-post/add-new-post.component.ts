@@ -29,7 +29,7 @@ export class AddNewPostComponent implements OnInit{
   subCategories:Icategory[]=[]
   userForm!: FormGroup;
   imageID:string[]=[];
-
+  invalidSubmit=false;
   ngOnInit(): void {
     fetch('https://apit.gitnasr.com/api/Catalog/categories', {
   headers: {
@@ -96,6 +96,9 @@ export class AddNewPostComponent implements OnInit{
   onSubmit(){
      if (this.userForm.valid) {
       console.log(this.userForm.value);
+    }else{
+      this.invalidSubmit=true;
+      return;
     }
     if(this.imagePreviews.length==0){
       this.invalid=true
@@ -132,10 +135,10 @@ export class AddNewPostComponent implements OnInit{
   ];
   title:string=''
   hasExpiryDate=false
-  condition:string='Choose a Condition'
+  condition:string=''
   category:Icategory={name:'',id:'',iconUrl:''}
   subcategory:Icategory={name:'',id:'',iconUrl:''}
-  city:string='Choose Your City'
+  city:string=''
   address:string=''
   price:string=''
   netPrice=0;
