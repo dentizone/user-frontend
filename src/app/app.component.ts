@@ -4,10 +4,11 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { ForgetPasswordComponent } from './features/Auth/forget-password/forget-password.component';
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
 import { RouterOutlet } from '@angular/router';
+import { AddNewPostComponent } from "./features/Add_Post/add-new-post/add-new-post.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ButtonModule, NavBarComponent, FooterComponent],
+  imports: [RouterOutlet, ButtonModule, NavBarComponent, FooterComponent, AddNewPostComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
