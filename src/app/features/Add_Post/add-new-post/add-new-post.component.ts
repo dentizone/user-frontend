@@ -104,17 +104,18 @@ export class AddNewPostComponent implements OnInit{
       this.invalid=true
     }
     this.userPost={
-      title:this.title,
-      condition:this.condition,
-      category:this.category,
-      city:this.city,
-      description:this.description,
-      price:this.price,
-      expiryDate:this.ExpiryDate,
-      subcategory:this.subcategory,
-      address:this.address,
-      imageId:this.imageID
+      title:this.userForm.value.title,
+      condition:this.userForm.value.condition,
+      category:this.userForm.value.category,
+      city:this.userForm.value.city,
+      description:this.userForm.value.description,
+      price:this.userForm.value.price,
+      expiryDate:this.userForm.value.ExpiryDate,
+      subcategory:this.userForm.value.subcategory,
+      address:this.userForm.value.address,
+      imageId:this.userForm.value.imageID
     }
+    console.log(this.userPost);
   }
   cities = [
     'Alexandria',
