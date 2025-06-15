@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
@@ -44,6 +44,8 @@ interface ImageUploadState {
   styleUrl: './add-new-post.component.css'
 })
 export class AddNewPostComponent implements OnInit, OnDestroy {
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  
   private destroy$ = new Subject<void>();
   
   categories: ICategory[] = [];
@@ -64,6 +66,7 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
   imagePreviews: string[] = [];
   imageUploadStates: ImageUploadState[] = [];
   errorMessage: string = '';
+  isUploadingAnyImage = false;
   
   // Price calculation
   netPrice = 0;
@@ -165,6 +168,16 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
     }
   }
 
+  private resetFileInput(): void {
+    if (this.fileInput && this.fileInput.nativeElement) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
+
+  private updateUploadingState(): void {
+    this.isUploadingAnyImage = this.imageUploadStates.some(state => state.isUploading);
+  }
+
   onDeleteImage(index: number): void {
     // Remove from upload states
     const uploadState = this.imageUploadStates[index];
@@ -203,6 +216,9 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
     } else {
       this.selectedImg = { path: '/assets/Icons/image-gallery.png', index: 0 };
     }
+
+    // Reset file input after deletion
+    this.resetFileInput();
   }
 
   onSelectImage(path: string, index: number): void {
@@ -241,16 +257,23 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
           this.selectedImg = { path: preview, index: 0 };
         }
         
+        // Update uploading state
+        this.updateUploadingState();
+        
         // Upload the image
         this.uploadImage(uploadState, this.imageUploadStates.length - 1);
       };
       reader.readAsDataURL(file);
     }
+
+    // Reset file input after selection
+    this.resetFileInput();
   }
 
   private uploadImage(uploadState: ImageUploadState, index: number): void {
     uploadState.isUploading = true;
     uploadState.uploadError = undefined;
+    this.updateUploadingState();
     
     this.postService.uploadImage(uploadState.file)
       .pipe(takeUntil(this.destroy$))
@@ -260,6 +283,7 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
           uploadState.uploadSuccess = true;
           uploadState.imageId = response.id;
           this.imageIDs.push(response.id);
+          this.updateUploadingState();
           console.log('Upload successful:', response);
         },
         error: (error) => {
@@ -267,6 +291,7 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
           uploadState.isUploading = false;
           uploadState.uploadError = 'Failed to upload image. Please try again.';
           uploadState.uploadSuccess = false;
+          this.updateUploadingState();
         }
       });
   }
