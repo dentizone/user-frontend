@@ -14,6 +14,7 @@ import { PostService, ICategory, IPost } from '../../core/services/post.service'
 import { AuthService } from '../../core/services/auth.service';
 
 import "quill/dist/quill.core.css";
+import { PostUnderReviewComponent } from '../../shared/components/post-under-review/post-under-review.component';
 
 interface ImagePreview {
   path: string;
@@ -38,7 +39,8 @@ interface ImageUploadState {
     InputTextModule,
     DropdownModule,
     FormsModule,
-    QuillEditorComponent
+    QuillEditorComponent,
+    PostUnderReviewComponent
   ],
   templateUrl: './add-new-post.component.html',
   styleUrl: './add-new-post.component.css'
@@ -79,6 +81,8 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
     'Fayoum', 'Giza', 'Ismailia', 'Luxor', 'Mansoura',
     'Port Said', 'Shubra El-Kheima', 'Suez', 'Tanta', 'Zagazig',
   ];
+
+  postUnderReview = false;
 
   constructor(
     private postService: PostService,
@@ -344,8 +348,7 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
         next: (response) => {
           console.log('Post created successfully:', response);
           this.isLoading = false;
-          // Navigate to home or show success message
-          this.router.navigate(['/home']);
+          this.postUnderReview = true;
         },
         error: (error) => {
           console.error('Error creating post:', error);
