@@ -79,6 +79,13 @@ export const routes: Routes = [
             './features/Profile/profile-container/profile-container.component'
           ).then((m) => m.ProfileContainerComponent),
       },
+      {
+        path: 'add-new-post',
+        loadComponent: () =>
+          import('./features/add-new-post/add-new-post.component').then(
+            (m) => m.AddNewPostComponent
+          ),
+      },
     ],
   },
   {
