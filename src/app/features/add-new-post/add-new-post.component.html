@@ -172,41 +172,18 @@
           </span>
         </div>
 
-        <div class="space-y-2">
-          <label class="block text-lg font-semibold text-[#1F2A56] mb-3">
-            Expiry Date
+        <!-- Expiry Date Section with Absolute Toggle -->
+        <div class="relative ">
+          <label class="block text-lg font-semibold text-[#1F2A56] mb-2">
+          Material  Expiry Date (If applicable)
           </label>
-          
-          <!-- Toggle Switch -->
-          <div class="flex items-center space-x-3 mb-4">
-            <input
-              type="checkbox"
-              [(ngModel)]="hasExpiryDate"
-              [ngModelOptions]="{ standalone: true }"
-              class="sr-only peer"
-              id="expiryToggle"
-            />
-            <label for="expiryToggle" class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600 cursor-pointer"></label>
-            <span class="text-base font-medium text-[#1F2A56]">
-              Your item has Expiry Date
-            </span>
-          </div>
+          <input
+            type="date"
+            formControlName="expiryDate"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
+            placeholder="Select expiry date"
+          />
 
-          <!-- Date Picker -->
-          <div *ngIf="hasExpiryDate" class="space-y-2">
-            <p-datepicker
-              formControlName="expiryDate"
-              class="w-full"
-              [showIcon]="true"
-              placeholder="Select expiry date"
-            />
-            <span
-              class="text-red-500 text-sm font-medium"
-              *ngIf="userForm.get('expiryDate')?.invalid && userForm.get('expiryDate')?.touched"
-            >
-              Please select a valid expiry date
-            </span>
-          </div>
         </div>
       </div>
 
@@ -312,9 +289,8 @@
         </label>
         <quill-editor
           formControlName="description"
-          [style]="{ height: '200px', borderRadius: '8px' }"
           placeholder="Write your product description here..."
-          class="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="w-full h-1/4"
         ></quill-editor>
         <span
           class="text-red-500 text-sm font-medium"

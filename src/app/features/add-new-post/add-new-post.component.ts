@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component,OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DatePicker } from 'primeng/datepicker';
-import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { QuillEditorComponent } from 'ngx-quill';
@@ -25,8 +24,7 @@ interface Icategory{
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    DatePicker,
-    CalendarModule,
+    DatePickerModule,
     InputTextModule,
     DropdownModule,
     FormsModule,
