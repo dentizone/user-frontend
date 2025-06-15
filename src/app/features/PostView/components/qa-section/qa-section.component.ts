@@ -36,7 +36,6 @@ interface Question {
         @for (question of questions; track question.id) {
           <app-question-answer
             [question]="question"
-            [isAuthenticated]="isAuthenticated"
             (answerSubmitted)="onAnswerSubmitted($event)"
           ></app-question-answer>
         }
