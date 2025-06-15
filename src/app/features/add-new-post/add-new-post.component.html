@@ -11,6 +11,23 @@
     <span class="font-medium">Warning alert!</span> Please complete the required fields
   </div>
 
+  <!-- Error Alert -->
+  <div
+    *ngIf="errorMessage"
+    class="p-4 mb-6 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200"
+    role="alert"
+  >
+    <span class="font-medium">Error!</span> {{ errorMessage }}
+  </div>
+
+  <!-- Loading Overlay -->
+  <div *ngIf="isLoading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+      <p class="mt-2 text-gray-600">Loading...</p>
+    </div>
+  </div>
+
   <!-- Main Form -->
   <form
     [formGroup]="userForm"
@@ -29,7 +46,7 @@
           <div class="relative w-full">
             <button
               type="button"
-              (click)="onDelete(selectedImg.index)"
+              (click)="onDeleteImage(selectedImg.index)"
               class="absolute top-2 right-2 z-10 p-1 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors duration-200"
             >
               <img
@@ -39,20 +56,43 @@
               />
             </button>
             
-            <div class="aspect-video rounded-lg overflow-hidden">
+            <div class="aspect-video rounded-lg overflow-hidden relative">
               <img
-                *ngIf="selectedImg.path === '' || selectedImg.path === undefined; else customImg"
-                [src]="imagePreviews[0]"
-                class="w-full h-full object-cover rounded-lg"
+                [src]="selectedImg.path" 
+                class="w-full h-full object-cover rounded-lg" 
                 alt="Selected image"
               />
-              <ng-template #customImg>
-                <img 
-                  [src]="selectedImg.path" 
-                  class="w-full h-full object-cover rounded-lg" 
-                  alt="Custom image"
-                />
-              </ng-template>
+              
+              <!-- Upload Loading Overlay for Selected Image -->
+              <div 
+                *ngIf="imageUploadStates[selectedImg.index]?.isUploading"
+                class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg"
+              >
+                <div class="text-center">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto"></div>
+                  <p class="mt-2 text-white text-sm">Uploading...</p>
+                </div>
+              </div>
+              
+              <!-- Upload Success Indicator -->
+              <div 
+                *ngIf="imageUploadStates[selectedImg.index]?.uploadSuccess"
+                class="absolute top-2 left-2 z-10 p-1 bg-green-500 text-white rounded-full"
+              >
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              
+              <!-- Upload Error Indicator -->
+              <div 
+                *ngIf="imageUploadStates[selectedImg.index]?.uploadError"
+                class="absolute top-2 left-2 z-10 p-1 bg-red-500 text-white rounded-full"
+              >
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
             </div>
           </div>
           }
@@ -71,15 +111,53 @@
           <!-- Image Thumbnails -->
           <div class="w-full">
             <div class="grid grid-cols-3 gap-2">
-              @for (item of imagePreviews; track $index) {
-              <button
-                type="button"
-                (click)="onSelectImage(item, $index)"
-                class="aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 transition-colors duration-200"
-                [class.border-blue-500]="selectedImg.index === $index"
-              >
-                <img [src]="item" class="w-full h-full object-cover" alt="Image thumbnail" />
-              </button>
+              @for (item of imageUploadStates; track $index) {
+              <div class="relative">
+                <button
+                  type="button"
+                  (click)="onSelectImage(item.preview, $index)"
+                  class="aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 transition-colors duration-200 relative"
+                  [class.border-blue-500]="selectedImg.index === $index"
+                >
+                  <img [src]="item.preview" class="w-full h-full object-cover" alt="Image thumbnail" />
+                  
+                  <!-- Upload Loading Overlay -->
+                  <div 
+                    *ngIf="item.isUploading"
+                    class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+                  >
+                    <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  </div>
+                  
+                  <!-- Upload Success Indicator -->
+                  <div 
+                    *ngIf="item.uploadSuccess"
+                    class="absolute top-1 right-1 p-0.5 bg-green-500 text-white rounded-full"
+                  >
+                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                  </div>
+                  
+                  <!-- Upload Error Indicator -->
+                  <div 
+                    *ngIf="item.uploadError"
+                    class="absolute top-1 right-1 p-0.5 bg-red-500 text-white rounded-full"
+                  >
+                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                  </div>
+                </button>
+                
+                <!-- Error Message for Individual Image -->
+                <div 
+                  *ngIf="item.uploadError"
+                  class="mt-1 text-xs text-red-500 text-center"
+                >
+                  {{ item.uploadError }}
+                </div>
+              </div>
               }
             </div>
           </div>
@@ -122,9 +200,8 @@
           <div class="flex items-center space-x-2">
             <div class="flex border border-gray-300 rounded-lg overflow-hidden flex-1">
               <input
-                type="text"
+                type="number"
                 formControlName="price"
-                (change)="calculateCom($event.target)"
                 placeholder="Enter The Price"
                 class="flex-1 px-3 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
@@ -138,7 +215,7 @@
             class="text-[#36478b] font-semibold text-sm"
           >
             The net price after commission will be
-            <span class="font-bold">{{ netPrice }}</span> EGP
+            <span class="font-bold">{{ netPrice | number:'1.2-2' }}</span> EGP
           </span>
           <span
             class="text-red-500 text-sm font-medium"
@@ -193,17 +270,30 @@
           <label for="category" class="block text-lg font-semibold text-[#1F2A56]">
             Category
           </label>
-          <select
-            id="category"
-            (change)="onSelectCategory($event)"
-            formControlName="category"
-            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-          >
-            <option value="">Choose a Category</option>
-            @for (item of categories; track $index) {
-            <option [value]="item.id">{{ item.name }}</option>
-            }
-          </select>
+          <div class="relative">
+            <select
+              id="category"
+              (change)="onSelectCategory()"
+              formControlName="category"
+              class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              [disabled]="isLoadingCategories"
+            >
+              <option value="">
+                {{ isLoadingCategories ? 'Loading categories...' : 'Choose a Category' }}
+              </option>
+              @for (item of categories; track $index) {
+              <option [value]="item.id">{{ item.name }}</option>
+              }
+            </select>
+            
+            <!-- Loading Spinner for Categories -->
+            <div 
+              *ngIf="isLoadingCategories"
+              class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+            >
+              <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+            </div>
+          </div>
           <span
             class="text-red-500 text-sm font-medium"
             *ngIf="userForm.get('category')?.invalid && userForm.get('category')?.touched"
@@ -216,19 +306,32 @@
           <label for="subcategory" class="block text-lg font-semibold text-[#1F2A56]">
             Subcategory
           </label>
-          <select
-            id="subcategory"
-            (change)="onSelectSubcategory()"
-            formControlName="subcategory"
-            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-          >
-            <option *ngIf="subCategories.length == 0" value="">
-              Choose a category first
-            </option>
-            @for (item of subCategories; track $index) {
-            <option [value]="item.id">{{ item.name }}</option>
-            }
-          </select>
+          <div class="relative">
+            <select
+              id="subcategory"
+              formControlName="subcategory"
+              class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              [disabled]="isLoadingSubcategories || subCategories.length === 0"
+            >
+              <option *ngIf="subCategories.length == 0 && !isLoadingSubcategories" value="">
+                Choose a category first
+              </option>
+              <option *ngIf="isLoadingSubcategories" value="">
+                Loading subcategories...
+              </option>
+              @for (item of subCategories; track $index) {
+              <option [value]="item.id">{{ item.name }}</option>
+              }
+            </select>
+            
+            <!-- Loading Spinner for Subcategories -->
+            <div 
+              *ngIf="isLoadingSubcategories"
+              class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+            >
+              <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+            </div>
+          </div>
           <span
             class="text-red-500 text-sm font-medium"
             *ngIf="userForm.get('subcategory')?.invalid && userForm.get('subcategory')?.touched"
@@ -304,9 +407,10 @@
       <div class="flex justify-end pt-6">
         <button
           type="submit"
-          class="px-8 py-3 bg-[#0077B6] hover:bg-[#005a8b] text-white font-semibold rounded-2xl transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-base sm:text-lg"
+          [disabled]="isLoading"
+          class="px-8 py-3 bg-[#0077B6] hover:bg-[#005a8b] disabled:bg-gray-400 text-white font-semibold rounded-2xl transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-base sm:text-lg"
         >
-          Publish Post
+          {{ isLoading ? 'Publishing...' : 'Publish Post' }}
         </button>
       </div>
     </div>
