@@ -1,0 +1,338 @@
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl">
+  <h2 class="text-2xl sm:text-3xl lg:text-4xl font-semibold lg:font-bold text-gray-800 mb-4">Add Post</h2>
+  <hr class="mb-6 border-gray-300" />
+  
+  <!-- Warning Alert -->
+  <div
+    *ngIf="invalidSubmit"
+    class="p-4 mb-6 text-sm text-yellow-800 rounded-lg bg-yellow-50 border border-yellow-200"
+    role="alert"
+  >
+    <span class="font-medium">Warning alert!</span> Please complete the required fields
+  </div>
+
+  <!-- Main Form -->
+  <form
+    [formGroup]="userForm"
+    (ngSubmit)="onSubmit()"
+    class="flex flex-col lg:flex-row lg:space-x-8 space-y-8 lg:space-y-0"
+  >
+    <!-- Image Upload Section - Left Side -->
+    <div class="lg:w-1/3">
+      <div class="bg-[#E9F6FF] rounded-2xl p-6 lg:p-8 sticky top-6">
+        <div class="flex flex-col items-center space-y-6">
+          @if (imagePreviews.length == 0) {
+          <div class="w-full">
+            <img class="w-full h-auto" src="/assets/Icons/image-gallery.png" alt="Image gallery placeholder" />
+          </div>
+          } @else {
+          <div class="relative w-full">
+            <button
+              type="button"
+              (click)="onDelete(selectedImg.index)"
+              class="absolute top-2 right-2 z-10 p-1 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors duration-200"
+            >
+              <img
+                src="/assets/Icons/delete.png"
+                class="w-4 h-4"
+                alt="Delete image"
+              />
+            </button>
+            
+            <div class="aspect-video rounded-lg overflow-hidden">
+              <img
+                *ngIf="selectedImg.path === '' || selectedImg.path === undefined; else customImg"
+                [src]="imagePreviews[0]"
+                class="w-full h-full object-cover rounded-lg"
+                alt="Selected image"
+              />
+              <ng-template #customImg>
+                <img 
+                  [src]="selectedImg.path" 
+                  class="w-full h-full object-cover rounded-lg" 
+                  alt="Custom image"
+                />
+              </ng-template>
+            </div>
+          </div>
+          }
+
+          <!-- File Input -->
+          <div class="w-full">
+            <input
+              *ngIf="imagePreviews.length < 3"
+              (change)="onFileSelected($event)"
+              accept="image/*"
+              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#c6e6fd] hover:bg-[#b8dffc] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 p-3"
+              type="file"
+            />
+          </div>
+
+          <!-- Image Thumbnails -->
+          <div class="w-full">
+            <div class="grid grid-cols-3 gap-2">
+              @for (item of imagePreviews; track $index) {
+              <button
+                type="button"
+                (click)="onSelectImage(item, $index)"
+                class="aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 transition-colors duration-200"
+                [class.border-blue-500]="selectedImg.index === $index"
+              >
+                <img [src]="item" class="w-full h-full object-cover" alt="Image thumbnail" />
+              </button>
+              }
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <span *ngIf="invalid" class="text-red-500 text-sm font-medium text-center">
+            You must add at least 1 image of the product you want to sell
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Fields Section - Right Side -->
+    <div class="lg:w-2/3 space-y-6">
+      <!-- Title and Price Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <label for="title" class="block text-lg font-semibold text-[#1F2A56]">
+            Title
+          </label>
+          <input
+            formControlName="title"
+            placeholder="Enter your Item Title"
+            type="text"
+            id="title"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          />
+          <span
+            class="text-red-500 text-sm font-medium"
+            *ngIf="userForm.get('title')?.invalid && userForm.get('title')?.touched"
+          >
+            Please add Title for your post
+          </span>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-lg font-semibold text-[#1F2A56]">
+            Price
+          </label>
+          <div class="flex items-center space-x-2">
+            <div class="flex border border-gray-300 rounded-lg overflow-hidden flex-1">
+              <input
+                type="text"
+                formControlName="price"
+                (change)="calculateCom($event.target)"
+                placeholder="Enter The Price"
+                class="flex-1 px-3 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <select class="bg-gray-100 text-sm text-gray-700 px-3 py-3 border-l border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option>EGP</option>
+              </select>
+            </div>
+          </div>
+          <span
+            *ngIf="netPrice > 0"
+            class="text-[#36478b] font-semibold text-sm"
+          >
+            The net price after commission will be
+            <span class="font-bold">{{ netPrice }}</span> EGP
+          </span>
+          <span
+            class="text-red-500 text-sm font-medium"
+            *ngIf="userForm.get('price')?.invalid && userForm.get('price')?.touched"
+          >
+            Please enter the price that you want
+          </span>
+        </div>
+      </div>
+
+      <!-- Condition and Expiry Date Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <label for="condition" class="block text-lg font-semibold text-[#1F2A56]">
+            Condition
+          </label>
+          <select
+            id="condition"
+            formControlName="condition"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          >
+            <option value="">Choose a Condition</option>
+            <option value="new">New</option>
+            <option value="used">Used</option>
+          </select>
+          <span
+            class="text-red-500 text-sm font-medium"
+            *ngIf="userForm.get('condition')?.invalid && userForm.get('condition')?.touched"
+          >
+            Please select the condition of your product
+          </span>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-lg font-semibold text-[#1F2A56] mb-3">
+            Expiry Date
+          </label>
+          
+          <!-- Toggle Switch -->
+          <div class="flex items-center space-x-3 mb-4">
+            <input
+              type="checkbox"
+              [(ngModel)]="hasExpiryDate"
+              [ngModelOptions]="{ standalone: true }"
+              class="sr-only peer"
+              id="expiryToggle"
+            />
+            <label for="expiryToggle" class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600 cursor-pointer"></label>
+            <span class="text-base font-medium text-[#1F2A56]">
+              Your item has Expiry Date
+            </span>
+          </div>
+
+          <!-- Date Picker -->
+          <div *ngIf="hasExpiryDate" class="space-y-2">
+            <p-datepicker
+              formControlName="expiryDate"
+              class="w-full"
+              [showIcon]="true"
+              placeholder="Select expiry date"
+            />
+            <span
+              class="text-red-500 text-sm font-medium"
+              *ngIf="userForm.get('expiryDate')?.invalid && userForm.get('expiryDate')?.touched"
+            >
+              Please select a valid expiry date
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category and Subcategory Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <label for="category" class="block text-lg font-semibold text-[#1F2A56]">
+            Category
+          </label>
+          <select
+            id="category"
+            (change)="onSelectCategory($event)"
+            formControlName="category"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          >
+            <option value="">Choose a Category</option>
+            @for (item of categories; track $index) {
+            <option [value]="item.id">{{ item.name }}</option>
+            }
+          </select>
+          <span
+            class="text-red-500 text-sm font-medium"
+            *ngIf="userForm.get('category')?.invalid && userForm.get('category')?.touched"
+          >
+            Please choose a category for your product
+          </span>
+        </div>
+
+        <div class="space-y-2">
+          <label for="subcategory" class="block text-lg font-semibold text-[#1F2A56]">
+            Subcategory
+          </label>
+          <select
+            id="subcategory"
+            (change)="onSelectSubcategory()"
+            formControlName="subcategory"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          >
+            <option *ngIf="subCategories.length == 0" value="">
+              Choose a category first
+            </option>
+            @for (item of subCategories; track $index) {
+            <option [value]="item.id">{{ item.name }}</option>
+            }
+          </select>
+          <span
+            class="text-red-500 text-sm font-medium"
+            *ngIf="userForm.get('subcategory')?.invalid && userForm.get('subcategory')?.touched"
+          >
+            Please choose a subcategory for your product
+          </span>
+        </div>
+      </div>
+
+      <!-- City and Address Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <label for="city" class="block text-lg font-semibold text-[#1F2A56]">
+            City
+          </label>
+          <select
+            id="city"
+            formControlName="city"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          >
+            <option value="">Choose Your City</option>
+            @for (item of cities; track $index) {
+            <option [value]="item">{{ item }}</option>
+            }
+          </select>
+          <span
+            class="text-red-500 text-sm font-medium"
+            *ngIf="userForm.get('city')?.invalid && userForm.get('city')?.touched"
+          >
+            Please choose your city
+          </span>
+        </div>
+
+        <div class="space-y-2">
+          <label for="address" class="block text-lg font-semibold text-[#1F2A56]">
+            Address
+          </label>
+          <input
+            formControlName="address"
+            placeholder="Enter your address"
+            type="text"
+            id="address"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          />
+          <span
+            class="text-red-500 text-sm font-medium"
+            *ngIf="userForm.get('address')?.invalid && userForm.get('address')?.touched"
+          >
+            Please enter your address
+          </span>
+        </div>
+      </div>
+
+      <!-- Description Section -->
+      <div class="space-y-2">
+        <label for="description" class="block text-lg font-semibold text-[#1F2A56]">
+          Product Description
+        </label>
+        <quill-editor
+          formControlName="description"
+          [style]="{ height: '200px', borderRadius: '8px' }"
+          placeholder="Write your product description here..."
+          class="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        ></quill-editor>
+        <span
+          class="text-red-500 text-sm font-medium"
+          *ngIf="userForm.get('description')?.invalid && userForm.get('description')?.touched"
+        >
+          Please enter a description for your product
+        </span>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end pt-6">
+        <button
+          type="submit"
+          class="px-8 py-3 bg-[#0077B6] hover:bg-[#005a8b] text-white font-semibold rounded-2xl transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-base sm:text-lg"
+        >
+          Publish Post
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

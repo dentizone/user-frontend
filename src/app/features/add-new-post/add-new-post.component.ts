@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component,OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePicker } from 'primeng/datepicker';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
 import { QuillEditorComponent } from 'ngx-quill';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -19,7 +22,16 @@ interface Icategory{
 }
 @Component({
   selector: 'app-add-new-post',
-  imports: [CommonModule,ReactiveFormsModule,DatePicker,FormsModule,QuillEditorComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    DatePicker,
+    CalendarModule,
+    InputTextModule,
+    DropdownModule,
+    FormsModule,
+    QuillEditorComponent
+  ],
   templateUrl: './add-new-post.component.html',
   styleUrl: './add-new-post.component.css'
 })
