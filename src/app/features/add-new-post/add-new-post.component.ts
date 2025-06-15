@@ -315,15 +315,15 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
     const formValue = this.userForm.value;
     const postData: IPost = {
       title: formValue.title,
-      condition: formValue.condition,
-      category: formValue.category,
-      city: formValue.city,
       description: formValue.description,
       price: formValue.price,
-      expiryDate: formValue.expiryDate,
-      subcategory: formValue.subcategory,
-      address: formValue.address,
-      imageId: this.imageIDs
+      condition: formValue.condition,
+      street: formValue.address,
+      city: formValue.city,
+      categoryId: formValue.category,
+      subCategoryId: formValue.subcategory,
+      expireDate: formValue.expiryDate || undefined,
+      assetIds: this.imageIDs
     };
 
     this.isLoading = true;

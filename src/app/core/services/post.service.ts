@@ -11,15 +11,15 @@ export interface ICategory {
 
 export interface IPost {
   title: string;
-  condition: string;
-  category: string;
-  city: string;
   description: string;
   price: number;
-  expiryDate?: Date;
-  subcategory: string;
-  address: string;
-  imageId: string[];
+  condition: string;
+  street: string;
+  city: string;
+  categoryId: string;
+  subCategoryId: string;
+  expireDate?: Date;
+  assetIds: string[];
 }
 
 export interface IImageUploadResponse {
