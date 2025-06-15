@@ -3,5 +3,5 @@ export interface posts{
     title:string;
     description:string;
     price:string;
-
+rating: string;
 }

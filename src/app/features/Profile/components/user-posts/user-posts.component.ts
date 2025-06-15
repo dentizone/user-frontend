@@ -16,21 +16,25 @@ export class UserPostsComponent {
     {title:"MANI K FILES ( SIZE 6 )",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
       price:"170",
-      imagesrc:"/assets/items/image1.png"
+      imagesrc:"/assets/items/image1.png",
+      rating:"3.5"
     },{title:"Alphasil Rubber Base impression kit",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
       price:"1700",
-      imagesrc:"/assets/items/image2.png"
+      imagesrc:"/assets/items/image2.png",
+      rating:"3.5"
     },
     {title:"Calibra Veneer Esthetic Resin",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
       price:"2650",
-      imagesrc:"/assets/items/image3.png"
+      imagesrc:"/assets/items/image3.png",
+      rating:"3.5"
     },
     {title:"Ultradent PermaFlo-A1",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
       price:"900",
-      imagesrc:"/assets/items/image4.png"
+      imagesrc:"/assets/items/image4.png",
+      rating:"3.5"
     }
   ]
   Current:posts[]=this.ActivePosts
@@ -38,35 +42,42 @@ export class UserPostsComponent {
     {title:"Calibra Veneer Esthetic Resin",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
       price:"2650",
-      imagesrc:"/assets/items/image3.png"
+      imagesrc:"/assets/items/image3.png",
+      rating:"3.5"
     },
     {title:"Ultradent PermaFlo-A1",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
       price:"900",
-      imagesrc:"/assets/items/image4.png"
+      imagesrc:"/assets/items/image4.png",
+      rating:"3.5"
     },{title:"MANI K FILES ( SIZE 6 )",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
       price:"170",
-      imagesrc:"/assets/items/image1.png"
+      imagesrc:"/assets/items/image1.png",
+      rating:"3.5"
     },{title:"Alphasil Rubber Base impression kit",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
       price:"1700",
-      imagesrc:"/assets/items/image2.png"
+      imagesrc:"/assets/items/image2.png",
+      rating:"3.5"
     }
   ]
   UnactivePosts:posts[]=[
     {title:"Ultradent PermaFlo-A1",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
       price:"900",
-      imagesrc:"/assets/items/image4.png"
+      imagesrc:"/assets/items/image4.png",
+      rating:"3.5"
     },{title:"MANI K FILES ( SIZE 6 )",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
       price:"170",
-      imagesrc:"/assets/items/image1.png"
+      imagesrc:"/assets/items/image1.png",
+      rating:"3.5"
     },{title:"Alphasil Rubber Base impression kit",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
       price:"1700",
-      imagesrc:"/assets/items/image2.png"
+      imagesrc:"/assets/items/image2.png",
+      rating:"3.5"
     }
   ]
   changeCurent(input:any){
