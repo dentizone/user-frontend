@@ -1,55 +1,82 @@
-
-<div class="p-6 grid grid-cols-1 gap-8">
- 
-  <div>
-    <div class="border rounded-xl p-4 flex justify-center">
-      <img [src]="mainImage" alt="product" class="h-48 object-contain" />
-    </div>
-    <div class="mt-4 flex space-x-4">
-      <img *ngFor="let image of images"
-           [src]="image"
-           (click)="mainImage = image"
-           class="h-16 w-16 border rounded-lg cursor-pointer object-contain hover:border-blue-500">
-    </div>
-  </div>
-
-  <div class="space-y-4">
-    <h2 class="text-2xl font-semibold">Alphasil Rubber Base impression</h2>
-    <div class="flex items-center space-x-2 text-sm">
-      <div class="flex items-center space-x-1">
-        <span class="font-medium">User-1234</span>
-        <span class="text-yellow-400">★★★★☆</span>
+<!-- Main Container -->
+<div class="min-h-screen bg-[#CAF0F861] p-4 sm:p-6 lg:p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Image Gallery Section -->
+      <div class="space-y-4">
+        <div class="bg-white border border-blue-100 rounded-xl p-4 sm:p-6 flex justify-center shadow-sm hover:shadow-md transition-shadow">
+          <img [src]="mainImage" alt="product" class="h-64 sm:h-80 object-contain" />
+        </div>
+        <div class="flex space-x-4 overflow-x-auto pb-2">
+          <img *ngFor="let image of images"
+               [src]="image"
+               (click)="mainImage = image"
+               class="h-20 w-20 border border-gray-200 rounded-lg cursor-pointer object-contain hover:border-[#0077B6] transition-colors">
+        </div>
       </div>
-      <span class="text-lg font-bold ml-70">1700 EGP</span>
-    </div>
-    <p class="text-gray-600">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
-    </p>
-    <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-      Add To Cart
-    </button>
-     
-    <div class="mt-6 border-t pt-4">
-      <h3 class="font-semibold text-lg mb-2">Details</h3>
-      <div class="grid grid-cols-2 gap-y-2 text-sm">
-        <div><span class="font-medium">Condition:</span> New</div>
-        <div><span class="font-medium">Expiry Date:</span> Expired</div>
-        <div><span class="font-medium">Category:</span> Orthodontics</div>
-        <div><span class="font-medium">Subcategory:</span> Material</div>
+
+      <!-- Product Details Section -->
+      <div class="bg-white border border-blue-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="space-y-6">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">Alphasil Rubber Base impression</h2>
+            <div class="flex items-center justify-between mt-4">
+              <div class="flex items-center space-x-2">
+                <span class="font-medium text-gray-700">User-1234</span>
+                <span class="text-yellow-400">★★★★☆</span>
+              </div>
+              <span class="text-2xl font-bold text-[#0077B6]">1700 EGP</span>
+            </div>
+          </div>
+
+          <p class="text-gray-600 text-sm sm:text-base">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+          </p>
+
+          <button class="w-full sm:w-auto bg-[#0077B6] hover:bg-[#00B4D8] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2">
+            Add To Cart
+          </button>
+
+          <div class="border-t border-gray-200 pt-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Details</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+              <div class="flex items-center space-x-2">
+                <span class="font-medium text-gray-700">Condition:</span>
+                <span class="text-gray-600">New</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="font-medium text-gray-700">Expiry Date:</span>
+                <span class="text-red-500">Expired</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="font-medium text-gray-700">Category:</span>
+                <span class="text-gray-600">Orthodontics</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="font-medium text-gray-700">Subcategory:</span>
+                <span class="text-gray-600">Material</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="p-6 mt-6">
-  <h2 class="text-xl font-semibold mb-4">Q&amp;A Section</h2>
-  <div *ngFor="let q of questions" class="mb-4">
-    <div class="flex space-x-2 items-start">
-      <img src="/assets/avatar/dentist.png" class="h-8 w-8" alt="user">
-      <div>
-        <p class="font-semibold text-sm">{{ q.username }}</p>
-        <p class="text-sm text-gray-700">{{ q.text }}</p>
-        <p class="text-xs text-gray-400 mt-1">{{ q.time }}</p>
+    <!-- Q&A Section -->
+    <div class="mt-8 bg-white border border-blue-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6">Q&A Section</h2>
+      <div class="space-y-6">
+        <div *ngFor="let q of questions" class="flex space-x-4">
+          <img src="/assets/avatar/dentist.png" class="h-10 w-10 rounded-full" alt="user">
+          <div class="flex-1">
+            <div class="flex items-center justify-between">
+              <p class="font-semibold text-gray-800">{{ q.username }}</p>
+              <p class="text-sm text-gray-400">{{ q.time }}</p>
+            </div>
+            <p class="text-gray-600 mt-1">{{ q.text }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
