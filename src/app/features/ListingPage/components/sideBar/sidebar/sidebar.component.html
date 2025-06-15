@@ -29,22 +29,23 @@
             </div>
          </li>
          @for (item of categories; track $index) {
-         <li (click)="onSelectCategory(item.name)">
+         <li (click)="onSelectCategory(item.categoryName)">
             <div 
                 [ngClass]="{
-                        'text-blue-700 bg-blue-50 border-s-4 border-blue-700': activeCategory === item.name,
-                        'text-gray-900 hover:bg-gray-100': activeCategory !== item.name
+                        'text-blue-700 bg-blue-50 border-s-4 border-blue-700': activeCategory === item.categoryName,
+                        'text-gray-900 hover:bg-gray-100': activeCategory !== item.categoryName
                     }"
                 
                 class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 group">
                <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
                   <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
                </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">{{item.name}}</span>
+               <span class="flex-1 ms-3 whitespace-nowrap">{{item.categoryName}}</span>
             </div>
          </li>
          }
       </ul>
+      
       <ul class="pt-4 mt-4 justify-center items-center space-y-2 font-medium border-t border-gray-200">
          <li>
             <div class="grid grid-cols-1 lg:grid-cols-3 text-xl items-center p-2 text-gray-900 rounded-lg group">
@@ -54,6 +55,23 @@
                     <option value="expiryAsc">Expiry Date ↑    (Oldest First)</option>
                     <option value="expiryDesc">Expiry Date ↓   (Newest First)</option>
                 </select>
+            </div>
+         </li>
+        </ul>
+         <ul class="pt-4 mt-4 justify-center items-center space-y-2 font-medium border-t border-gray-200">
+         <li>
+            <div class="grid grid-cols-1 lg:grid-cols-3 text-xl items-center p-2 text-gray-900 rounded-lg group">
+               <span>City</span>
+                <select id="sortSelect" name="sort"
+                    [(ngModel)]="selectedCity"
+                    [ngModelOptions]="{standalone:true}"
+                       aria-placeholder="Choose City"
+                    class="block lg:col-span-2 w-full ms-3 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                    @for (item of cities; track $index) {
+                        <option [value]="item">{{item}}</option>
+                    
+                    }
+                    </select>
             </div>
          </li>
         </ul>
@@ -69,7 +87,6 @@
                 <label for="labels-range-input" class="sr-only">Labels range</label>
                 <input (change)="onChangePriceRange($event)" id="labels-range-input" type="range" [value]="desiredPrice" [min]="minPrice" [max]="maxPrice" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
                 <span class="text-sm text-gray-500 absolute start-0 -bottom-6">Min {{minPrice}} EGP</span>
-                <span class="text-sm text-gray-500 absolute start-1/2 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">{{minPrice+maxPrice/2}} EGP</span>
                 <span class="text-sm text-gray-500 absolute end-0 -bottom-6">Max {{maxPrice}} EGP</span>
             </div>
             <input type="button" value="Filter" class="bg-[#0077B6] text-white float-end mt-3 px-4 py-1 rounded-2xl"/>
