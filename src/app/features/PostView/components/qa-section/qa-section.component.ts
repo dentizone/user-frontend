@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextarea } from 'primeng/inputtextarea';
 import { QuestionAnswerComponent } from '../question-answer/question-answer.component';
+import { AuthService } from '../../../../core/services/auth.service';
 
 interface Answer {
   id: number;
@@ -42,7 +43,7 @@ interface Question {
       </div>
 
       <!-- New Question Form - Only shown if user is authenticated -->
-      @if (isAuthenticated) {
+      @if (authService.isAuthenticated()) {
         <div class="mt-8 pt-6 border-t border-gray-200">
           <h3 class="text-lg font-medium text-gray-900 mb-4">Ask a Question</h3>
           <div class="space-y-4">
@@ -84,11 +85,12 @@ interface Question {
 })
 export class QaSectionComponent {
   @Input() questions: Question[] = [];
-  @Input() isAuthenticated: boolean = false;
   @Output() questionSubmitted = new EventEmitter<string>();
   @Output() answerSubmitted = new EventEmitter<{ questionId: number; answer: string }>();
 
   newQuestion: string = '';
+
+  constructor(public authService: AuthService) {}
 
   onSubmitQuestion() {
     if (this.newQuestion.trim() && this.newQuestion.length <= 500) {
