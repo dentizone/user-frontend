@@ -147,12 +147,19 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
         next: (subCategories) => {
           this.subCategories = subCategories;
           this.isLoadingSubcategories = false;
-          // Reset subcategory selection when category changes
-          this.userForm.patchValue({ subcategory: '' });
+          
+          // Auto-select the first subcategory if available
+          if (subCategories.length > 0) {
+            this.userForm.patchValue({ subcategory: subCategories[0].id });
+          } else {
+            // Reset subcategory selection if no subcategories available
+            this.userForm.patchValue({ subcategory: '' });
+          }
         },
         error: (error) => {
           console.error('Error fetching subcategories:', error);
           this.isLoadingSubcategories = false;
+          this.userForm.patchValue({ subcategory: '' });
         }
       });
   }
