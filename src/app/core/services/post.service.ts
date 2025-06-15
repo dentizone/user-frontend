@@ -13,7 +13,7 @@ export interface IPost {
   title: string;
   description: string;
   price: number;
-  condition: string;
+  condition: number;
   street: string;
   city: string;
   categoryId: string;
