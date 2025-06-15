@@ -3,10 +3,11 @@ import { Component } from '@angular/core';
 import { PaginatorModule } from 'primeng/paginator';
 import { posts } from '../../core/models/posts';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
+import { SidebarComponent } from './components/sideBar/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-listing-page',
-  imports: [PaginatorModule, CommonModule, ProductCardComponent],
+  imports: [PaginatorModule, CommonModule, ProductCardComponent,SidebarComponent],
   templateUrl: './listing-page.component.html',
   styleUrl: './listing-page.component.css',
 })
