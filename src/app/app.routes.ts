@@ -50,6 +50,13 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'post/:id',
+    loadComponent: () =>
+      import('./features/PostView/post-view-page.component').then(
+        (m) => m.PostViewPageComponent
+      ),
+  },
+  {
     path: '',
     canActivate: [AuthGuard],
     children: [

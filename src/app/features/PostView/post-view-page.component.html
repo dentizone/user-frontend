@@ -66,22 +66,9 @@
       </div>
     </div>
 
-    <!-- Q&A Section -->
-    <div class="mt-8 bg-white border border-blue-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-6">Q&A Section</h2>
-      <div class="space-y-6">
-        <div *ngFor="let q of questions" class="flex space-x-4">
-          <img src="/assets/avatar/dentist.png" class="h-10 w-10 rounded-full" alt="user">
-          <div class="flex-1">
-            <div class="flex items-center justify-between">
-              <p class="font-semibold text-gray-800">{{ q.username }}</p>
-              <p class="text-sm text-gray-400">{{ q.time }}</p>
-            </div>
-            <p class="text-gray-600 mt-1">{{ q.text }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-qa-component></app-qa-component>
+
+   
   </div>
 </div>
 
