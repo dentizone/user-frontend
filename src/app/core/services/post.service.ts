@@ -49,6 +49,10 @@ export class PostService {
     return this.http.post<IImageUploadResponse>(`${this.API_URL}/Upload/image`, formData);
   }
 
+  deleteImage(imageId: string): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/Upload/${imageId}`);
+  }
+
   createPost(postData: IPost): Observable<any> {
     return this.http.post(`${this.API_URL}/Posts`, postData);
   }

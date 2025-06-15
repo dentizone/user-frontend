@@ -169,12 +169,32 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
     // Remove from upload states
     const uploadState = this.imageUploadStates[index];
     if (uploadState && uploadState.imageId) {
-      const imageIdIndex = this.imageIDs.indexOf(uploadState.imageId);
-      if (imageIdIndex > -1) {
-        this.imageIDs.splice(imageIdIndex, 1);
-      }
+      const imageId = uploadState.imageId; // Store in variable to avoid undefined issues
+      
+      // Call delete API
+      this.postService.deleteImage(imageId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            console.log('Image deleted successfully:', imageId);
+            // Remove from imageIDs array
+            const imageIdIndex = this.imageIDs.indexOf(imageId);
+            if (imageIdIndex > -1) {
+              this.imageIDs.splice(imageIdIndex, 1);
+            }
+          },
+          error: (error) => {
+            console.error('Error deleting image:', error);
+            // Even if delete fails, remove from local state to maintain UI consistency
+            const imageIdIndex = this.imageIDs.indexOf(imageId);
+            if (imageIdIndex > -1) {
+              this.imageIDs.splice(imageIdIndex, 1);
+            }
+          }
+        });
     }
     
+    // Remove from local state
     this.imageUploadStates.splice(index, 1);
     this.imagePreviews.splice(index, 1);
     
