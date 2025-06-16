@@ -1,11 +1,10 @@
 import { Component, HostListener } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router, RouterOutlet } from '@angular/router';
 
-@Component({
-  selector: 'app-nav-bar',
-  imports: [CommonModule,RouterLink],
+@Component({  selector: 'app-nav-bar',
+  imports: [CommonModule, RouterLink],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css',
 })
@@ -14,6 +13,12 @@ export class NavBarComponent {
   mobileMenuOpened = false;
   UserName = 'Nourhane';
   UserEmail = 'nourhane@gmail.com';
+  
+  constructor(private router: Router) {}
+
+  isActive(route: string): boolean {
+    return this.router.url === route;
+  }
 
   opendropdown() {
     this.opened = !this.opened;
