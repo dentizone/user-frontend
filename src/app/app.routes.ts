@@ -79,6 +79,13 @@ export const routes: Routes = [
             './features/Profile/profile-container/profile-container.component'
           ).then((m) => m.ProfileContainerComponent),
       },
+      {
+      path: 'cart',
+      loadComponent: () =>
+        import('./features/Cart/cart/cart.component').then(
+          (m) => m.CartComponent
+        ),
+    }
     
     ],
   },
