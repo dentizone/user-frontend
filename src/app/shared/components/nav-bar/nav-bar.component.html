@@ -1,7 +1,8 @@
 <nav class="bg-white">
   <div
     class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
-  >    <a routerLink="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+  >
+    <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
       <img
         src="/assets/logo/logoWithoutBackground.png"
         class="h-12"
@@ -72,12 +73,11 @@
     >
       <ul
         class="flex flex-col font-medium p-4 md:p-0 mt-4 border rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white"
-      >        <li>
+      >
+        <li>
           <a
-            routerLink="/"
-            [class]="isActive('/') ? 
-              'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2' : 
-              'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'"
+            href="#"
+            class="block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2"
             aria-current="page"
           >
             Home
@@ -85,40 +85,32 @@
         </li>
         <li>
           <a
-            routerLink="/marketplace"
-            [class]="isActive('/marketplace') ? 
-              'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2' : 
-              'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'"
+            href="#"
+            class="block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2"
           >
-            Marketplace
+            Pages
           </a>
         </li>
         <li>
           <a
-            routerLink="/about"
-            [class]="isActive('/about') ? 
-              'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2' : 
-              'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'"
+            href="#"
+            class="block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2"
           >
             About
           </a>
         </li>
         <li>
           <a
-            routerLink="/services"
-            [class]="isActive('/services') ? 
-              'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2' : 
-              'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'"
+            href="#"
+            class="block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2"
           >
             Services
           </a>
         </li>
         <li>
           <a
-            routerLink="/cart"
-            [class]="isActive('/cart') ? 
-              'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2' : 
-              'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'"
+            href="#"
+            class="block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2"
           >
             Cart
           </a>
@@ -142,9 +134,10 @@
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >Profile</a
         >
-      </li>      <li>
+      </li>
+      <li>
         <a
-          routerLink="/settings"
+          href="#"
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >Settings</a
         >
@@ -152,7 +145,7 @@
 
       <li>
         <a
-          routerLink="/logout"
+          href="#"
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >Sign out</a
         >

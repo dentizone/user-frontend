@@ -1,0 +1,60 @@
+:host {
+  display: block;
+}
+
+/* Carousel Styles */
+::ng-deep .p-carousel {
+  .p-carousel-indicators {
+    display: none;
+  }
+
+  .p-carousel-indicator {
+    display: none;
+  }
+
+  .p-carousel-prev,
+  .p-carousel-next {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #0077B6;
+    transition: all 0.2s;
+
+    &:hover {
+      background: #0077B6;
+      color: white;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+/* Thumbnail Styles */
+.thumbnail {
+  transition: all 0.2s;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &.active {
+    border-color: #0077B6;
+  }
+}
+
+/* Button Styles */
+.btn {
+  transition: all 0.2s;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+} 

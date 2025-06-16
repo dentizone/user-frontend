@@ -1,6 +1,6 @@
-import { Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { NoAuthGuard } from './core/guards/no-auth.guard';
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
@@ -49,13 +49,13 @@ export const routes: Routes = [
       },
     ],
   },
-    {
-        path: 'marketplace',
-        loadComponent: () =>
-          import('./features/ListingPage/listing-page.component').then(
-            (m) => m.ListingPageComponent
-          ),
-      },
+  {
+    path: 'post/:id',
+    loadComponent: () =>
+      import('./features/PostView/post-view-page.component').then(
+        (m) => m.PostViewPageComponent
+      ),
+  },
   {
     path: '',
     canActivate: [AuthGuard],
@@ -79,7 +79,13 @@ export const routes: Routes = [
             './features/Profile/profile-container/profile-container.component'
           ).then((m) => m.ProfileContainerComponent),
       },
-    
+      {
+        path: 'add-new-post',
+        loadComponent: () =>
+          import('./features/add-new-post/add-new-post.component').then(
+            (m) => m.AddNewPostComponent
+          ),
+      },
     ],
   },
   {
