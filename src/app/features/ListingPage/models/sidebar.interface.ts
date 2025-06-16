@@ -13,7 +13,6 @@ export interface FilterOptions {
   category: string;
   city: string;
   price: number;
-  fromDate: Date;
   toDate: Date;
   conditions: string[];
   sortBy: string;

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DatePicker } from 'primeng/datepicker';
 import { SidebarService } from '../../../sidebarService/sidebar.service';
 import { SidebarData, FilterOptions } from '../../../models/sidebar.interface';
@@ -30,17 +31,17 @@ export class SidebarComponent implements OnInit {
   activeCategory = '';
   selectedCity = '';
   desiredPrice = 100;
-  fromDate: Date = new Date();
   toDate: Date = new Date();
   selectedConditions: string[] = [];
   sortBy = 'createdAtDesc';
 
-  constructor(private sidebarService: SidebarService) {}
+  constructor(private sidebarService: SidebarService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   async ngOnInit() {
     try {
       this.sidebarData = await this.sidebarService.getSidebar();
       this.initializeFilters();
+      this.loadFiltersFromUrl();
     } catch (error) {
       console.error('Error loading sidebar:', error);
     }
@@ -50,6 +51,73 @@ export class SidebarComponent implements OnInit {
     this.desiredPrice = this.sidebarData.maxPrice;
     this.activeCategory = this.sidebarData.categories[0]?.categoryName || '';
     this.selectedCity = this.sidebarData.cities[0] || '';
+  }
+
+  private loadFiltersFromUrl(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params['category'] && this.sidebarData.categories.some(cat => cat.categoryName === params['category'])) {
+        this.activeCategory = params['category'];
+      }
+      
+      if (params['city'] && this.sidebarData.cities.includes(params['city'])) {
+        this.selectedCity = params['city'];
+      }
+      
+      if (params['price']) {
+        const price = Number(params['price']);
+        if (price >= this.sidebarData.minPrice && price <= this.sidebarData.maxPrice) {
+          this.desiredPrice = price;
+        }
+      }
+      
+      if (params['toDate']) {
+        this.toDate = new Date(params['toDate']);
+      }
+      
+      if (params['conditions']) {
+        this.selectedConditions = params['conditions'].split(',').filter((condition: string) => 
+          ['New', 'As New', 'Used'].includes(condition)
+        );
+      }
+      
+      if (params['sortBy'] && ['createdAtAsc', 'createdAtDesc', 'priceAsc', 'priceDesc'].includes(params['sortBy'])) {
+        this.sortBy = params['sortBy'];
+      }
+    });
+  }
+
+  private updateUrlParams(): void {
+    const queryParams: any = {};
+    
+    if (this.activeCategory) {
+      queryParams.category = this.activeCategory;
+    }
+    
+    if (this.selectedCity) {
+      queryParams.city = this.selectedCity;
+    }
+    
+    if (this.desiredPrice !== this.sidebarData.maxPrice) {
+      queryParams.price = this.desiredPrice;
+    }
+    
+    if (this.toDate && this.toDate.getTime() !== new Date().getTime()) {
+      queryParams.toDate = this.toDate.toISOString().split('T')[0];
+    }
+    
+    if (this.selectedConditions.length > 0) {
+      queryParams.conditions = this.selectedConditions.join(',');
+    }
+    
+    if (this.sortBy !== 'createdAtDesc') {
+      queryParams.sortBy = this.sortBy;
+    }
+    
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: queryParams,
+      queryParamsHandling: 'merge'
+    });
   }
 
   openSideBar(): void {
@@ -64,10 +132,12 @@ export class SidebarComponent implements OnInit {
 
   onChangePriceRange(event: any): void {
     this.desiredPrice = Number(event.target.value);
+    this.emitFilterChange();
   }
 
   onPriceInputChange(event: any): void {
     this.desiredPrice = Number(event.target.value);
+    this.emitFilterChange();
   }
 
   onCityChange(): void {
@@ -84,6 +154,7 @@ export class SidebarComponent implements OnInit {
     } else {
       this.selectedConditions = this.selectedConditions.filter(c => c !== condition);
     }
+    this.emitFilterChange();
   }
 
   onCheckboxChange(condition: string, event: Event): void {
@@ -99,17 +170,32 @@ export class SidebarComponent implements OnInit {
     this.emitFilterChange();
   }
 
+  onSearch(): void {
+    // This method can be implemented to handle search functionality
+    this.emitFilterChange();
+  }
+
+  clearFilters(): void {
+    this.activeCategory = this.sidebarData.categories[0]?.categoryName || '';
+    this.selectedCity = this.sidebarData.cities[0] || '';
+    this.desiredPrice = this.sidebarData.maxPrice;
+    this.toDate = new Date();
+    this.selectedConditions = [];
+    this.sortBy = 'createdAtDesc';
+    this.emitFilterChange();
+  }
+
   private emitFilterChange(): void {
     const filters: FilterOptions = {
       category: this.activeCategory,
       city: this.selectedCity,
       price: this.desiredPrice,
-      fromDate: this.fromDate,
       toDate: this.toDate,
       conditions: this.selectedConditions,
       sortBy: this.sortBy
     };
     
+    this.updateUrlParams();
     this.filterChange.emit(filters);
   }
 

@@ -21,7 +21,7 @@
                 </svg>
             </div>
             <input type="search" id="search" class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search" required />
-            <button type="submit" class="text-white absolute end-2 bottom-2 bg-[#0077B6] hover:bg-[#00B4D8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5">Search</button>
+            <button type="submit" (click)="onSearch()" class="text-white absolute end-2 bottom-2 bg-[#0077B6] hover:bg-[#00B4D8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5">Search</button>
         </div>
     </div>
 
@@ -137,6 +137,7 @@
             <li>
                 <div class="flex items-center p-2">
                     <input type="checkbox" 
+                           [checked]="selectedConditions.includes('New')"
                            (change)="onCheckboxChange('New', $event)"
                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                     <label class="ms-3 text-sm font-medium text-gray-900">New</label>
@@ -145,6 +146,7 @@
             <li>
                 <div class="flex items-center p-2">
                     <input type="checkbox" 
+                           [checked]="selectedConditions.includes('Used')"
                            (change)="onCheckboxChange('Used', $event)"
                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                     <label class="ms-3 text-sm font-medium text-gray-900">Used</label>
