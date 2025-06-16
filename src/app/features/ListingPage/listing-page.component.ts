@@ -15,6 +15,7 @@ export class ListingPageComponent {
   clinicalproduct: posts[] = [
     {
       title: 'MANI K FILES ( SIZE 6 )',
+      id:'',
       description:
         'Lorem ipsum is placeholder text commonly used in the mockups.',
       price: '170',
@@ -23,6 +24,7 @@ export class ListingPageComponent {
     },
     {
       title: 'Alphasil Rubber Base impression kit',
+      id:'',
       description:
         'Lorem ipsum is placeholder text commonly used in the mockups.',
       price: '1700',
@@ -31,6 +33,7 @@ export class ListingPageComponent {
     },
     {
       title: 'Calibra Veneer Esthetic Resin',
+      id:'',
       description:
         'Lorem ipsum is placeholder text commonly used in the mockups.',
       price: '2650',
@@ -39,6 +42,7 @@ export class ListingPageComponent {
     },
     {
       title: 'Ultradent PermaFlo-A1',
+      id:'',
       description:
         'Lorem ipsum is placeholder text commonly used in the mockups.',
       price: '900',

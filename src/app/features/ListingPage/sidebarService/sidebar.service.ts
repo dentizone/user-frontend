@@ -15,7 +15,7 @@ export class SidebarService {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch sidebar posts');
+      throw new Error('Failed to fetch sidebar');
     }
 
     return await response.json();

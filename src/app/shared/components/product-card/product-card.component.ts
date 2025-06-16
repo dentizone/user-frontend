@@ -11,4 +11,7 @@ import { posts } from '../../../core/models/posts';
 })
 export class ProductCardComponent {
   @Input() product!: posts;
+  onSelectFav(e:string){
+
+  }
 }

@@ -33,7 +33,7 @@ export class SidebarComponent implements OnInit{
     try {
       this.sidebarObject = await this.sidebarService.getSidebar();
     } catch (error) {
-      console.error('Error loading sidebar posts:', error);
+      console.error('Error loading sidebar:', error);
     }
     this.cities=this.sidebarObject.cities;
     this.minPrice=this.sidebarObject.minPrice;

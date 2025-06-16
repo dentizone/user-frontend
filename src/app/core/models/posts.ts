@@ -1,4 +1,5 @@
 export interface posts{
+    id:string;
     imagesrc:string;
     title:string;
     description:string;
