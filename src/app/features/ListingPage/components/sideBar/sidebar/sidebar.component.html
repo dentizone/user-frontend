@@ -1,145 +1,193 @@
-
-<button (click)="openSideBar()" data-drawer-target="separator-sidebar" data-drawer-toggle="separator-sidebar" aria-controls="separator-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+<button (click)="openSideBar()" data-drawer-target="separator-sidebar" data-drawer-toggle="separator-sidebar" aria-controls="separator-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
    <span class="sr-only">Open sidebar</span>
    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
    <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
    </svg>
 </button>
 
-<aside id="separator-sidebar" [ngClass]="{'flex': isSidebarOpen,
-         'hidden': !isSidebarOpen,
-         '-translate-x-full': !isSidebarOpen,
-         'translate-x-0': isSidebarOpen}"  class="hidden lg:flex top-0 left-0 z-40 w-64 h-full transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-   <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50">
+<aside id="separator-sidebar" 
+       [ngClass]="{'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen}"  
+       class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-auto" 
+       aria-label="Sidebar">
+   <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 border-r border-gray-200">
     
-    <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
-    <div class="relative">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
+    <!-- Search Section -->
+    <div class="mb-6">
+        <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+        <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+            </div>
+            <input type="search" id="search" class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search" required />
+            <button type="submit" class="text-white absolute end-2 bottom-2 bg-[#0077B6] hover:bg-[#00B4D8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5">Search</button>
         </div>
-        <input type="search" id="search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search" required />
-        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-[#0077B6] hover:bg-[#00B4D8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 ">Search</button>
     </div>
-      <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200">
-         <li>
-            <div class="flex text-xl items-center p-2 text-gray-900 rounded-lg group">
-               <span>Categories</span>
-            </div>
-         </li>
-         @for (item of categories; track $index) {
-         <li (click)="onSelectCategory(item.categoryName)">
-            <div 
-                [ngClass]="{
-                        'text-blue-700 bg-blue-50 border-s-4 border-blue-700': activeCategory === item.categoryName,
-                        'text-gray-900 hover:bg-gray-100': activeCategory !== item.categoryName
-                    }"
-                
-                class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 group">
-               <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                  <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
-               </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">{{item.categoryName}}</span>
-            </div>
-         </li>
-         }
-      </ul>
-      
-      <ul class="pt-4 mt-4 justify-center items-center space-y-2 font-medium border-t border-gray-200">
-         <li>
-            <div class="grid grid-cols-1 lg:grid-cols-3 text-xl items-center p-2 text-gray-900 rounded-lg group">
-               <span>Sort By</span>
-                <select id="sortSelect" name="sort"
-                        class="block lg:col-span-2 w-full ms-3 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="expiryAsc">Expiry Date ↑    (Oldest First)</option>
-                    <option value="expiryDesc">Expiry Date ↓   (Newest First)</option>
-                </select>
-            </div>
-         </li>
+
+    <!-- Categories Section -->
+    <div class="mb-6">
+        <ul class="space-y-2 font-medium border-t border-gray-200 pt-4">
+            <li>
+                <div class="flex items-center p-2 text-gray-900 rounded-lg">
+                    <span class="text-lg font-semibold">Categories</span>
+                </div>
+            </li>
+            @for (item of categories; track $index) {
+            <li (click)="onSelectCategory(item.categoryName)">
+                <div 
+                    [ngClass]="{
+                            'text-blue-700 bg-blue-50 border-s-4 border-blue-700': activeCategory === item.categoryName,
+                            'text-gray-900 hover:bg-gray-100': activeCategory !== item.categoryName
+                        }"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group cursor-pointer transition-colors duration-200">
+                    <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                        <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap text-sm">{{item.categoryName}}</span>
+                </div>
+            </li>
+            }
         </ul>
-         <ul class="pt-4 mt-4 justify-center items-center space-y-2 font-medium border-t border-gray-200">
-         <li>
-            <div class="grid grid-cols-1 lg:grid-cols-3 text-xl items-center p-2 text-gray-900 rounded-lg group">
-               <span>City</span>
-                <select id="sortSelect" name="sort"
-                    [(ngModel)]="selectedCity"
-                    [ngModelOptions]="{standalone:true}"
-                       aria-placeholder="Choose City"
-                    class="block lg:col-span-2 w-full ms-3 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
-                    @for (item of cities; track $index) {
-                        <option [value]="item">{{item}}</option>
-                    
-                    }
+    </div>
+    
+    <!-- Sort By Section -->
+    <div class="mb-6">
+        <ul class="space-y-2 font-medium border-t border-gray-200 pt-4">
+            <li>
+                <div class="flex flex-col space-y-2 p-2 text-gray-900 rounded-lg">
+                    <span class="text-lg font-semibold">Sort By</span>
+                    <select id="sortSelect" name="sort"
+                            class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="expiryAsc">Expiry Date ↑ (Oldest First)</option>
+                        <option value="expiryDesc">Expiry Date ↓ (Newest First)</option>
                     </select>
-            </div>
-         </li>
-        </ul>
-      <ul class="pt-4 mt-4 justify-center items-center space-y-2 font-medium border-t border-gray-200">
-         <li>
-            <div class="flex text-xl items-center p-2 text-gray-900 rounded-lg group">
-               <span>Filter By Price</span>
-               <input type="number" [value]="desiredPrice" class=" text-sm ml-2 border border-gray-400 w-1/4 px-4 py-1 rounded-2xl"/>
-                <span class="text-sm ml-1">EGP</span>
-            </div>
-         </li>
-            <div class="relative w-full mb-6">
-                <label for="labels-range-input" class="sr-only">Labels range</label>
-                <input (change)="onChangePriceRange($event)" id="labels-range-input" type="range" [value]="desiredPrice" [min]="minPrice" [max]="maxPrice" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                <span class="text-sm text-gray-500 absolute start-0 -bottom-6">Min {{minPrice}} EGP</span>
-                <span class="text-sm text-gray-500 absolute end-0 -bottom-6">Max {{maxPrice}} EGP</span>
-            </div>
-            <input type="button" value="Filter" class="bg-[#0077B6] text-white float-end mt-3 px-4 py-1 rounded-2xl"/>
-      </ul>
-      <ul class="pt-4 mt-20 justify-center items-center space-y-2 font-medium border-t border-gray-200">
-         <li>
-            <div class="flex text-xl items-center p-2 text-gray-900 rounded-lg group">
-               <span>Filter By Condition</span>
-            </div>
-         </li>
-            <li>
-                <div class="flex items-center mb-4 ms-4">
-                    <input type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2 ">
-                    <label  class="ms-2 text-sm font-medium text-gray-900">New</label>
-                </div>
-            </li>
-            <li>
-                <div class="flex items-center mb-4 ms-4">
-                    <input type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2 ">
-                    <label  class="ms-2 text-sm font-medium text-gray-900">As New</label>
-                </div>
-            </li>
-            <li>
-                <div class="flex items-center mb-4 ms-4">
-                    <input type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2 ">
-                    <label  class="ms-2 text-sm font-medium text-gray-900">Used</label>
                 </div>
             </li>
         </ul>
-        <ul class="pt-4 mt-4 justify-center items-center space-y-2 font-medium border-t border-gray-200">
-         <li>
-            <div class="flex text-xl items-center p-2 text-gray-900 rounded-lg group">
-               <span>Filter By Expiry Date</span>
-               
-            </div>
-         </li>
-         <li class="ms-4 flex space-x-4">
-            <svg class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-  <path d="M6 2a1 1 0 0 0-2 0v1H4a2 2 0 0 0-2 2v1h16V5a2 2 0 0 0-2-2h-.001V2a1 1 0 0 0-2 0v1H6V2Zm12 5H2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7ZM6 10h2v2H6v-2Zm3 0h2v2H9v-2Zm3 0h2v2h-2v-2ZM6 13h2v2H6v-2Zm3 0h2v2H9v-2Zm3 0h2v2h-2v-2Z"/>
-</svg>
+    </div>
 
-            <label>From </label>
-            <p-datepicker [(ngModel)]="fromDate" [ngModelOptions]="{standalone:true}" class="border border-gray-300 text-gray-500 px-4 rounded-2xl w-2/3" />
-         </li>
-         <li class="ms-4 flex space-x-8">
-            <svg class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-  <path d="M6 2a1 1 0 0 0-2 0v1H4a2 2 0 0 0-2 2v1h16V5a2 2 0 0 0-2-2h-.001V2a1 1 0 0 0-2 0v1H6V2Zm12 5H2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7ZM6 10h2v2H6v-2Zm3 0h2v2H9v-2Zm3 0h2v2h-2v-2ZM6 13h2v2H6v-2Zm3 0h2v2H9v-2Zm3 0h2v2h-2v-2Z"/>
-</svg>
-
-            <label>To </label>
-            <p-datepicker [(ngModel)]="toDate" [ngModelOptions]="{standalone:true}" class="border border-gray-300 text-gray-500 px-4 rounded-2xl w-2/3" />
-         </li>
+    <!-- City Section -->
+    <div class="mb-6">
+        <ul class="space-y-2 font-medium border-t border-gray-200 pt-4">
+            <li>
+                <div class="flex flex-col space-y-2 p-2 text-gray-900 rounded-lg">
+                    <span class="text-lg font-semibold">City</span>
+                    <select id="citySelect" name="city"
+                        [(ngModel)]="selectedCity"
+                        [ngModelOptions]="{standalone:true}"
+                        aria-placeholder="Choose City"
+                        class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        @for (item of cities; track $index) {
+                            <option [value]="item">{{item}}</option>
+                        }
+                    </select>
+                </div>
+            </li>
         </ul>
+    </div>
+
+    <!-- Price Filter Section -->
+    <div class="mb-6">
+        <ul class="space-y-4 font-medium border-t border-gray-200 pt-4">
+            <li>
+                <div class="flex flex-col space-y-3 p-2 text-gray-900 rounded-lg">
+                    <span class="text-lg font-semibold">Filter By Price</span>
+                    <div class="flex items-center space-x-2">
+                        <input type="number" [value]="desiredPrice" class="flex-1 text-sm border border-gray-400 px-3 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"/>
+                        <span class="text-sm text-gray-600 whitespace-nowrap">EGP</span>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="relative w-full mb-6 px-2">
+                    <label for="labels-range-input" class="sr-only">Price range</label>
+                    <input (change)="onChangePriceRange($event)" 
+                           id="labels-range-input" 
+                           type="range" 
+                           [value]="desiredPrice" 
+                           [min]="minPrice" 
+                           [max]="maxPrice" 
+                           class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between text-xs text-gray-500 mt-2">
+                        <span>Min {{minPrice}} EGP</span>
+                        <span>Max {{maxPrice}} EGP</span>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <button type="button" class="w-full bg-[#0077B6] text-white hover:bg-[#00B4D8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 transition-colors duration-200">
+                    Filter
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Condition Filter Section -->
+    <div class="mb-6">
+        <ul class="space-y-3 font-medium border-t border-gray-200 pt-4">
+            <li>
+                <div class="flex items-center p-2 text-gray-900 rounded-lg">
+                    <span class="text-lg font-semibold">Filter By Condition</span>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center p-2">
+                    <input type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                    <label class="ms-3 text-sm font-medium text-gray-900">New</label>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center p-2">
+                    <input type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                    <label class="ms-3 text-sm font-medium text-gray-900">As New</label>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center p-2">
+                    <input type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                    <label class="ms-3 text-sm font-medium text-gray-900">Used</label>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Expiry Date Filter Section -->
+    <div class="mb-6">
+        <ul class="space-y-4 font-medium border-t border-gray-200 pt-4">
+            <li>
+                <div class="flex items-center p-2 text-gray-900 rounded-lg">
+                    <span class="text-lg font-semibold">Filter By Expiry Date</span>
+                </div>
+            </li>
+            <li>
+                <div class="flex flex-col space-y-2 p-2">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-gray-500 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path d="M6 2a1 1 0 0 0-2 0v1H4a2 2 0 0 0-2 2v1h16V5a2 2 0 0 0-2-2h-.001V2a1 1 0 0 0-2 0v1H6V2Zm12 5H2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7ZM6 10h2v2H6v-2Zm3 0h2v2H9v-2Zm3 0h2v2h-2v-2ZM6 13h2v2H6v-2Zm3 0h2v2H9v-2Zm3 0h2v2h-2v-2Z"/>
+                        </svg>
+                        <label class="text-sm font-medium text-gray-700">From</label>
+                    </div>
+                    <p-datepicker [(ngModel)]="fromDate" 
+                                 [ngModelOptions]="{standalone:true}" 
+                                 class="w-full border border-gray-300 text-gray-500 px-3 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" />
+                </div>
+            </li>
+            <li>
+                <div class="flex flex-col space-y-2 p-2">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-gray-500 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path d="M6 2a1 1 0 0 0-2 0v1H4a2 2 0 0 0-2 2v1h16V5a2 2 0 0 0-2-2h-.001V2a1 1 0 0 0-2 0v1H6V2Zm12 5H2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7ZM6 10h2v2H6v-2Zm3 0h2v2H9v-2Zm3 0h2v2h-2v-2ZM6 13h2v2H6v-2Zm3 0h2v2H9v-2Zm3 0h2v2h-2v-2Z"/>
+                        </svg>
+                        <label class="text-sm font-medium text-gray-700">To</label>
+                    </div>
+                    <p-datepicker [(ngModel)]="toDate" 
+                                 [ngModelOptions]="{standalone:true}" 
+                                 class="w-full border border-gray-300 text-gray-500 px-3 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" />
+                </div>
+            </li>
+        </ul>
+    </div>
         
    </div>
 </aside>

@@ -1,6 +1,6 @@
+import { Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { NoAuthGuard } from './core/guards/no-auth.guard';
-import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
@@ -38,6 +38,8 @@ export const routes: Routes = [
           ),
         canActivate: [AuthGuard]
       },
+
+    
     
   
       {
@@ -56,6 +58,14 @@ export const routes: Routes = [
         (m) => m.PostViewPageComponent
       ),
   },
+    {
+        path: 'marketplace',
+        loadComponent: () =>
+          import('./features/ListingPage/listing-page.component').then(
+            (m) => m.ListingPageComponent
+          ),
+
+      },
   {
     path: '',
     canActivate: [AuthGuard],

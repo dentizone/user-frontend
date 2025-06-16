@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { PaginatorModule } from 'primeng/paginator';
 import { posts } from '../../core/models/posts';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
@@ -9,9 +9,10 @@ import { SidebarComponent } from './components/sideBar/sidebar/sidebar.component
   selector: 'app-listing-page',
   imports: [PaginatorModule, CommonModule, ProductCardComponent,SidebarComponent],
   templateUrl: './listing-page.component.html',
-  styleUrl: './listing-page.component.css',
 })
 export class ListingPageComponent {
+  @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
+
   clinicalproduct: posts[] = [
     {
       title: 'MANI K FILES ( SIZE 6 )',
@@ -65,5 +66,16 @@ export class ListingPageComponent {
   goToPage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
+  }
+
+  toggleSidebar() {
+    if (this.sidebarComponent) {
+      this.sidebarComponent.openSideBar();
+    }
+  }
+
+  onSidebarToggle(isOpen: boolean) {
+    // Handle sidebar toggle event if needed
+    console.log('Sidebar is now:', isOpen ? 'open' : 'closed');
   }
 }
