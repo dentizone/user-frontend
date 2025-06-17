@@ -1,7 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { PaginatorModule } from 'primeng/paginator';
-import { CommonModule } from '@angular/common';
-import { posts } from '../../../core/models/posts';
+import { Posts } from '../../../core/models/posts';
 
 
 
@@ -12,7 +12,7 @@ import { posts } from '../../../core/models/posts';
   styleUrl: './listing-page.component.css'
 })
 export class ListingPageComponent {
-  clinicalproduct:posts[]=[
+  clinicalproduct:Posts[]=[
     {id: "1",
       title:"MANI K FILES ( SIZE 6 )",
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",

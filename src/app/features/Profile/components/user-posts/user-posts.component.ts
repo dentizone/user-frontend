@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { posts } from '../../../../core/models/posts';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Posts } from '../../../../core/models/posts';
 
 @Component({
   selector: 'app-user-posts',
@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 export class UserPostsComponent {
   currentTab=0;
   selectedTab='0'
-  ActivePosts:posts[]=[
+  ActivePosts:Posts[]=[
     {title:"MANI K FILES ( SIZE 6 )",
       id:'',
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
@@ -41,8 +41,8 @@ export class UserPostsComponent {
       rating:"3.5"
     }
   ]
-  Current:posts[]=this.ActivePosts
-  PendingPosts:posts[]=[
+  Current:Posts[]=this.ActivePosts
+  PendingPosts:Posts[]=[
     {title:"Calibra Veneer Esthetic Resin",
       id:'',
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",
@@ -70,7 +70,7 @@ export class UserPostsComponent {
       rating:"3.5"
     }
   ]
-  UnactivePosts:posts[]=[
+  UnactivePosts:Posts[]=[
     {title:"Ultradent PermaFlo-A1",
       id:'',
       description:"Lorem ipsum is placeholder text commonly used in the mockups.",

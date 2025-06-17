@@ -1,4 +1,4 @@
-export interface posts{
+export interface Posts{
     id:string;
     imagesrc:string;
     title:string;

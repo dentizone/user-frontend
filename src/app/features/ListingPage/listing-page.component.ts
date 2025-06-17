@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { PaginatorModule } from 'primeng/paginator';
-import { posts } from '../../core/models/posts';
+import { Posts } from '../../core/models/posts';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { SidebarComponent } from './components/sideBar/sidebar/sidebar.component';
 
@@ -13,7 +13,7 @@ import { SidebarComponent } from './components/sideBar/sidebar/sidebar.component
 export class ListingPageComponent {
   @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
 
-  clinicalproduct: posts[] = [
+  clinicalproduct: Posts[] = [
     {
       title: 'MANI K FILES ( SIZE 6 )',
       id:'',

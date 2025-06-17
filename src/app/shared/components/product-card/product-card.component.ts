@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { posts } from '../../../core/models/posts';
+import { Posts } from '../../../core/models/posts';
 
 @Component({
   selector: 'app-product-card',
@@ -9,7 +9,7 @@ import { posts } from '../../../core/models/posts';
   templateUrl: './product-card.component.html'
 })
 export class ProductCardComponent {
-  @Input() product!: posts;
+  @Input() product!: Posts;
   onSelectFav(e:string){
 
   }
