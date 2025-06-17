@@ -232,4 +232,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.onSelectCategory(categoryName);
     }
   }
+
+  isMobile(): boolean {
+    return window.innerWidth < 1024;
+  }
+
+  closeSidebar(): void {
+    this.isSidebarOpen = false;
+    this.sidebarToggle.emit(this.isSidebarOpen);
+  }
 }
