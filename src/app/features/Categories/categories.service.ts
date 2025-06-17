@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { ApiConfigService } from '../../core/services';
 import { Category } from './category';
 
@@ -15,7 +16,13 @@ export class CategoriesService {
   ) { }
 
  getCategories(): Observable<Category[]> {
-  return this._httpClient.get<Category[]>(this._apiConfig.buildUrl('Catalog/categories'));
+  return this._httpClient.get<Category[]>(this._apiConfig.buildUrl('Catalog/categories'))
+    .pipe(
+      catchError(error => {
+        // Optionally log the error here
+        return throwError(() => new Error('Unable to fetch categories'));
+      })
+    );
 }
 
 }
