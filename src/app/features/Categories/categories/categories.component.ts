@@ -8,9 +8,10 @@ import { Category } from '../category';
 
 @Component({
   selector: 'app-categories',
+  standalone: true,
   imports: [CommonModule, LoaderComponent],
   templateUrl: './categories.component.html',
-  styleUrl: './categories.component.css',
+  styleUrls: ['./categories.component.css'],
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
   categories: Category[] = [];

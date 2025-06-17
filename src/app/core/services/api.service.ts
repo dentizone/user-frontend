@@ -6,23 +6,27 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private readonly baseUrl = 'https://apit.gitnasr.com/api'; // Change to your API base URL
+  private readonly baseUrl = 'https://apit.gitnasr.com/api'; 
 
   constructor(private http: HttpClient) {}
 
   get<T>(endpoint: string, options: object = {}): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}/${endpoint}`, options);
+    const normalizedEndpoint = endpoint.replace(/^\/+/, '');
+    return this.http.get<T>(`${this.baseUrl}/${normalizedEndpoint}`, options);
   }
 
   post<T>(endpoint: string, body: any, options: object = {}): Observable<T> {
-    return this.http.post<T>(`${this.baseUrl}/${endpoint}`, body, options);
+    const normalizedEndpoint = endpoint.replace(/^\/+/, '');
+    return this.http.post<T>(`${this.baseUrl}/${normalizedEndpoint}`, body, options);
   }
 
   put<T>(endpoint: string, body: any, options: object = {}): Observable<T> {
-    return this.http.put<T>(`${this.baseUrl}/${endpoint}`, body, options);
+    const normalizedEndpoint = endpoint.replace(/^\/+/, '');
+    return this.http.put<T>(`${this.baseUrl}/${normalizedEndpoint}`, body, options);
   }
 
   delete<T>(endpoint: string, options: object = {}): Observable<T> {
-    return this.http.delete<T>(`${this.baseUrl}/${endpoint}`, options);
+    const normalizedEndpoint = endpoint.replace(/^\/+/, '');
+    return this.http.delete<T>(`${this.baseUrl}/${normalizedEndpoint}`, options);
   }
 }
