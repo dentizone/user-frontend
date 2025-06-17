@@ -225,4 +225,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
   get maxPrice(): number {
     return this.sidebarData.maxPrice;
   }
+
+  onCategoryKeyDown(event: KeyboardEvent, categoryName: string): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.onSelectCategory(categoryName);
+    }
+  }
 }

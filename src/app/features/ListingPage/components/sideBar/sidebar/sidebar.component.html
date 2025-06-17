@@ -34,7 +34,7 @@
                 </div>
             </li>
             @for (item of categories; track $index) {
-            <li (click)="onSelectCategory(item.categoryName)">
+            <li (click)="onSelectCategory(item.categoryName)" (keydown)="onCategoryKeyDown($event, item.categoryName)" tabindex="0">
                 <div 
                     [ngClass]="{
                             'text-blue-700 bg-blue-50 border-s-4 border-blue-700': activeCategory === item.categoryName,
