@@ -1,11 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Cart } from '../cart';
 import { CartService } from '../cart.service';
-import { CommonModule } from '@angular/common';
+import { AddressFormComponent } from './address-form.component';
 
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule],
+  imports: [CommonModule, AddressFormComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
@@ -13,8 +14,10 @@ export class CartComponent implements OnInit {
   
   cartItems:Cart[]=[]
   total:number=0
+  address: string = '';
+  city: string = '';
    
-  constructor(private _cartService:CartService){}
+  constructor(private readonly _cartService:CartService){}
 
   ngOnInit(): void {
     this.loadCart();

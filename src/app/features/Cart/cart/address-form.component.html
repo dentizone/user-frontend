@@ -1,0 +1,29 @@
+<div class="mb-4">
+  <label class="block text-gray-700 font-semibold mb-2" for="address"
+    >Address</label
+  >
+  <input
+    id="address"
+    type="text"
+    [(ngModel)]="address"
+    (ngModelChange)="addressChange.emit($event)"
+    class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+    placeholder="Enter your address"
+  />
+</div>
+<div class="mb-4">
+    <label class="block text-gray-700 font-semibold mb-2" for="city">City</label>
+    <select
+        id="city"
+        [(ngModel)]="city"
+        (ngModelChange)="cityChange.emit($event)"
+        class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+    >
+        <option value="" disabled selected>Select a city</option>
+        
+        @for (city of cities; track $index) {
+             <option [value]="city">{{ city }}</option>
+        }
+       
+    </select>
+</div>
