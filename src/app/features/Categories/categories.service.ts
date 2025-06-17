@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ApiConfigService } from '../../core/services';
+import { ApiService } from '../../core/services/api.service';
 import { Category } from './category';
 
 @Injectable({
@@ -11,12 +10,11 @@ import { Category } from './category';
 export class CategoriesService {
 
   constructor(
-    private _httpClient: HttpClient,
-    private _apiConfig: ApiConfigService
+    private _apiService: ApiService
   ) { }
 
  getCategories(): Observable<Category[]> {
-  return this._httpClient.get<Category[]>(this._apiConfig.buildUrl('Catalog/categories'))
+  return this._apiService.get<Category[]>('Catalog/categories')
     .pipe(
       catchError(error => {
         // Optionally log the error here
