@@ -106,6 +106,14 @@ export const routes: Routes = [
             (m) => m.AddNewPostComponent
           ),
       },
+      {
+      path: 'cart',
+      loadComponent: () =>
+        import('./features/Cart/cart/cart.component').then(
+          (m) => m.CartComponent
+        ),
+    },
+    
     ],
   },
   {
