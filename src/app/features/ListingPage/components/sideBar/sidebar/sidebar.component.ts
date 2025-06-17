@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { DatePicker } from 'primeng/datepicker';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FilterOptions, SidebarData } from '../../../models/sidebar.interface';
 import { SidebarService } from '../../../sidebarService/sidebar.service';
-import { SidebarData, FilterOptions } from '../../../models/sidebar.interface';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [CommonModule, FormsModule, DatePicker],
+  imports: [CommonModule, FormsModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
@@ -32,12 +31,14 @@ export class SidebarComponent implements OnInit {
   selectedCity = '';
   desiredPrice = 100;
   toDate: Date = new Date();
+  private initialDate: Date = new Date();
   selectedConditions: string[] = [];
   sortBy = 'createdAtDesc';
 
   constructor(private sidebarService: SidebarService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   async ngOnInit() {
+    this.initialDate = new Date();
     try {
       this.sidebarData = await this.sidebarService.getSidebar();
       this.initializeFilters();
@@ -101,7 +102,7 @@ export class SidebarComponent implements OnInit {
       queryParams.price = this.desiredPrice;
     }
     
-    if (this.toDate && this.toDate.getTime() !== new Date().getTime()) {
+    if (this.toDate && this.toDate.getTime() !== this.initialDate.getTime()) {
       queryParams.toDate = this.toDate.toISOString().split('T')[0];
     }
     
