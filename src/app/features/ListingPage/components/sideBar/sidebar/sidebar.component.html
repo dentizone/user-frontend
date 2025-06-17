@@ -1,0 +1,230 @@
+<ng-container *ngIf="isSidebarOpen && isMobile()">
+<div
+    class="fixed inset-0 bg-black bg-opacity-40 z-30"
+    (click)="closeSidebar()"
+    (keydown)="closeSidebar()"
+    aria-label="Close sidebar overlay"
+></div>
+</ng-container>
+<aside
+  id="separator-sidebar"
+  [ngClass]="{
+    'translate-x-0': isSidebarOpen,
+    '-translate-x-full': !isSidebarOpen
+  }"
+  class="fixed top-0 left-0 z-40 w-auto min-w-64 h-screen transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-auto"
+  aria-label="Sidebar"
+>
+  <div
+    class="h-full px-3 py-4 overflow-y-auto bg-gray-50 border-r border-gray-200"
+  >
+    <!-- Search Section -->
+    <div class="mb-6">
+      <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only"
+        >Search</label
+      >
+      <div class="relative">
+        <div
+          class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+        >
+          <svg
+            class="w-4 h-4 text-gray-500"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+            />
+          </svg>
+        </div>
+        <input
+          type="search"
+          id="search"
+          class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Search"
+          required
+        />
+        <button
+          type="submit"
+          (click)="onSearch()"
+          class="text-white absolute end-2 bottom-2 bg-[#0077B6] hover:bg-[#00B4D8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5"
+        >
+          Search
+        </button>
+      </div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="mb-6">
+      <ul class="space-y-2 font-medium border-t border-gray-200 pt-4">
+        <li>
+          <div class="flex items-center p-2 text-gray-900 rounded-lg">
+            <span class="text-lg font-semibold">Categories</span>
+          </div>
+        </li>
+        @for (item of categories; track $index) {
+        <li class="p-0 m-0 border-none bg-transparent" style="list-style: none">
+          <button
+            type="button"
+            (click)="onSelectCategory(item.categoryName)"
+            (keydown)="onCategoryKeyDown($event, item.categoryName)"
+            [ngClass]="{
+              'text-blue-700 bg-blue-50 border-s-4 border-blue-700':
+                activeCategory === item.categoryName,
+              'text-gray-900 hover:bg-gray-100':
+                activeCategory !== item.categoryName
+            }"
+            class="w-full flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group cursor-pointer transition-colors duration-200 focus:outline-none"
+          >
+            <svg
+              class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 18 18"
+            >
+              <path
+                d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"
+              />
+            </svg>
+            <span class="flex-1 ms-3 whitespace-nowrap text-sm">{{
+              item.categoryName
+            }}</span>
+          </button>
+        </li>
+        }
+      </ul>
+    </div>
+
+    <!-- Sort By Section -->
+    <div class="mb-6">
+      <ul class="space-y-2 font-medium border-t border-gray-200 pt-4">
+        <li>
+          <div class="flex flex-col space-y-2 p-2 text-gray-900 rounded-lg">
+            <span class="text-lg font-semibold">Sort By</span>
+            <select
+              id="sortSelect"
+              name="sort"
+              [(ngModel)]="sortBy"
+              (change)="onSortChange()"
+              class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="createdAtAsc">
+                Created Date ↑ (Oldest First)
+              </option>
+              <option value="createdAtDesc">
+                Created Date ↓ (Newest First)
+              </option>
+              <option value="priceAsc">Price ↑ (Lowest First)</option>
+              <option value="priceDesc">Price ↓ (Highest First)</option>
+            </select>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- City Section -->
+    <div class="mb-6">
+      <ul class="space-y-2 font-medium border-t border-gray-200 pt-4">
+        <li>
+          <div class="flex flex-col space-y-2 p-2 text-gray-900 rounded-lg">
+            <span class="text-lg font-semibold">City</span>
+            <select
+              id="citySelect"
+              name="city"
+              [(ngModel)]="selectedCity"
+              (change)="onCityChange()"
+              class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">All Cities</option>
+              @for (item of cities; track $index) {
+              <option [value]="item">{{ item }}</option>
+              }
+            </select>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Price Filter Section -->
+    <div class="mb-6">
+      <ul class="space-y-4 font-medium border-t border-gray-200 pt-4">
+        <li>
+          <div class="flex flex-col space-y-3 p-2 text-gray-900 rounded-lg">
+            <span class="text-lg font-semibold"
+              >Filter By Price ({{ desiredPrice | currency : "EGP" }})</span
+            >
+          </div>
+        </li>
+        <li>
+          <div class="relative w-full mb-6 px-2">
+            <label for="labels-range-input" class="sr-only">Price range</label>
+            <input
+              (change)="onChangePriceRange($event)"
+              id="labels-range-input"
+              type="range"
+              [value]="desiredPrice"
+              [min]="minPrice"
+              [max]="maxPrice"
+              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            />
+            <div class="flex justify-between text-xs text-gray-500 mt-2">
+              <span>Min {{ minPrice }} EGP</span>
+              <span>Max {{ maxPrice }} EGP</span>
+            </div>
+          </div>
+        </li>
+        <li>
+          <button
+            type="button"
+            (click)="onFilter()"
+            class="w-full bg-[#0077B6] text-white hover:bg-[#00B4D8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 transition-colors duration-200"
+          >
+            Filter
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Condition Filter Section -->
+    <div class="mb-6">
+      <ul class="space-y-3 font-medium border-t border-gray-200 pt-4">
+        <li>
+          <div class="flex items-center p-2 text-gray-900 rounded-lg">
+            <span class="text-lg font-semibold">Filter By Condition</span>
+          </div>
+        </li>
+        <li>
+          <div class="flex items-center p-2">
+            <input
+              id="condition-new"
+              type="checkbox"
+              [checked]="selectedConditions.includes('New')"
+              (change)="onCheckboxChange('New', $event)"
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+            />
+            <label for="condition-new" class="ms-3 text-sm font-medium text-gray-900">New</label>
+          </div>
+        </li>
+        <li>
+          <div class="flex items-center p-2">
+            <input
+              id="condition-used"
+              type="checkbox"
+              [checked]="selectedConditions.includes('Used')"
+              (change)="onCheckboxChange('Used', $event)"
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+            />
+            <label for="condition-used" class="ms-3 text-sm font-medium text-gray-900">Used</label>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>

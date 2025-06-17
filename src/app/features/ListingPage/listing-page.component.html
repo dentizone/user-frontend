@@ -1,0 +1,124 @@
+<div class="flex min-h-screen bg-gray-50">
+  <!-- Sidebar -->
+  <app-sidebar (sidebarToggle)="onSidebarToggle($event)"></app-sidebar>
+  
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col min-w-0">
+    <!-- Mobile Header with Sidebar Toggle -->
+    <div class="lg:hidden bg-white border-b border-gray-200 px-4 py-3">
+      <button (click)="toggleSidebar()" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+        <span class="sr-only">Toggle sidebar</span>
+        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Content Container -->
+    <div class="flex-1 p-4 lg:p-6">
+      <!-- Page Header -->
+      <div class="mb-6">
+        <h1 class="font-bold text-2xl lg:text-3xl text-[#222A68] mb-2">Dental Lab / Materials</h1>
+        <p class="text-gray-600 text-sm lg:text-base">Browse and filter dental laboratory materials and equipment</p>
+      </div>
+
+      <!-- Main Content Card -->
+      <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+        <!-- Tab Navigation -->
+        <div class="sm:hidden">
+          <label for="tabs" class="sr-only">Select tab</label>
+          <select
+            id="tabs"
+            class="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm rounded-t-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+          >
+            <option>Clinical</option>
+            <option>Pre-Clinical</option>
+          </select>
+        </div>
+        
+        <ul
+          class="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg sm:flex rtl:divide-x-reverse"
+          id="fullWidthTab"
+          data-tabs-toggle="#fullWidthTabContent"
+        >
+          <li class="w-full">
+            <button
+              id="stats-tab"
+              data-tabs-target="#stats"
+              type="button"
+              role="tab"
+              aria-controls="stats"
+              aria-selected="true"
+              class="inline-block w-full p-4 rounded-ss-lg bg-gray-50 hover:bg-gray-100 focus:outline-none text-lg lg:text-xl transition-colors duration-200"
+            >
+              Clinical
+            </button>
+          </li>
+          <li class="w-full">
+            <button
+              id="about-tab"
+              data-tabs-target="#about"
+              type="button"
+              role="tab"
+              aria-controls="about"
+              aria-selected="false"
+              class="inline-block w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none text-lg lg:text-xl transition-colors duration-200"
+            >
+              Pre-Clinical
+            </button>
+          </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div id="fullWidthTabContent" class="border-t border-gray-200">
+          <div
+            class="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 lg:gap-6 p-4 lg:p-6 bg-white rounded-lg"
+            id="about"
+            role="tabpanel"
+            aria-labelledby="about-tab"
+          >
+            @for (item of clinicalproduct; track $index) {
+            <app-product-card [product]="item"></app-product-card>
+            }
+          </div>
+
+          <!-- Pagination -->
+          <div class="flex justify-center items-center py-6 border-t border-gray-200">
+            <nav class="flex items-center space-x-2">
+              <button
+                class="px-3 py-2 text-sm text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                [disabled]="currentPage === 1"
+                (click)="goToPage(currentPage - 1)"
+              >
+                <span class="hidden sm:inline">Previous</span>
+                <span class="sm:hidden">Prev</span>
+              </button>
+
+              <ng-container *ngFor="let page of pages">
+                <button
+                  class="w-8 h-8 rounded-full border text-sm font-medium transition-colors duration-200"
+                  [ngClass]="{
+                    'bg-blue-600 text-white border-blue-600': page === currentPage,
+                    'hover:bg-blue-100 text-gray-700 border-gray-300': page !== currentPage
+                  }"
+                  (click)="goToPage(page)"
+                >
+                  {{ page }}
+                </button>
+              </ng-container>
+
+              <button
+                class="px-3 py-2 text-sm text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                [disabled]="currentPage === totalPages"
+                (click)="goToPage(currentPage + 1)"
+              >
+                <span class="hidden sm:inline">Next</span>
+                <span class="sm:hidden">Next</span>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

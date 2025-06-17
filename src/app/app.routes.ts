@@ -1,6 +1,6 @@
+import { Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { NoAuthGuard } from './core/guards/no-auth.guard';
-import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
@@ -12,15 +12,15 @@ export const routes: Routes = [
           import('./features/Auth/Login/login.component').then(
             (m) => m.LoginComponent
           ),
-        canActivate: [NoAuthGuard]
+        canActivate: [NoAuthGuard],
       },
       {
         path: 'register',
         loadComponent: () =>
-          import(
-            './features/Auth/Register/register.component'
-          ).then((m) => m.RegisterComponent),
-        canActivate: [NoAuthGuard]
+          import('./features/Auth/Register/register.component').then(
+            (m) => m.RegisterComponent
+          ),
+        canActivate: [NoAuthGuard],
       },
       {
         path: 'forgot-password',
@@ -28,18 +28,17 @@ export const routes: Routes = [
           import(
             './features/Auth/forget-password/forget-password.component'
           ).then((m) => m.ForgetPasswordComponent),
-        canActivate: [NoAuthGuard]
+        canActivate: [NoAuthGuard],
       },
       {
         path: 'mail-verify',
         loadComponent: () =>
-          import('./features/Auth/MailVerification/verification.component').then(
-            (m) => m.VerificationComponent
-          ),
-        canActivate: [AuthGuard]
+          import(
+            './features/Auth/MailVerification/verification.component'
+          ).then((m) => m.VerificationComponent),
+        canActivate: [AuthGuard],
       },
-    
-  
+
       {
         path: 'kyc',
         loadComponent: () =>
@@ -56,6 +55,27 @@ export const routes: Routes = [
         (m) => m.PostViewPageComponent
       ),
   },
+  {
+    path: 'marketplace',
+    loadComponent: () =>
+      import('./features/ListingPage/listing-page.component').then(
+        (m) => m.ListingPageComponent
+      ),
+  },
+
+
+  {
+
+
+    path:"catalog",
+    loadComponent: () =>
+      import('./features/Categories/categories/categories.component').then(
+        (m) => m.CategoriesComponent
+      ),
+
+
+  },
+
   {
     path: '',
     canActivate: [AuthGuard],

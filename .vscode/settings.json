@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "dentizone",
+        "projectKey": "dentizone_user-frontend"
+    }
+}

@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextarea } from 'primeng/inputtextarea';
@@ -98,7 +98,7 @@ export class QuestionAnswerComponent {
 
   newAnswer: string = '';
 
-  constructor(public authService: AuthService) {}
+  constructor(public readonly authService: AuthService) {}
 
   onSubmitAnswer() {
     if (this.newAnswer.trim() && this.newAnswer.length <= 500) {
@@ -109,4 +109,4 @@ export class QuestionAnswerComponent {
       this.newAnswer = '';
     }
   }
-} 
+}

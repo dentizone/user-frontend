@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -33,7 +33,7 @@ export interface IImageUploadResponse {
 export class PostService {
   private readonly API_URL = `${environment.apiUrl}/api`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getCategories(): Observable<ICategory[]> {
     return this.http.get<ICategory[]>(`${this.API_URL}/Catalog/categories`);
@@ -56,4 +56,4 @@ export class PostService {
   createPost(postData: IPost): Observable<any> {
     return this.http.post(`${this.API_URL}/Posts`, postData);
   }
-} 
+}
