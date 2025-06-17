@@ -1,12 +1,13 @@
 import { Component, HostListener } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({  selector: 'app-nav-bar',
+  standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.css',
+  styleUrls: ['./nav-bar.component.css'],
 })
 export class NavBarComponent {
   opened = false;

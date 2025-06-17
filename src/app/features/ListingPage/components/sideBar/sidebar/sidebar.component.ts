@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { FilterOptions, SidebarData } from '../../../models/sidebar.interface';
 import { SidebarService } from '../../../sidebarService/sidebar.service';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
