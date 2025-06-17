@@ -1,0 +1,96 @@
+<div class="max-w-4xl mx-auto p-6 bg-white shadow rounded-xl space-y-6 text-sm">
+  <div class="text-xl font-semibold">Order #12345</div>
+  <div class="text-gray-500">Placed on May 15, 2023 at 10:30 AM</div>
+
+  <div class="space-y-2">
+    <div class="font-bold">Order Status</div>
+    <div class="flex items-center justify-between text-center">
+      <div class="flex-1">
+        <div class="rounded-full bg-blue-600 w-4 h-4 mx-auto mb-1"></div>
+        <p>Order Placed<br><span class="text-xs text-gray-500">May 15</span></p>
+      </div>
+      <div class="flex-1">
+        <div class="rounded-full bg-blue-600 w-4 h-4 mx-auto mb-1"></div>
+        <p>Processing<br><span class="text-xs text-gray-500">May 16</span></p>
+      </div>
+      <div class="flex-1">
+        <div class="rounded-full bg-blue-600 w-4 h-4 mx-auto mb-1"></div>
+        <p>Shipped<br><span class="text-xs text-gray-500">May 17</span></p>
+      </div>
+      <div class="flex-1">
+        <div class="rounded-full bg-gray-300 w-4 h-4 mx-auto mb-1"></div>
+        <p>Out for Delivery<br><span class="text-xs text-gray-500">May 19</span></p>
+      </div>
+      <div class="flex-1">
+        <div class="rounded-full bg-gray-300 w-4 h-4 mx-auto mb-1"></div>
+        <p>Delivered<br><span class="text-xs text-gray-500">May 20</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+      <div class="font-bold mb-1">Shipping Address</div>
+      <p>John Doe<br>123 Market Street<br>Apt 4B<br>San Francisco, CA 94103<br>United States<br>Phone: (555) 123-4567</p>
+    </div>
+    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+      <div class="font-bold mb-1">Payment Information</div>
+      <p>💳 Visa ending in 4242<br>Billing Address: Same as shipping address</p>
+    </div>
+  </div>
+  <div>
+    <div class="font-bold mb-2">Order Items</div>
+    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg space-y-4">
+      <div *ngFor="let item of orderItems; let i = index">
+        <div class="flex justify-between items-center gap-4">
+          <img [src]="item.image" class="w-20 h-20 object-cover rounded-md border" alt="Item Image">
+          <div class="flex-1">
+            <p class="font-semibold">{{ item.name }}</p>
+            <p class="text-gray-500">{{ item.details }}</p>
+            <p class="text-gray-500">Qty: {{ item.quantity }}</p>
+          </div>
+          <p class="font-semibold">${{ item.price.toFixed(2) }}</p>
+        </div>
+        <hr *ngIf="i !== orderItems.length - 1" />
+      </div>
+    </div>
+  </div>
+</div>
+  <div>
+    <div class="font-bold mb-2">Order Summary</div>
+    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg space-y-2">
+      <div class="flex justify-between">
+        <p>Subtotal (3 items)</p>
+        <p>$1,079.97</p>
+      </div>
+      <div class="flex justify-between">
+        <p>Shipping & Handling</p>
+        <p>$0.00</p>
+      </div>
+      <div class="flex justify-between">
+        <p>Tax</p>
+        <p>$97.20</p>
+      </div>
+      <hr>
+      <div class="flex justify-between font-bold text-lg">
+        <p>Total</p>
+        <p>$1,177.17</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="flex justify-between pt-4">
+    <div class="space-x-2">
+      <button class="bg-blue-900 text-white px-4 py-2 rounded shadow">Print Receipt</button>
+      <button class="bg-white border border-blue-900 text-blue-900 px-4 py-2 rounded shadow">Contact Support</button>
+    </div>
+    <button class="bg-red-100 text-red-600 px-4 py-2 rounded shadow">Cancel Order</button>
+  </div>
+
+
+
+
+
+
+

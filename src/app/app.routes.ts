@@ -113,9 +113,14 @@ export const routes: Routes = [
           (m) => m.CartComponent
         ),
     },
-    
+    {
+  path: 'order',
+  loadComponent: () =>
+    import('./features/Order/order/order.component').then((m) => m.OrderComponent),
+}    
     ],
   },
+  
   {
     path: '**',
     redirectTo: 'auth/login',
