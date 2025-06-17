@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilterOptions, SidebarData } from '../../../models/sidebar.interface';
 import { SidebarService } from '../../../sidebarService/sidebar.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,7 +12,7 @@ import { SidebarService } from '../../../sidebarService/sidebar.service';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
   @Output() sidebarToggle = new EventEmitter<boolean>();
   @Output() filterChange = new EventEmitter<FilterOptions>();
 
@@ -35,6 +36,8 @@ export class SidebarComponent implements OnInit {
   selectedConditions: string[] = [];
   sortBy = 'createdAtDesc';
 
+  private destroy$ = new Subject<void>();
+
   constructor(private sidebarService: SidebarService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   async ngOnInit() {
@@ -55,36 +58,38 @@ export class SidebarComponent implements OnInit {
   }
 
   private loadFiltersFromUrl(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      if (params['category'] && this.sidebarData.categories.some(cat => cat.categoryName === params['category'])) {
-        this.activeCategory = params['category'];
-      }
-      
-      if (params['city'] && this.sidebarData.cities.includes(params['city'])) {
-        this.selectedCity = params['city'];
-      }
-      
-      if (params['price']) {
-        const price = Number(params['price']);
-        if (price >= this.sidebarData.minPrice && price <= this.sidebarData.maxPrice) {
-          this.desiredPrice = price;
+    this.activatedRoute.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        if (params['category'] && this.sidebarData.categories.some(cat => cat.categoryName === params['category'])) {
+          this.activeCategory = params['category'];
         }
-      }
-      
-      if (params['toDate']) {
-        this.toDate = new Date(params['toDate']);
-      }
-      
-      if (params['conditions']) {
-        this.selectedConditions = params['conditions'].split(',').filter((condition: string) => 
-          ['New', 'As New', 'Used'].includes(condition)
-        );
-      }
-      
-      if (params['sortBy'] && ['createdAtAsc', 'createdAtDesc', 'priceAsc', 'priceDesc'].includes(params['sortBy'])) {
-        this.sortBy = params['sortBy'];
-      }
-    });
+        
+        if (params['city'] && this.sidebarData.cities.includes(params['city'])) {
+          this.selectedCity = params['city'];
+        }
+        
+        if (params['price']) {
+          const price = Number(params['price']);
+          if (price >= this.sidebarData.minPrice && price <= this.sidebarData.maxPrice) {
+            this.desiredPrice = price;
+          }
+        }
+        
+        if (params['toDate']) {
+          this.toDate = new Date(params['toDate']);
+        }
+        
+        if (params['conditions']) {
+          this.selectedConditions = params['conditions'].split(',').filter((condition: string) => 
+            ['New', 'As New', 'Used'].includes(condition)
+          );
+        }
+        
+        if (params['sortBy'] && ['createdAtAsc', 'createdAtDesc', 'priceAsc', 'priceDesc'].includes(params['sortBy'])) {
+          this.sortBy = params['sortBy'];
+        }
+      });
   }
 
   private updateUrlParams(): void {
@@ -198,6 +203,11 @@ export class SidebarComponent implements OnInit {
     
     this.updateUrlParams();
     this.filterChange.emit(filters);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   // Getters for template
