@@ -35,7 +35,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   selectedConditions: string[] = [];
   sortBy = 'createdAtDesc';
 
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
   constructor(private readonly sidebarService: SidebarService, private readonly router: Router, private readonly activatedRoute: ActivatedRoute) {}
 

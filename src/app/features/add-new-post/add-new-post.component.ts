@@ -1,17 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { DatePickerModule } from 'primeng/datepicker';
-import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
-import { QuillEditorComponent } from 'ngx-quill';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { QuillEditorComponent } from 'ngx-quill';
+import { DatePickerModule } from 'primeng/datepicker';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
 import { Subject, takeUntil } from 'rxjs';
 
-import { PostService, ICategory, IPost } from '../../core/services/post.service';
 import { AuthService } from '../../core/services/auth.service';
+import { ICategory, IPost, PostService } from '../../core/services/post.service';
 
 import "quill/dist/quill.core.css";
 import { PostUnderReviewComponent } from '../../shared/components/post-under-review/post-under-review.component';
@@ -48,7 +46,7 @@ interface ImageUploadState {
 export class AddNewPostComponent implements OnInit, OnDestroy {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
   
   categories: ICategory[] = [];
   subCategories: ICategory[] = [];
