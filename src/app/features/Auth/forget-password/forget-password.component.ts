@@ -46,9 +46,9 @@ export class ForgetPasswordComponent implements OnInit {
     reset: false,
   };
   constructor(
-    private authService: AuthService,
-    private router: Router,
-    private route: ActivatedRoute
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute
   ) {}
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -85,8 +85,8 @@ export class ForgetPasswordComponent implements OnInit {
         console.error('Failed to send reset email:', error);
         this.emailInvalid = true;
         this.emailErrorMessage =
-          error?.error?.Message ||
-          error?.error?.Details ||
+          (error?.error?.Message ??
+          error?.error?.Details) ??
           'Failed to send reset email. Please try again.';
         this.isLoading.email = false; // Clear loading state immediately on error
       }
@@ -112,8 +112,8 @@ export class ForgetPasswordComponent implements OnInit {
         console.error('Failed to resend reset email:', error);
         this.resendSuccessMessage = ''; // Clear success message on error
         this.resendErrorMessage =
-          error?.error?.Message ||
-          error?.error?.Details ||
+          (error?.error?.Message ??
+          error?.error?.Details) ??
           'Failed to resend email. Please try again.';
         this.isLoading.resend = false; // Clear loading state immediately on error
       }
@@ -159,8 +159,8 @@ export class ForgetPasswordComponent implements OnInit {
           console.error('Failed to reset password:', error);
           this.passwordInvalid = true;
           this.passwordErrorMessage =
-            error?.error?.Message ||
-            error?.error?.Details ||
+            error?.error?.Message ??
+            error?.error?.Details ??
             'Failed to reset password. Please try again.';
           this.isLoading.reset = false; // Clear loading state immediately on error
         }

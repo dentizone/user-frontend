@@ -83,9 +83,9 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
   postUnderReview = false;
 
   constructor(
-    private postService: PostService,
-    private authService: AuthService,
-    private router: Router
+    private readonly postService: PostService,
+    private readonly authService: AuthService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
