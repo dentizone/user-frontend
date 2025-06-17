@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { LoaderComponent } from "../../../shared/components/loader/loader.component";
+import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { CategoriesService } from '../categories.service';
 import { Category } from '../category';
 
@@ -10,18 +10,18 @@ import { Category } from '../category';
   selector: 'app-categories',
   imports: [CommonModule, LoaderComponent],
   templateUrl: './categories.component.html',
-  styleUrl: './categories.component.css'
+  styleUrl: './categories.component.css',
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
-  
-  categories:Category[]=[]
-  isLoading:boolean=true;
+  categories: Category[] = [];
+  isLoading: boolean = true;
   private destroy$ = new Subject<void>();
 
-  constructor(private _categoriesService:CategoriesService){}
-  
+  constructor(private _categoriesService: CategoriesService) {}
+
   ngOnInit(): void {
-    this._categoriesService.getCategories()
+    this._categoriesService
+      .getCategories()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: Category[]) => {
@@ -31,7 +31,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
         error: (err) => {
           console.error('Failed to load categories:', err);
           this.isLoading = false;
-        }
+        },
       });
   }
 
@@ -102,5 +102,4 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   //     icon: '/assets/Icons/all.png',
   //   },
   // ];
-
 }
