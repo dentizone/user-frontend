@@ -15,7 +15,7 @@ export class NavBarComponent {
   UserName = 'Nourhane';
   UserEmail = 'nourhane@gmail.com';
   
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   isActive(route: string): boolean {
     return this.router.url === route;

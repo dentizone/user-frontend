@@ -37,7 +37,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private sidebarService: SidebarService, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private readonly sidebarService: SidebarService, private readonly router: Router, private readonly activatedRoute: ActivatedRoute) {}
 
   async ngOnInit() {
     this.initialDate = new Date();

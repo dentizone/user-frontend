@@ -46,7 +46,7 @@ import { Router } from '@angular/router';
   `,
 })
 export class VerificationSentModalComponent {
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   onBackdropClick(event: MouseEvent) {
     this.router.navigate(['/']);

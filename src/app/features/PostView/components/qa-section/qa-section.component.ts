@@ -1,10 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextarea } from 'primeng/inputtextarea';
-import { QuestionAnswerComponent } from '../question-answer/question-answer.component';
 import { AuthService } from '../../../../core/services/auth.service';
+import { QuestionAnswerComponent } from '../question-answer/question-answer.component';
 
 interface Answer {
   id: number;
@@ -90,7 +90,7 @@ export class QaSectionComponent {
 
   newQuestion: string = '';
 
-  constructor(public authService: AuthService) {}
+  constructor(public readonly authService: AuthService) {}
 
   onSubmitQuestion() {
     if (this.newQuestion.trim() && this.newQuestion.length <= 500) {
@@ -102,4 +102,4 @@ export class QaSectionComponent {
   onAnswerSubmitted(event: { questionId: number; answer: string }) {
     this.answerSubmitted.emit(event);
   }
-} 
+}

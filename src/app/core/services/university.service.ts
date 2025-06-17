@@ -15,9 +15,9 @@ export interface University {
 export class UniversityService {
   private readonly API_URL = `${environment.apiUrl}/api/Universities`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getSupportedUniversities(): Observable<University[]> {
     return this.http.get<University[]>(`${this.API_URL}/supported`);
   }
-} 
+}

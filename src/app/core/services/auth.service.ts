@@ -1,12 +1,12 @@
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import {
-  AuthResponse,
-  LoginRequestDto,
-  LogoutRequest,
-  RefreshTokenRequest,
-  RegisterRequestDto,
-  ResetPasswordDto,
-  User
+    AuthResponse,
+    LoginRequestDto,
+    LogoutRequest,
+    RefreshTokenRequest,
+    RegisterRequestDto,
+    ResetPasswordDto,
+    User
 } from '../models/auth.models';
 
 import { HttpClient } from '@angular/common/http';
@@ -21,7 +21,7 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
     this.loadStoredUser();
   }
 
@@ -124,4 +124,4 @@ export class AuthService {
       params: {  token }
     });
   }
-} 
+}

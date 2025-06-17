@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   standalone: true
 })
 export class PostUnderReviewComponent {
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   backToHome() {
     this.router.navigate(['/home']);
