@@ -9,8 +9,7 @@ import { SidebarService } from '../../../sidebarService/sidebar.service';
 @Component({
   selector: 'app-sidebar',
   imports: [CommonModule, FormsModule],
-  templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  templateUrl: './sidebar.component.html'
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   @Output() sidebarToggle = new EventEmitter<boolean>();

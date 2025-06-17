@@ -10,7 +10,7 @@ import { Category } from './category';
 export class CategoriesService {
 
   constructor(
-    private _apiService: ApiService
+    private readonly _apiService: ApiService
   ) { }
 
  getCategories(): Observable<Category[]> {

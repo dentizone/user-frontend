@@ -11,14 +11,13 @@ import { Category } from '../category';
   standalone: true,
   imports: [CommonModule, LoaderComponent],
   templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.css'],
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
   isLoading: boolean = true;
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
-  constructor(private _categoriesService: CategoriesService) {}
+  constructor(private readonly _categoriesService: CategoriesService) {}
 
   ngOnInit(): void {
     this._categoriesService

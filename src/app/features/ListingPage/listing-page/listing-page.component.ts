@@ -8,8 +8,8 @@ import { Posts } from '../../../core/models/posts';
 @Component({
   selector: 'app-listing-page',
   imports: [PaginatorModule,CommonModule],
-  templateUrl: './listing-page.component.html',
-  styleUrl: './listing-page.component.css'
+  templateUrl: './listing-page.component.html'
+
 })
 export class ListingPageComponent {
   clinicalproduct:Posts[]=[

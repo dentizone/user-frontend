@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class ApiService {
   private readonly baseUrl = 'https://apit.gitnasr.com/api'; 
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   get<T>(endpoint: string, options: object = {}): Observable<T> {
     const normalizedEndpoint = endpoint.replace(/^\/+/, '');
