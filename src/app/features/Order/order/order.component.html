@@ -1,92 +1,103 @@
-<div class="max-w-4xl mx-auto p-6 bg-white shadow rounded-xl space-y-6 text-sm">
-  <div class="text-xl font-semibold">Order #12345</div>
-  <div class="text-gray-500">Placed on May 15, 2023 at 10:30 AM</div>
+<div class="max-w-4xl mx-auto p-4 md:p-8 bg-white shadow-lg rounded-2xl space-y-8 md:space-y-12 text-sm md:text-base border border-gray-200">
+  <div class="text-xl md:text-2xl font-semibold text-blue-900 mb-2">Order #12345</div>
+  <div class="text-gray-500 text-xs md:text-sm mb-4">Placed on May 15, 2023 at 10:30 AM</div>
 
-  <div class="space-y-2">
-    <div class="font-bold">Order Status</div>
-    <div class="flex items-center justify-between text-center">
-      <div class="flex-1">
-        <div class="rounded-full bg-blue-600 w-4 h-4 mx-auto mb-1"></div>
-        <p>Order Placed<br><span class="text-xs text-gray-500">May 15</span></p>
+  <div class="space-y-4">
+    <div class="font-bold text-blue-900 mb-2">Shipping Status</div>
+    <div class="relative flex items-center justify-between text-center overflow-x-auto gap-4 md:gap-0 flex-nowrap md:flex-wrap pb-6">
+      <!-- Gray background line -->
+      <div class="absolute top-7 left-0 right-0 h-1 bg-gray-200 z-0"></div>
+      <!-- Blue progress line (3/5 steps completed) -->
+      <div class="absolute top-7 left-0 w-[60%] h-1 bg-blue-600 z-10 transition-all"></div>
+      <!-- Steps -->
+      <div class="flex-1 min-w-[90px] z-20 relative flex flex-col items-center">
+        <div class="rounded-full bg-blue-600 w-6 h-6 mb-2 border-4 border-white shadow"></div>
+        <span class="font-semibold text-blue-900 mb-1">Order Placed</span>
+        <span class="text-xs text-gray-500">May 15</span>
       </div>
-      <div class="flex-1">
-        <div class="rounded-full bg-blue-600 w-4 h-4 mx-auto mb-1"></div>
-        <p>Processing<br><span class="text-xs text-gray-500">May 16</span></p>
+      <div class="flex-1 min-w-[90px] z-20 relative flex flex-col items-center">
+        <div class="rounded-full bg-blue-600 w-6 h-6 mb-2 border-4 border-white shadow"></div>
+        <span class="font-semibold text-blue-900 mb-1">Processing</span>
+        <span class="text-xs text-gray-500">May 16</span>
       </div>
-      <div class="flex-1">
-        <div class="rounded-full bg-blue-600 w-4 h-4 mx-auto mb-1"></div>
-        <p>Shipped<br><span class="text-xs text-gray-500">May 17</span></p>
+      <div class="flex-1 min-w-[90px] z-20 relative flex flex-col items-center">
+        <div class="rounded-full bg-blue-600 w-6 h-6 mb-2 border-4 border-white shadow"></div>
+        <span class="font-semibold text-blue-900 mb-1">Shipped</span>
+        <span class="text-xs text-gray-500">May 17</span>
       </div>
-      <div class="flex-1">
-        <div class="rounded-full bg-gray-300 w-4 h-4 mx-auto mb-1"></div>
-        <p>Out for Delivery<br><span class="text-xs text-gray-500">May 19</span></p>
+      <div class="flex-1 min-w-[90px] z-20 relative flex flex-col items-center">
+        <div class="rounded-full bg-gray-300 w-6 h-6 mb-2 border-4 border-white"></div>
+        <span class="font-semibold text-gray-400 mb-1">Out for Delivery</span>
+        <span class="text-xs text-gray-400">May 19</span>
       </div>
-      <div class="flex-1">
-        <div class="rounded-full bg-gray-300 w-4 h-4 mx-auto mb-1"></div>
-        <p>Delivered<br><span class="text-xs text-gray-500">May 20</span></p>
+      <div class="flex-1 min-w-[90px] z-20 relative flex flex-col items-center">
+        <div class="rounded-full bg-gray-300 w-6 h-6 mb-2 border-4 border-white"></div>
+        <span class="font-semibold text-gray-400 mb-1">Delivered</span>
+        <span class="text-xs text-gray-400">May 20</span>
       </div>
     </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
-      <div class="font-bold mb-1">Shipping Address</div>
-      <p>John Doe<br>123 Market Street<br>Apt 4B<br>San Francisco, CA 94103<br>United States<br>Phone: (555) 123-4567</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <div class="bg-gray-50 border border-gray-200 p-6 rounded-xl shadow-sm">
+      <div class="font-bold mb-2 text-blue-900">Shipping Address</div>
+      <p class="text-gray-700">John Doe<br>123 Market Street<br>Apt 4B<br>San Francisco, CA 94103<br>United States<br>Phone: (555) 123-4567</p>
     </div>
-    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
-      <div class="font-bold mb-1">Payment Information</div>
-      <p>💳 Visa ending in 4242<br>Billing Address: Same as shipping address</p>
+    <div class="bg-gray-50 border border-gray-200 p-6 rounded-xl shadow-sm">
+      <div class="font-bold mb-2 text-blue-900">Payment Information</div>
+      <p class="text-gray-700">💳 Visa ending in 4242<br>Billing Address: Same as shipping address</p>
     </div>
   </div>
-  <div>
-    <div class="font-bold mb-2">Order Items</div>
-    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg space-y-4">
+  <div class="mb-8">
+    <div class="font-bold mb-3 text-blue-900">Order Items</div>
+    <div class="bg-gray-50 border border-gray-200 p-6 rounded-xl space-y-6 shadow-sm">
       <div *ngFor="let item of orderItems; let i = index">
-        <div class="flex justify-between items-center gap-4">
-          <img [src]="item.image" class="w-20 h-20 object-cover rounded-md border" alt="Item Image">
-          <div class="flex-1">
-            <p class="font-semibold">{{ item.name }}</p>
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-6 py-2">
+          <img [src]="item.image" class="w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg border border-gray-200 shadow-sm" alt="Item ">
+          <div class="flex-1 w-full text-center sm:text-left">
+            <p class="font-semibold text-blue-900">{{ item.name }}</p>
             <p class="text-gray-500">{{ item.details }}</p>
             <p class="text-gray-500">Qty: {{ item.quantity }}</p>
           </div>
-          <p class="font-semibold">${{ item.price.toFixed(2) }}</p>
+          <p class="font-semibold mt-2 sm:mt-0 text-blue-900">${{ item.price.toFixed(2) }}</p>
         </div>
-        <hr *ngIf="i !== orderItems.length - 1" />
+        <hr *ngIf="i !== orderItems.length - 1" class="border-gray-200" />
       </div>
     </div>
   </div>
-</div>
-  <div>
-    <div class="font-bold mb-2">Order Summary</div>
-    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg space-y-2">
+
+  <div class="mb-8">
+    <div class="font-bold mb-3 text-blue-900">Order Summary</div>
+    <div class="bg-gray-50 border border-gray-200 p-6 rounded-xl space-y-3 shadow-sm">
       <div class="flex justify-between">
-        <p>Subtotal (3 items)</p>
-        <p>$1,079.97</p>
+        <p class="text-gray-700">Subtotal (3 items)</p>
+        <p class="text-gray-900">$1,079.97</p>
       </div>
       <div class="flex justify-between">
-        <p>Shipping & Handling</p>
-        <p>$0.00</p>
+        <p class="text-gray-700">Shipping & Handling</p>
+        <p class="text-gray-900">$0.00</p>
       </div>
       <div class="flex justify-between">
-        <p>Tax</p>
-        <p>$97.20</p>
+        <p class="text-gray-700">Tax</p>
+        <p class="text-gray-900">$97.20</p>
       </div>
-      <hr>
+      <hr class="border-gray-200">
       <div class="flex justify-between font-bold text-lg">
-        <p>Total</p>
-        <p>$1,177.17</p>
+        <p class="text-blue-900">Total</p>
+        <p class="text-blue-900">$1,177.17</p>
       </div>
     </div>
   </div>
 
-
-  <div class="flex justify-between pt-4">
-    <div class="space-x-2">
-      <button class="bg-blue-900 text-white px-4 py-2 rounded shadow">Print Receipt</button>
-      <button class="bg-white border border-blue-900 text-blue-900 px-4 py-2 rounded shadow">Contact Support</button>
+  <div class="flex flex-col md:flex-row justify-between pt-4 gap-4 md:gap-0">
+    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 w-full md:w-auto">
+      <button class="bg-blue-900 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition w-full sm:w-auto">Print Receipt</button>
+      <button class="bg-white border border-blue-900 text-blue-900 px-6 py-3 rounded-lg shadow hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400 transition w-full sm:w-auto">Contact Support</button>
     </div>
-    <button class="bg-red-100 text-red-600 px-4 py-2 rounded shadow">Cancel Order</button>
+    <button class="bg-red-100 text-red-600 px-6 py-3 rounded-lg shadow hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 transition mt-2 md:mt-0 w-full md:w-auto">Cancel Order</button>
   </div>
+
+</div>
 
 
 
