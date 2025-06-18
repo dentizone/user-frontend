@@ -10,10 +10,12 @@ import { Component } from '@angular/core';
 export class PersonalInfoComponent {
   userName = 'Nourhane';
   generatedName = 'User-1234';
+  rating=4.3;
   userEmail = 'nourhane@gmail.com';
   verificationStatus = 'verified';
   academicYear = 'Year 5';
   userUniversity = 'Alexanria University';
   userPhoneNumber = '+201210082921';
+  avatarSrc='/assets/avatar/tooth-extraction.png'
   userAddress = 'Smouha, Alexanria';
 }
