@@ -116,7 +116,7 @@ export const routes: Routes = [
     {
   path: 'order',
   loadComponent: () =>
-    import('./features/Order/order/order.component').then((m) => m.OrderComponent),
+    import('./features/Profile/order/order.component').then((m) => m.OrderComponent),
 }    
     ],
   },
