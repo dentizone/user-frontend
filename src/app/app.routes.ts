@@ -107,10 +107,17 @@ export const routes: Routes = [
               ),
           },
           {
-            path: 'order-management',
+            path: 'orders',
             loadComponent: () =>
-              import('./features/Profile/order/order.component').then(
+              import('./features/Profile/order-list/order.component').then(
                 (m) => m.OrderComponent
+              ),
+          },
+          {
+            path: 'orders/:id',
+            loadComponent: () =>
+              import('./features/Profile/order-details/order-details.component').then(
+                (m) => m.OrderDetailsComponent
               ),
           },
           {

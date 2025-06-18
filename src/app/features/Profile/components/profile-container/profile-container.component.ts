@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PersonalInfoComponent } from "../personal-info/personal-info.component";
 import { UserPostsComponent } from "../user-posts/user-posts.component";
-import { OrderComponent } from "../../order/order.component";
+import { OrderComponent } from "../../order-list/order.component";
 
 @Component({
   standalone:true,

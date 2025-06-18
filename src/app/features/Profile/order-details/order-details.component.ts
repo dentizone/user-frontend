@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
 @Component({
   standalone: true,
-  selector: 'app-order',
+  selector: 'app-order-details',
   imports: [CommonModule, RouterModule],
-  templateUrl: './order.component.html',
-  styleUrl: './order.component.css',
+  templateUrl: './order-details.component.html',
+  styleUrl: './order-details.component.css',
 })
-export class OrderComponent {
+export class OrderDetailsComponent {
   orderItems = [
     {
       name: 'Sealer 3M',
@@ -32,4 +33,4 @@ export class OrderComponent {
       image: 'assets/items/image3.png',
     },
   ];
-}
+} 
