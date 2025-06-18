@@ -63,17 +63,12 @@ export const routes: Routes = [
       ),
   },
 
-
   {
-
-
-    path:"catalog",
+    path: 'catalog',
     loadComponent: () =>
       import('./features/Categories/categories/categories.component').then(
         (m) => m.CategoriesComponent
       ),
-
-
   },
 
   {
@@ -107,20 +102,22 @@ export const routes: Routes = [
           ),
       },
       {
-      path: 'cart',
-      loadComponent: () =>
-        import('./features/Cart/cart/cart.component').then(
-          (m) => m.CartComponent
-        ),
-    },
-    {
-  path: 'order',
-  loadComponent: () =>
-    import('./features/Profile/order/order.component').then((m) => m.OrderComponent),
-}    
+        path: 'cart',
+        loadComponent: () =>
+          import('./features/Cart/cart/cart.component').then(
+            (m) => m.CartComponent
+          ),
+      },
+      {
+        path: 'profile/order/:id',
+        loadComponent: () =>
+          import('./features/Profile/order/order.component').then(
+            (m) => m.OrderComponent
+          ),
+      },
     ],
   },
-  
+
   {
     path: '**',
     redirectTo: 'auth/login',

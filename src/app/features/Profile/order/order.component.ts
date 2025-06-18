@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-
+import { RouterModule } from '@angular/router';
 @Component({
   standalone: true,
   selector: 'app-order',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './order.component.html',
   styleUrl: './order.component.css',
 })
