@@ -1,12 +1,12 @@
-<div class="flex mt-8 bg-white space-x-5 p-4 rounded-2xl border border-gray-300 shadow-md mb-5 w-3/4 justify-self-center items-center">
+<div class="flex flex-col lg:flex-row mt-8 bg-white space-x-5 p-4 rounded-2xl border border-gray-300 shadow-md mb-5 w-3/4 justify-self-center items-center">
     <div class="rounded-full w-24 float-left bg-[#3BA3DB] ">
         <img [src]="avatarSrc" class="bg-cover">
     </div>
     <div>
-        <div class="flex justify-center items-center min-h-full">
+        <div class="flex flex-col lg:flex-row justify-center items-center min-h-full">
         <h3 class="font-bold text-2xl">{{userName}}</h3>
         <span class="text-gray-600 ms-4 flex"><span>&commat;</span> {{generatedName}}</span>
-        <span class="bg-emerald-100 font-semibold flex ms-4 rounded-xl px-3 py-1 text-emerald-700 capitalize">
+        <span class="bg-emerald-100 font-semibold mt-2 lg:mt-0 flex ms-4 rounded-xl px-3 py-1 text-emerald-700 capitalize">
             <svg xmlns="http://www.w3.org/2000/svg" class="text-emerald-500 mr-1" fill="var(--color-emerald-500)" viewBox="0 0 24 24" width="25" height="25">
                 <path d="M12 1.75l2.44 1.02 2.57-.04.89 2.45 2.2 1.56-.62 2.6 1.4 2.2-1.4 2.2.62 2.6-2.2 1.56-.89 2.45-2.57-.04L12 22.25l-2.44-1.02-2.57.04-.89-2.45-2.2-1.56.62-2.6-1.4-2.2 1.4-2.2-.62-2.6 2.2-1.56.89-2.45 2.57.04L12 1.75zm-1.12 13.61l5.14-5.14-1.41-1.41-3.73 3.73-1.59-1.59-1.41 1.41 3 3z"/>
             </svg>
