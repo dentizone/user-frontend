@@ -1,0 +1,33 @@
+
+
+<div class="w-full mt-5 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8 ">
+    
+   <div class="flow-root">
+        <ul role="list" class="divide-y divide-gray-200 ">
+           @for (item of reviews; track $index) {
+                <li class="py-3 sm:py-4">
+                    <div class="flex items-center">
+                        <div class="shrink-0">
+                            <img class="w-12 h-12 rounded-full" [src]="item.avatarSrc" alt="Neil image">
+                        </div>
+                        <div class="flex-1 min-w-0 ms-4">
+                            <p class="flex text-sm font-medium text-gray-900 truncate ">
+                                {{item.username}}
+                                <p-rating
+                                class="text-amber-300 ms-5"
+                                 [(ngModel)]="item.rate" [readonly]="true" />
+                            </p>
+                            <p class="text-sm text-gray-500 truncate ">
+                               Purchased: {{item.purchasedItemTitle}}
+                            </p>
+                            <p class="text-sm truncate ">
+                               {{item.comment}}
+                            </p>
+                        </div>
+                        
+                    </div>
+                </li>
+            }
+        </ul>
+   </div>
+</div>

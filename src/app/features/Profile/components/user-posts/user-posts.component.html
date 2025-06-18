@@ -1,47 +1,118 @@
-<div class=" flex justify-center items-center my-10">
-<div class="w-11/12 justify-center items-center bg-white border border-gray-200 rounded-lg shadow-sm ">
-    <div class="sm:hidden">
-        <label for="tabs" class="sr-only">Select tab</label>
-        <select [(ngModel)]="selectedTab" (change)="changeCurent(selectedTab)" class="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm rounded-t-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-            <option [value]="1">Active Posts</option>
-            <option [value]="2">Pending Posts</option>
-            <option [value]="3">Unactive Posts</option>
-        </select>
-    </div>
-    <ul class="hidden md:flex text-md font-semibold text-center text-black divide-x divide-gray-200 rounded-lg sm:flex rtl:divide-x-reverse" id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
-        <li class="w-full">
-            <button type="button" class="inline-block w-full p-4 rounded-ss-lg bg-gray-50 focus:outline-none text-black" [ngClass]="{'text-[#0077B6]': currentTab == 0,'bg-white': currentTab == 0, 'text-black':currentTab!=0}" (click)="changeCurent(1)">Active Posts</button>
-        </li>
-        <li class="w-full">
-            <button type="button" class="inline-block w-full p-4 bg-gray-50 focus:outline-none " [ngClass]="{'text-[#0077B6]': currentTab == 1,'bg-white': currentTab == 1, 'text-black':currentTab!=1}"  (click)="changeCurent(2)">Pending Posts</button>
-        </li>
-        <li class="w-full">
-            <button type="button" class="inline-block w-full p-4 rounded-se-lg bg-gray-50 focus:outline-none " [ngClass]="{'text-[#0077B6]': currentTab == 2,'bg-white': currentTab == 2, 'text-black':currentTab!=2}"  (click)="changeCurent(3)">Unactive Posts</button>
-        </li>
+<div class="justify-center flex mb-7">
+  <div class="border-b border-gray-200 w-full bg-white shadow-2xs">
+    <ul
+      class="flex cursor-pointer border-b border-gray-200 flex-wrap -mb-px text-sm font-medium text-center text-gray-500"
+    >
+      <li class="me-2" (click)="changeCurent(0)">
+        <div
+          class="inline-flex text-base items-center justify-center p-4 border-b-2 rounded-t-lg group"
+          [ngClass]="{
+            'border-[#0077B6] text-[#0077B6] active hover:text-[#32aef0]':
+              currentTab == 0,
+            'hover:text-gray-600 border-transparent hover:border-gray-300 text-gray-500':
+              currentTab != 0
+          }"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="mr-3"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            width="30"
+            height="30"
+          >
+            <path
+              d="M21.41 11.58l-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.41l9 9a2 2 0 0 0 2.82 0l7-7a2 2 0 0 0 0-2.83zM5.5 7A1.5 1.5 0 1 1 7 5.5 1.5 1.5 0 0 1 5.5 7z"
+            />
+          </svg>
+          For Sale ({{ ActivePosts.length }})
+        </div>
+      </li>
+      <li class="me-2" (click)="changeCurent(1)">
+        <div
+          class="inline-flex text-base items-center justify-center p-4 border-b-2 rounded-t-lg group"
+          [ngClass]="{
+            'border-[#0077B6] text-[#0077B6] hover:text-[#32aef0] active':
+              currentTab == 1,
+            'border-transparent hover:text-gray-600 hover:border-gray-300 text-gray-500':
+              currentTab != 1
+          }"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="mr-3"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            width="30"
+            height="30"
+          >
+            <path
+              d="M12 2l2.9 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 7.1-1.01L12 2z"
+            />
+          </svg>
+          Reviews ({{ reviews.length }})
+        </div>
+      </li>
     </ul>
-    <div id="fullWidthTabContent" class="border-t border-gray-200 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        @if(Current.length==0){
-            <h4>No posts</h4>
-        }
-        @else{
-            @for (item of Current; track $index) {
-        <div class="flex shadow-md rounded-lg p-3 m-3 border-gray-300">
-            <img [src]="item.imagesrc" class="rounded-full w-1/4 bg-cover">
-            <div class="flex flex-col mx-2">
-            <h3 class="text-sm font-medium capitalize">{{item.title}}</h3>
-            <p class="text-gray-500 text-xs">{{item.description}}</p>
-            <div class="grid grid-cols-6 mt-2">
-                <h3 class="font-semibold text-xs col-span-2">{{item.price}} EGP</h3>
-                <div class="flex justify-end col-span-4">
-                <button class="flex mx-3 bg-[#90E0EF] rounded-2xl text-xs px-2 py-1 justify-between items-center font-semibold"><img src="/assets/Icons/edit.png" class="w-1/4 bg-cover">Edit </button>
-                <button class="flex bg-[#3BA3DB] font-semibold rounded-2xl text-xs px-2 py-1 justify-between items-center"><img src="/assets/Icons/view.png" class="w-1/4 bg-cover">View </button>
-            </div></div>
-        </div>
-        </div>
-        }
-        }
-       
+    <div
+      [ngClass]="{ hidden: currentTab != 0 }"
+      class="flex space-x-2 mt-5 ms-5"
+    >
+      <span class="font-medium text-base mt-1">Filter by</span>
+      <select
+        id="small"
+        class="block p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+      >
+        <option selected>Choose a Condition</option>
+        <option value="active">Active posts</option>
+        <option value="pending">Pending Posts</option>
+        <option value="rejected">Rejected Posts</option>
+        <option value="unActive">Un-Active Posts</option>
+      </select>
     </div>
-</div>
-
+    <div
+      *ngIf="currentTab == 0; else review"
+      class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center"
+    >
+      @if(Current.length==0){
+      <h4>No posts</h4>
+      } @else{ @for (item of Current; track $index) {
+      <div
+        class="w-full max-w-sm flex flex-col justify-between bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden p-5"
+        style="margin: 0;"
+      >
+        <div class="relative w-full h-36">
+          <button
+            type="button"
+            class="absolute top-2 right-2 z-10 p-1 bg-white border border-gray-300 cursor-pointer hover:bg-gray-200 text-white rounded-sm transition-colors duration-200"
+            aria-label="Edit product"
+          >
+            <img src="/assets/Icons/edit.png" class="w-5 h-5" alt="edit" />
+          </button>
+          <img
+            class="w-full h-full object-cover rounded"
+            [src]="item.imagesrc"
+            alt="product "
+          />
+        </div>
+        <div class="flex flex-col justify-between flex-grow px-3 py-3">
+          <div class="flex">
+            <h5 class="text-xl font-semibold tracking-tight text-gray-900">
+              {{ item.title }}
+            </h5>
+          </div>
+          <p class="text-sm text-gray-600 mt-3">{{ item.description }}</p>
+          <div class="mt-4 text-right">
+            <span class="text-xl font-bold text-[#0077B6]"
+              >{{ item.price }} EGP</span
+            >
+          </div>
+        </div>
+      </div>
+      } }
+    </div>
+    <ng-template #review>
+      <app-review-cards [reviews]="reviews"></app-review-cards>
+    </ng-template>
+  </div>
 </div>

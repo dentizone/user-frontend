@@ -90,9 +90,51 @@ export const routes: Routes = [
       {
         path: 'profile',
         loadComponent: () =>
-          import(
-            './features/Profile/profile-container/profile-container.component'
-          ).then((m) => m.ProfileContainerComponent),
+          import('./features/Profile/components/profile-container/profile-container.component').then(
+            (m) => m.ProfileContainerComponent
+          ),
+        children: [
+          {
+            path: '',
+            redirectTo: 'overview',
+            pathMatch: 'full',
+          },
+          {
+            path: 'overview',
+            loadComponent: () =>
+              import('./features/Profile/components/personal-info/personal-info.component').then(
+                (m) => m.PersonalInfoComponent
+              ),
+          },
+          {
+            path: 'orders',
+            loadComponent: () =>
+              import('./features/Profile/order-list/order.component').then(
+                (m) => m.OrderComponent
+              ),
+          },
+          {
+            path: 'orders/:id',
+            loadComponent: () =>
+              import('./features/Profile/order-details/order-details.component').then(
+                (m) => m.OrderDetailsComponent
+              ),
+          },
+          {
+            path: 'your-activity',
+            loadComponent: () =>
+              import('./features/Profile/components/account-management.component').then(
+                (m) => m.AccountManagementComponent
+              ),
+          },
+          {
+            path: 'account-management',
+            loadComponent: () =>
+              import('./features/Profile/components/account-management.component').then(
+                (m) => m.AccountManagementComponent
+              ),
+          },
+        ],
       },
       {
         path: 'add-new-post',
@@ -106,13 +148,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/Cart/cart/cart.component').then(
             (m) => m.CartComponent
-          ),
-      },
-      {
-        path: 'profile/order/:id',
-        loadComponent: () =>
-          import('./features/Profile/order/order.component').then(
-            (m) => m.OrderComponent
           ),
       },
     ],
