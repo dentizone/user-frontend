@@ -1,22 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CarouselModule } from 'primeng/carousel';
 import { QaComponent } from './qa/qa-componenet';
+import { ActivatedRoute } from '@angular/router';
+import { ListingService } from '../ListingPage/listingService/listing.service';
+import { QuillModule } from 'ngx-quill'
 
 @Component({
   selector: 'app-post-view-page',
   standalone: true,
-  imports: [CommonModule, CarouselModule, QaComponent],
+  imports: [CommonModule, CarouselModule, QaComponent,QuillModule],
   templateUrl: './post-view-page.component.html',
 })
-export class PostViewPageComponent {
-  images: string[] = [
-    '/assets/items/image1.png',
-    '/assets/items/image2.png',
-    '/assets/items/image3.png',
-    '/assets/items/image4.png'
-  ];
-  
+export class PostViewPageComponent implements OnInit{
+  images: string[] = [];
+  product:any={}
+  productID=''
+  expirationDate!:Date
+  formattedDate!:any
+  isExpired!:boolean
+  ngOnInit(): void {
+    this.productID=this.route.snapshot.paramMap.get('id')!;
+    if (this.productID) {
+        this.loadPost();
+      }
+  }
+  loadPost() {
+    this.posts.getPostById(this.productID).subscribe({
+      next: (data) =>{
+        this.product = data;
+        this.images= this.product.assets?.map((img: any) => img.url) || [];
+        this.mainImage=this.images[0] || '';
+        this.expirationDate = new Date(this.product.expireDate);
+        this.formattedDate = this.expirationDate.toLocaleDateString('en-GB', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        this.isExpired = this.expirationDate.getTime() < new Date().getTime();
+        console.log(this.product);
+      },
+      error: (err) => console.error('Error:', err)
+    });
+    
+    console.log(this.images)
+  }
+  constructor(private route: ActivatedRoute,private posts: ListingService){}
   mainImage: string = this.images[0];
   activeIndex: number = 0;
   page: number = 0;
@@ -75,4 +107,5 @@ export class PostViewPageComponent {
     console.log('New answer:', event);
     // Add API call here
   }
+  onAddToCart(id:string){}
 } 

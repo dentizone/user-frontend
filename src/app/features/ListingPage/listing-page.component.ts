@@ -1,61 +1,47 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { PaginatorModule } from 'primeng/paginator';
 import { Posts } from '../../core/models/posts';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { SidebarComponent } from './components/sideBar/sidebar/sidebar.component';
-
+import { ActivatedRoute } from '@angular/router';
+import { ListingService } from './listingService/listing.service';
 @Component({
   selector: 'app-listing-page',
   imports: [PaginatorModule, CommonModule, ProductCardComponent,SidebarComponent],
   templateUrl: './listing-page.component.html',
 })
-export class ListingPageComponent {
+export class ListingPageComponent implements OnInit{
+  selectedCategory=''
+  title=''
+  ngOnInit(): void {
+    
+   this.route.queryParams.subscribe(params => {
+      this.selectedCategory = params['category'];
+      this.title=params['category'];
+      if (this.selectedCategory) {
+        this.loadItems();
+      }else{
+
+      }
+    });
+  }
+
+  loadItems() {
+    this.posts.getPostsByCategory(this.selectedCategory).subscribe({
+      next: (data) => this.clinicalproduct = data,
+      error: (err) => console.error('Error:', err)
+    });
+    console.log(this.clinicalproduct)
+  }
   @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
 
-  clinicalproduct: Posts[] = [
-    {
-      title: 'MANI K FILES ( SIZE 6 )',
-      id: 'item-1',
-      description:
-        'Lorem ipsum is placeholder text commonly used in the mockups.',
-      price: '170',
-      imagesrc: '/assets/items/image1.png',
-      rating: '3.5',
-    },
-    {
-      title: 'Alphasil Rubber Base impression kit',
-      id: 'item-2',
-      description:
-        'Lorem ipsum is placeholder text commonly used in the mockups.',
-      price: '1700',
-      imagesrc: '/assets/items/image2.png',
-      rating: '3.5',
-    },
-    {
-      title: 'Calibra Veneer Esthetic Resin',
-      id: 'item-3',
-      description:
-        'Lorem ipsum is placeholder text commonly used in the mockups.',
-      price: '2650',
-      imagesrc: '/assets/items/image3.png',
-      rating: '3.5',
-    },
-    {
-      title: 'Ultradent PermaFlo-A1',
-      id: 'item-4',
-      description:
-        'Lorem ipsum is placeholder text commonly used in the mockups.',
-      price: '900',
-      imagesrc: '/assets/items/image4.png',
-      rating: '3.5',
-    },
-  ];
+  clinicalproduct: Posts[] = [];
   currentPage = 1;
   totalPages = 5;
   pages: number[] = [];
 
-  constructor() {
+  constructor(private route: ActivatedRoute,private posts: ListingService) {
     this.updatePages();
   }
 
@@ -72,6 +58,7 @@ export class ListingPageComponent {
     if (this.sidebarComponent) {
       this.sidebarComponent.openSideBar();
     }
+    console.log(this.clinicalproduct)
   }
 
   onSidebarToggle(isOpen: boolean) {
