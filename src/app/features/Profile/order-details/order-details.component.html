@@ -2,8 +2,8 @@
   <a routerLink="/profile" class="inline-flex items-center text-blue-700 hover:underline mb-4">
     &larr; Back to Profile
   </a>
-  <div class="text-xl md:text-2xl font-semibold text-blue-900 mb-2">Order #12345</div>
-  <div class="text-gray-500 text-xs md:text-sm mb-4">Placed on May 15, 2023 at 10:30 AM</div>
+  <div class="text-xl md:text-2xl font-semibold text-blue-900 mb-2">Order #{{orderDetails.id}}</div>
+  <div class="text-gray-500 text-xs md:text-sm mb-4">Placed on {{createdAt}}</div>
 
   <div class="space-y-4">
     <div class="font-bold text-blue-900 mb-2">Shipping Status</div>
@@ -44,7 +44,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
     <div class="bg-gray-50 border border-gray-200 p-6 rounded-xl shadow-sm">
       <div class="font-bold mb-2 text-blue-900">Shipping Address</div>
-      <p class="text-gray-700">John Doe<br>123 Market Street<br>Apt 4B<br>San Francisco, CA 94103<br>United States<br>Phone: (555) 123-4567</p>
+      <p class="text-gray-700">{{orderDetails.buyerName}}<br>{{orderDetails.orderShipmentAddress.street}}<br>{{orderDetails.orderShipmentAddress.city}}</p>
     </div>
     <div class="bg-gray-50 border border-gray-200 p-6 rounded-xl shadow-sm">
       <div class="font-bold mb-2 text-blue-900">Payment Information</div>
@@ -58,9 +58,9 @@
         <div class="flex flex-col sm:flex-row justify-between items-center gap-6 py-2">
           <img [src]="item.image" class="w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg border border-gray-200 shadow-sm" alt="Item ">
           <div class="flex-1 w-full text-center sm:text-left">
-            <p class="font-semibold text-blue-900">{{ item.name }}</p>
-            <p class="text-gray-500">{{ item.details }}</p>
-            <p class="text-gray-500">Qty: {{ item.quantity }}</p>
+            <p class="font-semibold text-blue-900">{{ item.postTitle }}</p>
+            <p class="text-gray-500 line-clamp-2">{{ item.details }}</p>
+            <p class="text-gray-500">Qty: 1</p>
           </div>
           <p class="font-semibold mt-2 sm:mt-0 text-blue-900">${{ item.price.toFixed(2) }}</p>
         </div>
@@ -73,8 +73,8 @@
     <div class="font-bold mb-3 text-blue-900">Order Summary</div>
     <div class="bg-gray-50 border border-gray-200 p-6 rounded-xl space-y-3 shadow-sm">
       <div class="flex justify-between">
-        <p class="text-gray-700">Subtotal (3 items)</p>
-        <p class="text-gray-900">$1,079.97</p>
+        <p class="text-gray-700">Subtotal ({{orderItems.length}} items)</p>
+        <p class="text-gray-900">${{orderDetails.totalAmount}}</p>
       </div>
       <div class="flex justify-between">
         <p class="text-gray-700">Shipping & Handling</p>
@@ -82,12 +82,12 @@
       </div>
       <div class="flex justify-between">
         <p class="text-gray-700">Tax</p>
-        <p class="text-gray-900">$97.20</p>
+        <p class="text-gray-900">$0.00</p>
       </div>
       <hr class="border-gray-200">
       <div class="flex justify-between font-bold text-lg">
         <p class="text-blue-900">Total</p>
-        <p class="text-blue-900">$1,177.17</p>
+        <p class="text-blue-900">${{orderDetails.totalAmount}}</p>
       </div>
     </div>
   </div>

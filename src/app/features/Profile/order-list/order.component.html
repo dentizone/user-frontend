@@ -14,15 +14,19 @@
       <tbody>
         <tr *ngFor="let order of orders" class="hover:bg-blue-50 cursor-pointer border-b border-gray-100" (click)="goToOrder(order.id)">
           <td class="py-3 px-3 font-semibold text-blue-900">{{ order.id }}</td>
-          <td class="py-3 px-3">{{ order.date }}</td>
+          <td class="py-3 px-3">{{ order.createdAt }}</td>
           <td class="py-3 px-3">
-            <span [ngClass]="{
+            <span *ngIf="order.statusTimeline[0].status<=3;else unknown" [ngClass]="{
               'text-green-600': order.status === 'Delivered',
               'text-blue-600': order.status === 'Shipped',
               'text-yellow-600': order.status === 'Processing'
-            }">{{ order.status }}</span>
+            }">{{OrderStatues[(order.statusTimeline[0].status)-1]  }}</span>
+            <ng-template #unknown >
+              <span class="text-red-400">
+              UnCompleted</span>
+            </ng-template>
           </td>
-          <td class="py-3 px-3">${{ order.total.toFixed(2) }}</td>
+          <td class="py-3 px-3">${{ order.totalAmount }}</td>
         </tr>
       </tbody>
     </table>

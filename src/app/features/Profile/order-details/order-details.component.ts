@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { OrderServiceService } from '../OrderService/order-service.service';
+import { Route } from '@angular/router';
+import { ListingService } from '../../ListingPage/listingService/listing.service';
 
 @Component({
   standalone: true,
@@ -9,28 +12,39 @@ import { RouterModule } from '@angular/router';
   templateUrl: './order-details.component.html',
   styleUrl: './order-details.component.css',
 })
-export class OrderDetailsComponent {
-  orderItems = [
-    {
-      name: 'Sealer 3M',
-      details: 'Used for 2 patients only',
-      quantity: 1,
-      price: 899.99,
-      image: 'assets/items/image1.png',
-    },
-    {
-      name: 'Endo Ruler',
-      details: 'Metal autoclavable ruler',
-      quantity: 1,
-      price: 149.99,
-      image: 'assets/items/image2.png',
-    },
-    {
-      name: 'Bond',
-      details: 'Expired for preclinical only',
-      quantity: 1,
-      price: 29.99,
-      image: 'assets/items/image3.png',
-    },
+
+export class OrderDetailsComponent implements OnInit {
+  createdAt!:any;
+  ngOnInit(): void {
+    const orderID= this.route.snapshot.paramMap.get('id')!;
+    this.service.GetOrderDetails(orderID).subscribe({
+      next:(Data)=> {this.orderDetails= Data
+        this.orderItems=this.orderDetails.orderItems
+
+        this.createdAt=new Date(this.orderDetails.createdAt).toLocaleDateString('en-GB', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        this.orderItems.forEach((item:any, index:any) => {
+          this.postService.getPostById(item.postId).subscribe((postData) => {
+            this.orderItems[index].image = postData.assets[0].url;
+            this.orderItems[index].postTitle = postData.title;
+            this.orderItems[index].details = postData.description;
+          });
+        });
+      console.log(Data)}
+    })
+  }
+  constructor(private service: OrderServiceService, private route:ActivatedRoute, private postService:ListingService){
+    
+
+  }
+  orderDetails:any={}
+  orderItems:any = [
+
   ];
 } 
