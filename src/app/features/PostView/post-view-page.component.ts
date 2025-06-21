@@ -16,7 +16,7 @@ import { FavsService } from '../favorites/favs.service';
   templateUrl: './post-view-page.component.html',
 })
 export class PostViewPageComponent implements OnInit{
-
+   showToast = false;
   images: string[] = [];
   product:any={}
   productID=''
@@ -125,8 +125,13 @@ export class PostViewPageComponent implements OnInit{
   }
   onSelectFav(id:string) {
     this.favService.addToFavs(id).subscribe({
-      next:()=>
-        console.log("added to favorites")
+      next:()=>{console.log("added to favorites")
+        this.showToast = true;
+        setTimeout(() => {
+          this.showToast = false;
+        }, 3000);
+      }
+        
       ,error:(err)=>{
         console.log("failed to add to favorits",err);
       }

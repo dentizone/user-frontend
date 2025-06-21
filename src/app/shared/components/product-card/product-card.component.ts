@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Posts } from '../../../core/models/posts';
 import { QuillModule } from 'ngx-quill';
@@ -16,7 +16,8 @@ import { FavsService } from '../../../features/favorites/favs.service';
 export class ProductCardComponent {
 
   @Input() product!: any;
-  
+  @Output() showToastEvent=new EventEmitter<boolean>();
+  showToast=false;
 
   constructor(private cartService:CartService,private favService:FavsService){}
   
@@ -36,8 +37,15 @@ export class ProductCardComponent {
   }
    onSelectFav(id:string) {
     this.favService.addToFavs(id).subscribe({
-      next:()=>
+      next:()=>{
         console.log("added to favorites")
+        this.showToast = true;
+        this.showToastEvent.emit(this.showToast);
+        setTimeout(() => {
+          this.showToast = false;
+          this.showToastEvent.emit(this.showToast);
+        }, 3000);
+      }
       ,error:(err)=>{
         console.log("failed to add to favorits",err);
       }

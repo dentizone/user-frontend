@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, afterNextRender } from '@angular/core';
 import { PaginatorModule } from 'primeng/paginator';
 import { Posts } from '../../core/models/posts';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
@@ -14,6 +14,10 @@ import { ListingService } from './listingService/listing.service';
 export class ListingPageComponent implements OnInit{
   selectedCategory=''
   title=''
+  showToast=false;
+  handleToast(toats: boolean) {
+    this.showToast=toats
+  }
   ngOnInit(): void {
     
    this.route.queryParams.subscribe(params => {
@@ -21,12 +25,18 @@ export class ListingPageComponent implements OnInit{
       this.title=params['category'];
       if (this.selectedCategory) {
         this.loadItems();
+        this.loadfav();
       }else{
 
       }
     });
   }
-
+  loadfav(){
+    this.posts.getAllFav().subscribe({
+      next:(data)=>console.log(data),
+      error: (err)=>console.log(err)
+    })
+  }
   loadItems() {
     this.posts.getPostsByCategory(this.selectedCategory).subscribe({
       next: (data) => this.clinicalproduct = data,
