@@ -12,10 +12,7 @@ export class ListingService {
     });
   constructor(private http: HttpClient) { }
   
-  getAllFav():Observable<any>{
-    return this.http.get<any>(`https://apit.gitnasr.com/api/Favorites`,{headers:this.headers});
-    
-  }
+  
   getPostById(id:string):Observable<any>{
     return this.http.get<any>(`https://apit.gitnasr.com/api/Posts/${id}`,{headers:this.headers});
   }

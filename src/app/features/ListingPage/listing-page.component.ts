@@ -25,18 +25,12 @@ export class ListingPageComponent implements OnInit{
       this.title=params['category'];
       if (this.selectedCategory) {
         this.loadItems();
-        this.loadfav();
       }else{
 
       }
     });
   }
-  loadfav(){
-    this.posts.getAllFav().subscribe({
-      next:(data)=>console.log(data),
-      error: (err)=>console.log(err)
-    })
-  }
+  
   loadItems() {
     this.posts.getPostsByCategory(this.selectedCategory).subscribe({
       next: (data) => this.clinicalproduct = data,

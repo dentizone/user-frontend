@@ -1,0 +1,91 @@
+<table class="w-5/6 text-sm text-left rtl:text-right text-gray-500 justify-self-center mt-8 bg-white p-4">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+                
+                <th scope="col" class="px-6 py-3">
+                    Title
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Category
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Status
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody *ngIf="favlist.length>0 ;else noFav">
+            @for (fav of favlist; track $index) {
+            <tr class="bg-white border-b p-4 border-gray-200 hover:bg-gray-50">
+                
+                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap ">
+                    <img class="w-10 h-10 rounded-full" [src]="fav.post.assets[0].url" [alt]="fav.post.title">
+                    <div class="ps-3">
+                        <div class="text-base font-semibold">{{fav.post.title}}</div>
+                        <div class="font-normal text-gray-500">{{fav.post.seller.username}}</div>
+                    </div>  
+                </th>
+                <td class="px-6 py-4">
+                   {{fav.post.category}}
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center">
+                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> {{fav.post.status}}
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <a (click)="removeProduct(fav.id)" class="font-medium text-blue-600  hover:underline">Remove item</a>
+                </td>
+            </tr>
+            
+            }
+        </tbody>
+        <ng-template #noFav>
+            <tbody>
+                <tr>
+                    <td colspan="4" class="text-2xl p-4 font-bold text-black text-center mt-5">
+                        No Fav Found
+                    </td>
+                </tr>
+            </tbody>
+        </ng-template>
+    </table>
+<!-- <div class="p-6 max-w-6xl mx-auto">
+
+    <h1 class="text-3xl font-bold mb-6">Favorite List</h1>
+
+
+    <div class="flex flex-col lg:flex-row gap-8">
+        <div *ngIf="favlist.length > 0; else emptyCart" class="flex-1 bg-white p-6 shadow rounded-xl" id="cart-items">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-2xl font-semibold">Your Items</h2>
+                
+            </div>
+            <div class="space-y-6">
+
+                <div *ngFor="let FavItem of favlist" >
+                    <div class="flex items-center border-b pb-4 hover:bg-blue-50">
+                        <i class="pi pi-trash text-gray-500 hover:text-red-600 text-xl mr-4 cursor-pointer"
+                            (click)="removeProduct(FavItem.id)"
+                            (keydown.enter)="removeProduct(FavItem.id)"></i>
+                        <img [src]="FavItem.post.assets[0].url" [alt]="FavItem.post.title" class="w-20 h-20 object-contain mr-4" />
+                        <div class="flex-1" [routerLink]="[`/post/${FavItem.post.id}`]"  >
+                            <p class="font-bold text-lg">{{ FavItem.post.title }}</p>
+                        </div>
+                        <p class="font-bold text-indigo-900 text-lg">
+                            {{ FavItem.post.price }} EGP
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #emptyCart>
+            <div class="flex-1 bg-white p-6 shadow rounded-xl h-[300px] flex items-center justify-center">
+                <p class="text-gray-500 text-xl font-semibold">Your List is empty.</p>
+            </div>
+        </ng-template>
+    </div>
+</div> -->
