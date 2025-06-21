@@ -12,10 +12,10 @@
         alt=""
       />
     </button>
-    <img class="w-full h-48 lg:h-56 xl:h-64 object-cover rounded-t-lg p-4" [src]="product.imagesrc" alt="product" />
+    <img class="w-full h-48 lg:h-56 xl:h-64 object-cover rounded-t-lg p-4" [src]="product.assets[0].url" alt="product" />
   </div>
   <div class="px-4 pb-4 flex-1 flex flex-col w-full">
-    <a [routerLink]="['/product', product.id]" class="block mb-2">
+    <a [routerLink]="['/post', product.id]" class="block mb-2">
       <h5 class="text-lg lg:text-xl font-semibold tracking-tight text-gray-900 line-clamp-2">{{product.title}}</h5>
     </a>
     <div class="flex items-center mt-2.5 mb-5">
@@ -36,16 +36,19 @@
           <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
         </svg>
       </div>
-      <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-sm ">{{product.rating}}</span>
-    </div>        
-    <div class="mb-3 flex-1">
+      <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-sm ">{{product.status}}</span>
+    </div>     
+    <quill-view-html class="mb-3 flex-1 line-clamp-3" [content]="getFirstLines(product.description)" theme="snow"></quill-view-html>
+   
+    <!-- <div class="mb-3 flex-1 line-clamp-3">
+      
       <p class="text-sm text-gray-600 line-clamp-3">
         {{product.description}}
       </p>
-    </div>
+    </div> -->
     <div class="flex items-center justify-between mt-auto">
       <span class="text-base lg:text-xl font-bold text-gray-900">{{product.price}} EGP</span>
-      <button type="button" class="text-white bg-[#0077B6] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 text-center transition-colors duration-200">Add to cart</button>
+      <button type="button" (click)="onAddToCart(product.id)" class="text-white bg-[#0077B6] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 text-center transition-colors duration-200">Add to cart</button>
     </div>
   </div>
 </div>

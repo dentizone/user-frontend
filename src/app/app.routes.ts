@@ -126,6 +126,12 @@ export const routes: Routes = [
               import('./features/Profile/components/account-management.component').then(
                 (m) => m.AccountManagementComponent
               ),
+          },{
+            path: 'fav-list',
+            loadComponent: () =>
+              import('./features/FavList/fav-list/fav-list.component').then(
+                (m) => m.FavListComponent
+              ),
           },
           {
             path: 'account-management',

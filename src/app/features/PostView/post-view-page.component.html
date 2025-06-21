@@ -1,6 +1,17 @@
 <!-- Main Container -->
+ <div 
+  *ngIf="showToast" 
+  class="fixed top-5 right-5 z-50 p-4 text-sm bg-green-100 text-green-700 rounded-lg shadow-md flex items-center space-x-2 dark:bg-green-800 dark:text-green-200 transition-opacity duration-300">
+  <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 bg-green-200 rounded-lg dark:bg-green-700">
+    <svg class="w-5 h-5 text-green-700 dark:text-green-200" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+    </svg>
+  </div>
+  <span>Product added to favorites!</span>
+</div>
 <div class="min-h-screen bg-[#CAF0F861] p-4 sm:p-6 lg:p-8">
   <div class="max-w-7xl mx-auto">
+    
     <!-- Product Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <!-- Image Gallery Section -->
@@ -20,9 +31,23 @@
       <div class="bg-white border border-blue-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
         <div class="space-y-6">
           <div>
-            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">Alphasil Rubber Base impression</h2>
+            <div class="flex justify-between">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">{{product.title}}</h2>
+            <button
+          type="button"
+          (click)="onSelectFav(productID)"
+          class=""
+          aria-label="Add to favorites"
+        >
+          <img
+            src="/assets/Icons/favorite.png"
+            class="w-16 h-16"
+            alt=""
+          />
+        </button>
+        </div>
             <div class="flex items-center space-x-2 mt-2">
-              <span class="font-medium text-gray-700">User-1234</span>
+              <span class="font-medium text-gray-700">{{product.seller.username}}</span>
               <span class="text-yellow-400">★★★★☆</span>
             </div>
           </div>
@@ -30,35 +55,32 @@
           <div class="flex items-center justify-between py-4 border-y border-gray-200">
             <div class="flex items-center space-x-2">
               <span class="text-sm text-gray-600">Price:</span>
-              <span class="text-2xl font-bold text-[#0077B6]">1700 EGP</span>
+              <span class="text-2xl font-bold text-[#0077B6]">{{product.price}} EGP</span>
             </div>
-            <button class="bg-[#0077B6] hover:bg-[#00B4D8] text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2">
+            <button (click)="onAddToCart(productID)" class="bg-[#0077B6] hover:bg-[#00B4D8] text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2">
               Add To Cart
             </button>
           </div>
-
-          <p class="text-gray-600 text-sm sm:text-base">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
-          </p>
+          <quill-view-html [content]="product.description" theme="snow"></quill-view-html>
 
           <div class="border-t border-gray-200 pt-6">
             <h3 class="text-xl font-semibold text-gray-800 mb-4">Details</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div class="flex items-center space-x-2">
                 <span class="font-medium text-gray-700">Condition:</span>
-                <span class="text-gray-600">New</span>
+                <span class="text-gray-600">{{product.condition}}</span>
               </div>
-              <div class="flex items-center space-x-2">
+              <div *ngIf="expirationDate" class="flex items-center space-x-2">
                 <span class="font-medium text-gray-700">Expiry Date:</span>
-                <span class="text-red-500">Expired</span>
+                <span [ngClass]="{ 'text-red-500': isExpired, 'text-green-500': !isExpired }">{{formattedDate}}</span>
               </div>
               <div class="flex items-center space-x-2">
                 <span class="font-medium text-gray-700">Category:</span>
-                <span class="text-gray-600">Orthodontics</span>
+                <span class="text-gray-600">{{product.category}}</span>
               </div>
               <div class="flex items-center space-x-2">
                 <span class="font-medium text-gray-700">Subcategory:</span>
-                <span class="text-gray-600">Material</span>
+                <span class="text-gray-600">{{product.subCatgory}}</span>
               </div>
             </div>
           </div>

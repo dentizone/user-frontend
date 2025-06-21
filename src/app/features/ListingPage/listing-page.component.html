@@ -4,6 +4,16 @@
   
   <!-- Main Content Area -->
   <div class="flex-1 flex flex-col min-w-0">
+    <div 
+  *ngIf="showToast" 
+  class="fixed top-5 right-5 z-50 p-4 text-sm bg-green-100 text-green-700 rounded-lg shadow-md flex items-center space-x-2 dark:bg-green-800 dark:text-green-200 transition-opacity duration-300">
+  <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 bg-green-200 rounded-lg dark:bg-green-700">
+    <svg class="w-5 h-5 text-green-700 dark:text-green-200" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+    </svg>
+  </div>
+  <span>Product added to favorites!</span>
+</div>
     <!-- Mobile Header with Sidebar Toggle -->
     <div class="lg:hidden bg-white border-b border-gray-200 px-4 py-3">
       <button (click)="toggleSidebar()" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
@@ -18,7 +28,7 @@
     <div class="flex-1 p-4 lg:p-6">
       <!-- Page Header -->
       <div class="mb-6">
-        <h1 class="font-bold text-2xl lg:text-3xl text-[#222A68] mb-2">Dental Lab / Materials</h1>
+        <h1 class="font-bold text-2xl lg:text-3xl text-[#222A68] mb-2 capitalize">{{title}}</h1>
         <p class="text-gray-600 text-sm lg:text-base">Browse and filter dental laboratory materials and equipment</p>
       </div>
 
@@ -78,7 +88,7 @@
             aria-labelledby="about-tab"
           >
             @for (item of clinicalproduct; track $index) {
-            <app-product-card [product]="item"></app-product-card>
+            <app-product-card (showToastEvent)="handleToast($event)" [product]="item"></app-product-card>
             }
           </div>
 
