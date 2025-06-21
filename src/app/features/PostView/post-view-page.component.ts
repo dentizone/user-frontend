@@ -4,7 +4,10 @@ import { CarouselModule } from 'primeng/carousel';
 import { QaComponent } from './qa/qa-componenet';
 import { ActivatedRoute } from '@angular/router';
 import { ListingService } from '../ListingPage/listingService/listing.service';
-import { QuillModule } from 'ngx-quill'
+import { QuillModule } from 'ngx-quill';
+import { CartService } from '../Cart/cart.service';
+import { FavsService } from '../favorites/favs.service';
+
 
 @Component({
   selector: 'app-post-view-page',
@@ -13,12 +16,16 @@ import { QuillModule } from 'ngx-quill'
   templateUrl: './post-view-page.component.html',
 })
 export class PostViewPageComponent implements OnInit{
+
   images: string[] = [];
   product:any={}
   productID=''
   expirationDate!:Date
   formattedDate!:any
   isExpired!:boolean
+
+  
+
   ngOnInit(): void {
     this.productID=this.route.snapshot.paramMap.get('id')!;
     if (this.productID) {
@@ -48,7 +55,7 @@ export class PostViewPageComponent implements OnInit{
     
     console.log(this.images)
   }
-  constructor(private route: ActivatedRoute,private posts: ListingService){}
+  constructor(private route: ActivatedRoute,private posts: ListingService, private cartService:CartService, private favService:FavsService){}
   mainImage: string = this.images[0];
   activeIndex: number = 0;
   page: number = 0;
@@ -107,5 +114,22 @@ export class PostViewPageComponent implements OnInit{
     console.log('New answer:', event);
     // Add API call here
   }
-  onAddToCart(id:string){}
+  onAddToCart(id:string){
+    this.cartService.addToCart(id).subscribe({
+      next:()=>
+        console.log("added to cart")
+      ,error:(err)=>{
+        console.log("failed to add to cart",err);
+      }
+    });
+  }
+  onSelectFav(id:string) {
+    this.favService.addToFavs(id).subscribe({
+      next:()=>
+        console.log("added to favorites")
+      ,error:(err)=>{
+        console.log("failed to add to favorits",err);
+      }
+    });
+}
 } 
