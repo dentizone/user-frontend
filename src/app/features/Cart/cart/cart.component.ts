@@ -60,4 +60,23 @@ export class CartComponent implements OnInit {
 
   }
 
+  checkOut(): void {
+  const orderRequest = {
+    postIds: this.cartItems.map(item => item.postId),
+    shipInfo: {
+      address: this.address,
+      city: this.city
+    }
+  };
+
+  this._cartService.checkOut(orderRequest).subscribe({
+    next: () => {
+      console.log('Order placed successfully');
+    },
+    error: (err) => {
+      console.error('Failed to place order', err);
+    }
+  });
+}
+
 }

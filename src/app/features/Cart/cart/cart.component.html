@@ -61,9 +61,10 @@
             </div>
 
             <button
+                (click)="checkOut()"
                 class="w-full mt-2 bg-[#0077B6] hover:bg-blue-900 text-white font-bold py-3 rounded-xl transition-all disabled:bg-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed"
                 [disabled]="cartItems.length === 0 || !address || !city">
-                Go To Checkout
+                Place Order
             </button>
         </div>
     </div>

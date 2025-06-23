@@ -8,5 +8,5 @@ import { ServiceCardComponent } from '../service-card/service-card.component';
   styleUrl: './service-section.component.css'
 })
 export class ServiceSectionComponent {
-
+  
 }

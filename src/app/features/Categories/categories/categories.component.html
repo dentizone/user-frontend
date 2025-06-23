@@ -3,14 +3,15 @@
 <div class="grid grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6">
   <div
     *ngFor="let cat of categories"
+    
     class=" bg-[#D6EEFF] rounded-lg p-6 text-center cursor-pointer border border-transparent hover:border-blue-400 hover:shadow-lg transition duration-300"
-  >
+  ><div (click)="navigateToListing(cat)">
     <img
       [src]="cat.iconUrl"
       [alt]="cat.name"
       class="w-14 h-14 mx-auto mb-6"
     />
     <div class="text-lg font-semibold">{{ cat.name }}</div>
-    
+    </div>
   </div>
 </div>
