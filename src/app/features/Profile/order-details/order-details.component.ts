@@ -1,17 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { OrderServiceService } from '../OrderService/order-service.service';
+import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { ListingService } from '../../ListingPage/listingService/listing.service';
+import { OrderServiceService } from '../OrderService/order-service.service';
+import html2canvas from 'html2canvas-pro';
+import { jsPDF } from 'jspdf';
 
 @Component({
   standalone: true,
   selector: 'app-order-details',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, LoaderComponent],
   templateUrl: './order-details.component.html',
   styleUrl: './order-details.component.css',
 })
 export class OrderDetailsComponent implements OnInit {
+  isLoading = true;
   createdAt!: any;
   ngOnInit(): void {
     const orderID = this.route.snapshot.paramMap.get('id')!;
@@ -19,6 +23,7 @@ export class OrderDetailsComponent implements OnInit {
       next: (Data) => {
         this.orderDetails = Data;
         this.orderItems = this.orderDetails.orderItems;
+        this.statusTimeline = this.orderDetails.statusTimeline || [];
 
         this.createdAt = new Date(
           this.orderDetails.createdAt
@@ -37,7 +42,11 @@ export class OrderDetailsComponent implements OnInit {
             this.orderItems[index].details = postData.description;
           });
         });
+        this.isLoading = false;
         console.log(Data);
+      },
+      error: () => {
+        this.isLoading = false;
       },
     });
   }
@@ -48,4 +57,31 @@ export class OrderDetailsComponent implements OnInit {
   ) {}
   orderDetails: any = {};
   orderItems: any = [];
+  statusTimeline: any[] = [];
+
+  getStatusTimestamp(statusKey: string): string | null {
+    const found = this.statusTimeline.find((s: any) => s.status === statusKey);
+    return found ? new Date(found.timestamp).toLocaleDateString('en-GB', {
+      year: 'numeric', month: 'short', day: 'numeric'
+    }) : null;
+  }
+
+  getCurrentStatusIndex(): number {
+    // The last index in the timeline is the current status
+    return this.statusTimeline.length - 1;
+  }
+
+  generatePDF() {
+    const data = document.getElementById('order-details-content');
+    if (!data) return;
+    html2canvas(data).then((canvas) => {
+      const imgWidth = 208;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      let position = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.save('order-receipt.pdf');
+    });
+  }
 }
