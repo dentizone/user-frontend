@@ -16,11 +16,20 @@ import { FavsService } from '../../../features/favorites/favs.service';
 export class ProductCardComponent {
 
   @Input() product!: any;
-  @Output() showToastEvent=new EventEmitter<boolean>();
+  @Output() showToastEvent=new EventEmitter<any>();
   showToast=false;
-
+  message=''
   constructor(private cartService:CartService,private favService:FavsService){}
-  
+  Toast(message:string){
+    this.showToast = true;
+    this.message=message;
+        this.showToastEvent.emit({toats:this.showToast,message:this.message});
+        
+        setTimeout(() => {
+          this.showToast = false;
+          this.showToastEvent.emit(this.showToast);
+        }, 3000);
+  }
   
   getFirstLines(html: string, lines = 2): string {
   const plainText = new DOMParser().parseFromString(html, 'text/html').body.textContent || '';
@@ -28,8 +37,10 @@ export class ProductCardComponent {
 }
   onAddToCart(id:string){
     this.cartService.addToCart(id).subscribe({
-      next:()=>
+      next:()=>{
         console.log("added to cart")
+        this.Toast('Product Added to Cart!')
+      }
       ,error:(err)=>{
         console.log("failed to add to cart",err);
       }
@@ -39,12 +50,7 @@ export class ProductCardComponent {
     this.favService.addToFavs(id).subscribe({
       next:()=>{
         console.log("added to favorites")
-        this.showToast = true;
-        this.showToastEvent.emit(this.showToast);
-        setTimeout(() => {
-          this.showToast = false;
-          this.showToastEvent.emit(this.showToast);
-        }, 3000);
+        this.Toast('Product Added to Favorites!')
       }
       ,error:(err)=>{
         console.log("failed to add to favorits",err);

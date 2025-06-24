@@ -53,7 +53,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private initializeFilters(): void {
     this.desiredPrice = this.sidebarData.maxPrice;
     this.activeCategory = this.sidebarData.categories[0]?.categoryName || '';
-    this.selectedCity = this.sidebarData.cities[0] || '';
+    this.selectedCity = 'all';
   }
 
   private loadFiltersFromUrl(): void {

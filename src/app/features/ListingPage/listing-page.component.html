@@ -4,7 +4,9 @@
   
   <!-- Main Content Area -->
   <div class="flex-1 flex flex-col min-w-0">
-    <div 
+    
+    <app-toast *ngIf="showToast" [message]="message"></app-toast>
+    <!-- <div 
   *ngIf="showToast" 
   class="fixed top-5 right-5 z-50 p-4 text-sm bg-green-100 text-green-700 rounded-lg shadow-md flex items-center space-x-2 dark:bg-green-800 dark:text-green-200 transition-opacity duration-300">
   <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 bg-green-200 rounded-lg dark:bg-green-700">
@@ -13,7 +15,7 @@
     </svg>
   </div>
   <span>Product added to favorites!</span>
-</div>
+</div> -->
     <!-- Mobile Header with Sidebar Toggle -->
     <div class="lg:hidden bg-white border-b border-gray-200 px-4 py-3">
       <button (click)="toggleSidebar()" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
@@ -88,7 +90,7 @@
             aria-labelledby="about-tab"
           >
             @for (item of clinicalproduct; track $index) {
-            <app-product-card (showToastEvent)="handleToast($event)" [product]="item"></app-product-card>
+            <app-product-card (showToastEvent)="handleToast($event)"  [product]="item"></app-product-card>
             }
           </div>
 

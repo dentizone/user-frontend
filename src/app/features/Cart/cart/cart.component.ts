@@ -3,10 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { Cart } from '../cart';
 import { CartService } from '../cart.service';
 import { AddressFormComponent } from './address-form.component';
+import { ToastComponent } from "../../../shared/components/toast/toast.component";
 
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule, AddressFormComponent],
+  imports: [CommonModule, AddressFormComponent, ToastComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
@@ -16,7 +17,15 @@ export class CartComponent implements OnInit {
   total:number=0
   address: string = '';
   city: string = '';
-   
+   showToast=false;
+  message=''
+  Toast(message:string){
+    this.message=message;
+    this.showToast = true;
+        setTimeout(() => {
+          this.showToast = false;
+        }, 3000);
+  }
   constructor(private readonly _cartService:CartService){}
 
   ngOnInit(): void {
@@ -72,6 +81,11 @@ export class CartComponent implements OnInit {
   this._cartService.checkOut(orderRequest).subscribe({
     next: () => {
       console.log('Order placed successfully');
+      //this.Toast('Order placed successfully');
+      //this.clearCart()
+      // this.cartItems=[]
+      // this.address=''
+      // this.city=''
     },
     error: (err) => {
       console.error('Failed to place order', err);

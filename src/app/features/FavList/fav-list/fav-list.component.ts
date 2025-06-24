@@ -22,15 +22,16 @@ export class FavListComponent implements OnInit{
   }
   loadFav(){
     this.favService.getAllFav().subscribe({
-      next:(data)=>{this.favlist=data,console.log(this.favlist)},
+      next:(data)=>{this.favlist=data},
       error: (err)=>console.log(err)
     })
   }
-  removeProduct(id:string){
+  removeProduct(id:string,index:number){
+    this.favlist.splice(index,1);
     this.favService.removeFavByID(id).subscribe({
       next:()=>console.log("Data Removed Successfuly"),
       error:()=>console.log("error")
     })
-    this.loadFav()
+    //this.loadFav()
   }
 }
