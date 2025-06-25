@@ -7,9 +7,10 @@ import { SidebarComponent } from './components/sideBar/sidebar/sidebar.component
 import { ActivatedRoute } from '@angular/router';
 import { ListingService } from './listingService/listing.service';
 import { ToastComponent } from "../../shared/components/toast/toast.component";
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 @Component({
   selector: 'app-listing-page',
-  imports: [PaginatorModule, CommonModule, ProductCardComponent, SidebarComponent, ToastComponent],
+  imports: [PaginatorModule, CommonModule, ProductCardComponent, SidebarComponent, ToastComponent,LoaderComponent],
   templateUrl: './listing-page.component.html',
 })
 export class ListingPageComponent implements OnInit{
@@ -19,9 +20,11 @@ export class ListingPageComponent implements OnInit{
   desiredPrice!:number
   toDate: Date = new Date();
   sortby=''
+  SortDirection!:boolean;
   private initialDate: Date = new Date();
   selectedConditions: string='';
 
+  waitLoading=true;
   title=''
   showToast=false;
   message=''
@@ -47,29 +50,63 @@ export class ListingPageComponent implements OnInit{
       this.sortby=params['sortBy']
       this.selectedConditions=params['conditions']
       this.title=params['category'];
-      if (this.selectedCategory) {
+    
+      if (this.selectedCategory && this.desiredPrice) {
+        this.waitLoading=false
         this.loadItems();
       }else{
-
+        setTimeout(() => {
+          this.waitLoading=false;
+          this.loadItems();
+        }, 1000);
       }
     });
   }
   
   loadItems() {
+    this.waitLoading=true
     let condition
     if(this.selectedConditions=='New'){
       condition=0;
     }else{
       condition=1;
     }
-    if(this.selectedCity=='all'){this.selectedCity=''}
+    if(this.selectedCity=='all' || this.selectedCity==undefined ){this.selectedCity=''}
+    switch(this.sortby){
+      case 'createdAtAsc':
+        this.sortby='createdAt';
+        this.SortDirection=true;
+        break;
+      case 'createdAtDesc':
+        this.sortby='createdAt';
+        this.SortDirection=false;
+        break;
+      case 'priceAsc':
+        this.sortby='price';
+        this.SortDirection=true;
+        break;
+      case 'priceDesc':
+        this.sortby='price';
+        this.SortDirection=false;
+        break;
+      default:
+        this.sortby='';
+        this.SortDirection=true;
+        break;
+    }
+    if(!this.desiredPrice){this.desiredPrice=this.sidebarComponent.maxPrice}
+    if(this.selectedCategory=='all'){this.selectedCategory=''}
+
     let body={
       category:this.selectedCategory,
-      // city:this.selectedCity,
-      // MaxPrice:this.desiredPrice,
-      // Condition:condition,
-      //SortBy:this.sortby
+      city:this.selectedCity,
+      MaxPrice:this.desiredPrice,
+      Condition:condition,
+      SortBy:this.sortby,
+      SortDirection:this.SortDirection,
+      keyword:this.sidebarComponent.keyword
     }
+    this.waitLoading=false
     this.posts.getPostsByCategory(body).subscribe({
       next: (data) => this.clinicalproduct = data,
       error: (err) => console.error('Error:', err)

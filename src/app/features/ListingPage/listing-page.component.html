@@ -80,7 +80,7 @@
             </button>
           </li>
         </ul>
-
+<app-loader class="flex justify-self-center" *ngIf="waitLoading"></app-loader>
         <!-- Tab Content -->
         <div id="fullWidthTabContent" class="border-t border-gray-200">
           <div
@@ -89,6 +89,7 @@
             role="tabpanel"
             aria-labelledby="about-tab"
           >
+          
             @for (item of clinicalproduct; track $index) {
             <app-product-card (showToastEvent)="handleToast($event)"  [product]="item"></app-product-card>
             }
