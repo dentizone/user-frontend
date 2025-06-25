@@ -36,7 +36,7 @@
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                    <a (click)="removeProduct(fav.id,$index)" class="font-medium text-blue-600  hover:underline">Remove item</a>
+                    <a (click)="$event.stopPropagation(); removeProduct(fav.id,$index)" class="font-medium text-blue-600  hover:underline">Remove item</a>
                 </td>
             </tr>
             

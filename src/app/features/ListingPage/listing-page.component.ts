@@ -35,9 +35,9 @@ export class ListingPageComponent implements OnInit{
           this.showToast = false;
         }, 3000);
   }
-  handleToast(obj:{toats: boolean,message:string}) {
-    this.showToast=obj.toats
-    this.message=obj.message
+  handleToast(obj: { toast: boolean, message: string }) {
+    this.showToast = obj.toast;
+    this.message = obj.message;
   }
   
   ngOnInit(): void {
@@ -64,54 +64,58 @@ export class ListingPageComponent implements OnInit{
   }
   
   loadItems() {
-    this.waitLoading=true
-    let condition
-    if(this.selectedConditions=='New'){
-      condition=0;
-    }else{
-      condition=1;
+    this.waitLoading = true;
+    let condition;
+    if (this.selectedConditions == 'New') {
+      condition = 0;
+    } else {
+      condition = 1;
     }
-    if(this.selectedCity=='all' || this.selectedCity==undefined ){this.selectedCity=''}
-    switch(this.sortby){
+    if (this.selectedCity == 'all' || this.selectedCity == undefined) { this.selectedCity = ''; }
+
+    let sortField = '';
+    let sortDirection = true;
+    switch (this.sortby) {
       case 'createdAtAsc':
-        this.sortby='createdAt';
-        this.SortDirection=true;
+        sortField = 'createdAt';
+        sortDirection = true;
         break;
       case 'createdAtDesc':
-        this.sortby='createdAt';
-        this.SortDirection=false;
+        sortField = 'createdAt';
+        sortDirection = false;
         break;
       case 'priceAsc':
-        this.sortby='price';
-        this.SortDirection=true;
+        sortField = 'price';
+        sortDirection = true;
         break;
       case 'priceDesc':
-        this.sortby='price';
-        this.SortDirection=false;
+        sortField = 'price';
+        sortDirection = false;
         break;
       default:
-        this.sortby='';
-        this.SortDirection=true;
+        sortField = '';
+        sortDirection = true;
         break;
     }
-    if(!this.desiredPrice){this.desiredPrice=this.sidebarComponent.maxPrice}
-    if(this.selectedCategory=='all'){this.selectedCategory=''}
 
-    let body={
-      category:this.selectedCategory,
-      city:this.selectedCity,
-      MaxPrice:this.desiredPrice,
-      Condition:condition,
-      SortBy:this.sortby,
-      SortDirection:this.SortDirection,
-      keyword:this.sidebarComponent.keyword
-    }
-    this.waitLoading=false
+    if (!this.desiredPrice && this.sidebarComponent) { this.desiredPrice = this.sidebarComponent.maxPrice; }
+    if (this.selectedCategory == 'all') { this.selectedCategory = ''; }
+
+    let body = {
+      category: this.selectedCategory,
+      city: this.selectedCity,
+      MaxPrice: this.desiredPrice,
+      Condition: condition,
+      SortBy: sortField,
+      SortDirection: sortDirection,
+      keyword: this.sidebarComponent ? this.sidebarComponent.keyword : ''
+    };
+    this.waitLoading = false;
     this.posts.getPostsByCategory(body).subscribe({
       next: (data) => this.clinicalproduct = data,
       error: (err) => console.error('Error:', err)
     });
-    console.log(this.clinicalproduct)
+    console.log(this.clinicalproduct);
   }
   @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
 
@@ -137,7 +141,7 @@ export class ListingPageComponent implements OnInit{
     if (this.sidebarComponent) {
       this.sidebarComponent.openSideBar();
     }
-    console.log(this.clinicalproduct)
+    console.log(this.clinicalproduct);
   }
 
   onSidebarToggle(isOpen: boolean) {

@@ -23,12 +23,11 @@ export class ProductCardComponent {
   Toast(message:string){
     this.showToast = true;
     this.message=message;
-        this.showToastEvent.emit({toats:this.showToast,message:this.message});
-        
-        setTimeout(() => {
-          this.showToast = false;
-          this.showToastEvent.emit(this.showToast);
-        }, 3000);
+    this.showToastEvent.emit({toast: this.showToast, message: this.message});
+    setTimeout(() => {
+      this.showToast = false;
+      this.showToastEvent.emit({toast: this.showToast, message: this.message});
+    }, 3000);
   }
   
   getFirstLines(html: string, lines = 2): string {

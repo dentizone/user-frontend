@@ -6,32 +6,36 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-fav-list',
-  standalone:true,
-  imports: [CommonModule,FormsModule,RouterLink],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './fav-list.component.html',
-  styleUrl: './fav-list.component.css'
+  styleUrl: './fav-list.component.css',
 })
-export class FavListComponent implements OnInit{
-  favlist:any=[]
-  constructor(private favService:FavsService){}
+export class FavListComponent implements OnInit {
+  favlist: any = [];
+  constructor(private favService: FavsService) {}
   ngOnInit(): void {
-    this.loadFav()
+    this.loadFav();
   }
-  onclick(){
 
-  }
-  loadFav(){
+  loadFav() {
     this.favService.getAllFav().subscribe({
-      next:(data)=>{this.favlist=data},
-      error: (err)=>console.log(err)
-    })
+      next: (data) => {
+        this.favlist = data;
+      },
+      error: (err) => console.log(err),
+    });
   }
-  removeProduct(id:string,index:number){
-    this.favlist.splice(index,1);
+  removeProduct(id: string, index: number) {
     this.favService.removeFavByID(id).subscribe({
-      next:()=>console.log("Data Removed Successfuly"),
-      error:()=>console.log("error")
-    })
+      next: () => {
+        this.favlist.splice(index, 1);
+        console.log('Data Removed Successfully');
+      },
+      error: (err) => {
+        console.log('Error removing favorite:', err);
+      },
+    });
     //this.loadFav()
   }
 }
