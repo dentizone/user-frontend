@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FavsService } from '../../favorites/favs.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-fav-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './fav-list.component.html',
   styleUrl: './fav-list.component.css',
 })
