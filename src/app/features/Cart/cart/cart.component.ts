@@ -81,11 +81,11 @@ export class CartComponent implements OnInit {
   this._cartService.checkOut(orderRequest).subscribe({
     next: () => {
       console.log('Order placed successfully');
-      //this.Toast('Order placed successfully');
-      //this.clearCart()
-      // this.cartItems=[]
-      // this.address=''
-      // this.city=''
+      this.Toast('Order placed successfully');
+      this.clearCart()
+      this.cartItems=[]
+      this.address=''
+      this.city=''
     },
     error: (err) => {
       console.error('Failed to place order', err);

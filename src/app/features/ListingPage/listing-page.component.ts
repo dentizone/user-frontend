@@ -65,9 +65,9 @@ export class ListingPageComponent implements OnInit{
     if(this.selectedCity=='all'){this.selectedCity=''}
     let body={
       category:this.selectedCategory,
-      city:this.selectedCity,
-      MaxPrice:this.desiredPrice,
-      Condition:condition,
+      // city:this.selectedCity,
+      // MaxPrice:this.desiredPrice,
+      // Condition:condition,
       //SortBy:this.sortby
     }
     this.posts.getPostsByCategory(body).subscribe({
