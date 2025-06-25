@@ -16,20 +16,25 @@ export class FavListComponent implements OnInit {
   ngOnInit(): void {
     this.loadFav();
   }
-  onclick() {}
+
   loadFav() {
     this.favService.getAllFav().subscribe({
       next: (data) => {
-        (this.favlist = data), console.log(this.favlist);
+        this.favlist = data;
       },
       error: (err) => console.log(err),
     });
   }
-  removeProduct(id: string) {
+  removeProduct(id: string, index: number) {
     this.favService.removeFavByID(id).subscribe({
-      next: () => console.log('Data Removed Successfuly'),
-      error: () => console.log('error'),
+      next: () => {
+        this.favlist.splice(index, 1);
+        console.log('Data Removed Successfully');
+      },
+      error: (err) => {
+        console.log('Error removing favorite:', err);
+      },
     });
-    this.loadFav();
+    //this.loadFav()
   }
 }

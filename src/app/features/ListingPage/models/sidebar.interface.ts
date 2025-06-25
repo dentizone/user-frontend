@@ -16,4 +16,5 @@ export interface FilterOptions {
   toDate: Date;
   conditions: string[];
   sortBy: string;
+  keyword:string;
 } 

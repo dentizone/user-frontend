@@ -17,12 +17,7 @@ export class ListingService {
     return this.http.get<any>(`https://apit.gitnasr.com/api/Posts/${id}`,{headers:this.headers});
   }
 
-  getPostsByCategory(category: string): Observable<any> {
-    
-
-    const body = {
-      category: category 
-    };
+  getPostsByCategory(body: any): Observable<any> {
 
     return this.http.get<any>(this.apiUrl,{headers: this.headers,params:body });
   }

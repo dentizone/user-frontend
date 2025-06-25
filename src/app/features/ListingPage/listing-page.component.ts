@@ -6,37 +6,116 @@ import { ProductCardComponent } from '../../shared/components/product-card/produ
 import { SidebarComponent } from './components/sideBar/sidebar/sidebar.component';
 import { ActivatedRoute } from '@angular/router';
 import { ListingService } from './listingService/listing.service';
+import { ToastComponent } from "../../shared/components/toast/toast.component";
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 @Component({
   selector: 'app-listing-page',
-  imports: [PaginatorModule, CommonModule, ProductCardComponent,SidebarComponent],
+  imports: [PaginatorModule, CommonModule, ProductCardComponent, SidebarComponent, ToastComponent,LoaderComponent],
   templateUrl: './listing-page.component.html',
 })
 export class ListingPageComponent implements OnInit{
-  selectedCategory=''
+
+  selectedCategory='';
+  selectedCity = '';
+  desiredPrice!:number
+  toDate: Date = new Date();
+  sortby=''
+  SortDirection!:boolean;
+  private initialDate: Date = new Date();
+  selectedConditions: string='';
+
+  waitLoading=true;
   title=''
   showToast=false;
-  handleToast(toats: boolean) {
-    this.showToast=toats
+  message=''
+  Toast(message:string){
+    this.message=message;
+    this.showToast = true;
+        setTimeout(() => {
+          this.showToast = false;
+        }, 3000);
   }
+  handleToast(obj: { toast: boolean, message: string }) {
+    this.showToast = obj.toast;
+    this.message = obj.message;
+  }
+  
   ngOnInit(): void {
     
    this.route.queryParams.subscribe(params => {
       this.selectedCategory = params['category'];
+      this.selectedCity=params['city'];
+      this.desiredPrice = params['price'];
+      this.toDate=params['toDate']
+      this.sortby=params['sortBy']
+      this.selectedConditions=params['conditions']
       this.title=params['category'];
-      if (this.selectedCategory) {
+    
+      if (this.selectedCategory && this.desiredPrice) {
+        this.waitLoading=false
         this.loadItems();
       }else{
-
+        setTimeout(() => {
+          this.waitLoading=false;
+          this.loadItems();
+        }, 1000);
       }
     });
   }
   
   loadItems() {
-    this.posts.getPostsByCategory(this.selectedCategory).subscribe({
+    this.waitLoading = true;
+    let condition;
+    if (this.selectedConditions == 'New') {
+      condition = 0;
+    } else {
+      condition = 1;
+    }
+    if (this.selectedCity == 'all' || this.selectedCity == undefined) { this.selectedCity = ''; }
+
+    let sortField = '';
+    let sortDirection = true;
+    switch (this.sortby) {
+      case 'createdAtAsc':
+        sortField = 'createdAt';
+        sortDirection = true;
+        break;
+      case 'createdAtDesc':
+        sortField = 'createdAt';
+        sortDirection = false;
+        break;
+      case 'priceAsc':
+        sortField = 'price';
+        sortDirection = true;
+        break;
+      case 'priceDesc':
+        sortField = 'price';
+        sortDirection = false;
+        break;
+      default:
+        sortField = '';
+        sortDirection = true;
+        break;
+    }
+
+    if (!this.desiredPrice && this.sidebarComponent) { this.desiredPrice = this.sidebarComponent.maxPrice; }
+    if (this.selectedCategory == 'all') { this.selectedCategory = ''; }
+
+    let body = {
+      category: this.selectedCategory,
+      city: this.selectedCity,
+      MaxPrice: this.desiredPrice,
+      Condition: condition,
+      SortBy: sortField,
+      SortDirection: sortDirection,
+      keyword: this.sidebarComponent ? this.sidebarComponent.keyword : ''
+    };
+    this.waitLoading = false;
+    this.posts.getPostsByCategory(body).subscribe({
       next: (data) => this.clinicalproduct = data,
       error: (err) => console.error('Error:', err)
     });
-    console.log(this.clinicalproduct)
+    console.log(this.clinicalproduct);
   }
   @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
 
@@ -62,7 +141,7 @@ export class ListingPageComponent implements OnInit{
     if (this.sidebarComponent) {
       this.sidebarComponent.openSideBar();
     }
-    console.log(this.clinicalproduct)
+    console.log(this.clinicalproduct);
   }
 
   onSidebarToggle(isOpen: boolean) {

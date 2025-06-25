@@ -34,6 +34,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private initialDate: Date = new Date();
   selectedConditions: string[] = [];
   sortBy = 'createdAtDesc';
+  keyword=''
 
   private readonly destroy$ = new Subject<void>();
 
@@ -53,7 +54,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private initializeFilters(): void {
     this.desiredPrice = this.sidebarData.maxPrice;
     this.activeCategory = this.sidebarData.categories[0]?.categoryName || '';
-    this.selectedCity = this.sidebarData.cities[0] || '';
+    this.selectedCity = 'all';
   }
 
   private loadFiltersFromUrl(): void {
@@ -88,6 +89,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
         if (params['sortBy'] && ['createdAtAsc', 'createdAtDesc', 'priceAsc', 'priceDesc'].includes(params['sortBy'])) {
           this.sortBy = params['sortBy'];
         }
+
+        if(params['searchKeyword']){
+          this.keyword=params['searchKeyword'];
+        }
       });
   }
 
@@ -117,7 +122,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
     if (this.sortBy !== 'createdAtDesc') {
       queryParams.sortBy = this.sortBy;
     }
-    
+    if(this.keyword){
+      queryParams.searchKeyword=this.keyword;
+    }
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: queryParams,
@@ -178,6 +185,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   onSearch(): void {
     // This method can be implemented to handle search functionality
     this.emitFilterChange();
+    console.log(this.keyword)
   }
 
   clearFilters(): void {
@@ -187,6 +195,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.toDate = new Date();
     this.selectedConditions = [];
     this.sortBy = 'createdAtDesc';
+    this.keyword=''
     this.emitFilterChange();
   }
 
@@ -197,7 +206,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
       price: this.desiredPrice,
       toDate: this.toDate,
       conditions: this.selectedConditions,
-      sortBy: this.sortBy
+      sortBy: this.sortBy,
+      keyword:this.keyword
     };
     
     this.updateUrlParams();

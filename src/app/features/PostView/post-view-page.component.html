@@ -1,6 +1,7 @@
 <!-- Main Container -->
- <div 
-  *ngIf="showToast" 
+ <app-toast *ngIf="showToast" [message]="message"></app-toast>
+ <!-- <div 
+ 
   class="fixed top-5 right-5 z-50 p-4 text-sm bg-green-100 text-green-700 rounded-lg shadow-md flex items-center space-x-2 dark:bg-green-800 dark:text-green-200 transition-opacity duration-300">
   <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 bg-green-200 rounded-lg dark:bg-green-700">
     <svg class="w-5 h-5 text-green-700 dark:text-green-200" fill="currentColor" viewBox="0 0 20 20">
@@ -8,7 +9,7 @@
     </svg>
   </div>
   <span>Product added to favorites!</span>
-</div>
+</div> -->
 <div class="min-h-screen bg-[#CAF0F861] p-4 sm:p-6 lg:p-8">
   <div class="max-w-7xl mx-auto">
     

@@ -18,7 +18,7 @@
         </thead>
         <tbody *ngIf="favlist.length>0 ;else noFav">
             @for (fav of favlist; track $index) {
-            <tr class="bg-white border-b p-4 border-gray-200 hover:bg-gray-50">
+            <tr class="bg-white border-b p-4 border-gray-200 hover:bg-gray-50 cursor-pointer" [routerLink]="['/post', fav.post.id]">
                 
                 <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap ">
                     <img class="w-10 h-10 rounded-full" [src]="fav.post.assets[0].url" [alt]="fav.post.title">
@@ -36,7 +36,7 @@
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                    <a (click)="removeProduct(fav.id)" class="font-medium text-blue-600  hover:underline">Remove item</a>
+                    <a (click)="$event.stopPropagation(); removeProduct(fav.id,$index)" class="font-medium text-blue-600  hover:underline">Remove item</a>
                 </td>
             </tr>
             

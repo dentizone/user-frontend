@@ -7,16 +7,18 @@ import { ListingService } from '../ListingPage/listingService/listing.service';
 import { QuillModule } from 'ngx-quill';
 import { CartService } from '../Cart/cart.service';
 import { FavsService } from '../favorites/favs.service';
+import { ToastComponent } from '../../shared/components/toast/toast.component';
 
 
 @Component({
   selector: 'app-post-view-page',
   standalone: true,
-  imports: [CommonModule, CarouselModule, QaComponent,QuillModule],
+  imports: [CommonModule, CarouselModule, QaComponent,QuillModule,ToastComponent],
   templateUrl: './post-view-page.component.html',
 })
 export class PostViewPageComponent implements OnInit{
    showToast = false;
+   message=''
   images: string[] = [];
   product:any={}
   productID=''
@@ -24,6 +26,13 @@ export class PostViewPageComponent implements OnInit{
   formattedDate!:any
   isExpired!:boolean
 
+  Toast(message:string){
+    this.message=message;
+    this.showToast = true;
+        setTimeout(() => {
+          this.showToast = false;
+        }, 3000);
+  }
   
 
   ngOnInit(): void {
@@ -116,20 +125,20 @@ export class PostViewPageComponent implements OnInit{
   }
   onAddToCart(id:string){
     this.cartService.addToCart(id).subscribe({
-      next:()=>
+      next:()=>{
+        this.Toast('Product added to cart!')
         console.log("added to cart")
+      }
       ,error:(err)=>{
         console.log("failed to add to cart",err);
+        
       }
     });
   }
   onSelectFav(id:string) {
     this.favService.addToFavs(id).subscribe({
       next:()=>{console.log("added to favorites")
-        this.showToast = true;
-        setTimeout(() => {
-          this.showToast = false;
-        }, 3000);
+        this.Toast('Product added to favorites!')
       }
         
       ,error:(err)=>{
