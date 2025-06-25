@@ -1,37 +1,38 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { OrderServiceService } from '../OrderService/order-service.service';
+import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 
 @Component({
   standalone: true,
   selector: 'app-order',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, LoaderComponent],
   templateUrl: './order.component.html',
   styleUrl: './order.component.css',
 })
-export class OrderComponent {
-  orders = [
-    {
-      id: '12345',
-      date: '2023-05-15',
-      status: 'Shipped',
-      total: 1177.17,
-    },
-    {
-      id: '12346',
-      date: '2023-05-10',
-      status: 'Delivered',
-      total: 299.99,
-    },
-    {
-      id: '12347',
-      date: '2023-04-28',
-      status: 'Processing',
-      total: 499.50,
-    },
-  ];
+export class OrderComponent implements OnInit {
+  isLoading = true;
 
-  constructor(private router: Router) {}
+  ngOnInit(): void {
+    this.isLoading = true;
+    this.myOrder.GetAllOrders().subscribe({
+      next: (Data) => {
+        this.orders = Data;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  orders: any = [{}];
+
+  constructor(
+    private readonly router: Router,
+    private readonly myOrder: OrderServiceService
+  ) {}
 
   goToOrder(id: string) {
     this.router.navigate(['/profile/orders', id]);
