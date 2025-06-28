@@ -36,4 +36,10 @@ export class NavBarComponent {
       target.closest('#user-menu-button') || target.closest('#user-dropdown');
     if (!inside) this.opened = false;
   }
+
+  logout() {
+  localStorage.clear();
+  this.router.navigate(['/home']); 
+}
+
 }
