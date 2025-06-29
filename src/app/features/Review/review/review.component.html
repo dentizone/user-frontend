@@ -1,15 +1,18 @@
 <div class="bg-gray-50 flex justify-center items-center">
-    <div class="w-3/4 h-screen shadow-2xl  my-20">
-        <div class="w-full h-1/6 bg-blue-950 rounded-t-4xl flex justify-between items-center p-8">
-            <h2 class="font-bold text-white text-3xl ">Service Review</h2>
-            <div class="flex flex-row justify-center space-x space-x-1">
+    
+    <!--  -->
+    <div class="w-3/4 h-screen shadow-2xl  my-20 ">
+        <app-toast *ngIf="showToast" [message]="message"></app-toast>
+        <div class="w-full h-1/6 bg-blue-950 rounded-t-4xl lg:flex justify-between items-center p-8">
+            <h2 class="font-bold text-white text-2xl lg:text-3xl ">Service Review</h2>
+            <div class="flex flex-row justify-center space-x space-x-1 float-end">
   <ng-container *ngFor="let star of stars; let i = index">
     <button
       type="button"
       (click)="rate(i + 1)"
       (mouseenter)="hover(i + 1)"
       (mouseleave)="hover(0)"
-      class="text-4xl transition-colors"
+      class="text-3xl lg:text-4xl transition-colors"
       [ngClass]="{
         'text-yellow-400': (i + 1) <= (hovered || value),
         'text-gray-300': (i + 1) > (hovered || value)
@@ -22,25 +25,25 @@
 
         </div>
         <div class="bg-white h-5/6 rounded-b-4xl p-8">
-            <h2 class="font-semibold text-2xl">Comment</h2>
-            <p class="text-gray-400 text-sm">Enter your honest review about our service </p>
+            <h2 class="font-semibold text-xl lg:text-2xl">Comment</h2>
+            <p class="text-gray-400 text-xs lg:text-sm">Enter your honest review about our service </p>
             <textarea [ngClass]="{'text-gray-400':!userComment,'text-black':userComment}"
                 [(ngModel)]="userComment"
                 placeholder="Absolutely amazing experience! The service was fast, professional, and exceeded my expectations..."
-                class="w-full p-2 border border-gray-200 rounded-md mt-5 focus:border-gray-300"
+                class="w-full h-2/9 p-2 border border-gray-200 rounded-md mt-5 focus:border-gray-300 text-xs lg:text-base"
                 rows="3"
                 ></textarea>
 
-                <h2 class="font-semibold text-2xl mt-5">Improvement Points</h2>
-            <p class="text-gray-400 text-sm">Enter the improvement point that you see that can make us provide better experience</p>
+                <h2 class="font-semibold text-xl lg:text-2xl mt-5">Improvement Points</h2>
+            <p class="text-gray-400 text-xs lg:text-sm">Enter the improvement point that you see that can make us provide better experience</p>
             <textarea [ngClass]="{'text-gray-400':!userPointOfView,'text-black':userPointOfView}"
                 [(ngModel)]="userPointOfView"
                 placeholder="It would be even better if the delivery was faster or if there were more color options available..."
-                class="w-full p-2 border border-gray-200 rounded-md mt-5 focus:border-gray-300"
+                class="w-full h-2/9 p-2 border border-gray-200 rounded-md mt-5 focus:border-gray-300 text-xs lg:text-base"
                 rows="3"
                 ></textarea>
 
-                <button (click)="SubmitReview()" class="bg-blue-950 text-white font-semibold px-4 py-2 rounded-xl float-end mt-8">Submit Review</button>
+                <button (click)="SubmitReview()" class="bg-blue-950 text-white font-semibold px-4 py-2 rounded-xl float-end mt-8 ">Submit Review</button>
         </div>
     </div>
 </div>

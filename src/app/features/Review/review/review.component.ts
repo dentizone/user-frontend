@@ -1,14 +1,36 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RatingModule } from 'primeng/rating';
+import { ActivatedRoute ,Router} from '@angular/router';
+import { ReviewService } from '../review.service';
+import { ToastComponent } from '../../../shared/components/toast/toast.component';
 @Component({
   selector: 'app-review',
-  imports: [RatingModule,CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,ToastComponent],
   templateUrl: './review.component.html',
   styleUrl: './review.component.css'
 })
-export class ReviewComponent {
+export class ReviewComponent implements OnInit {
+  orderId='';
+  showToast=false;
+  message: string='';
+
+  constructor(private route:ActivatedRoute,private navigationRoute:Router,private service:ReviewService){}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params=>{
+      this.orderId=params['orderId'];
+    })
+  }
+  
+  Toast(message:string){
+    this.message=message;
+    this.showToast = true;
+        setTimeout(() => {
+          this.showToast = false;
+          this.navigationRoute.navigate(['/home'])
+        }, 2000);
+  }
+  
   userComment='';
   userPointOfView='';      //nininnininnin
   value = 5;
@@ -23,9 +45,16 @@ export class ReviewComponent {
     this.hovered = star;
   }
   SubmitReview(){
-    let body={
-      comment:"User comment is "+this.userComment+" User improvement is "+this.userPointOfView,
-      stars:this.value
+    if(!this.orderId){
+      alert('order ID not found');
+      return;
     }
+    let comment="User comment is "+this.userComment+" User improvement is "+this.userPointOfView;
+    this.service.postNewReview(this.orderId,this.value,comment)
+    .subscribe({
+      next:()=>this.Toast('Review Submited Successfully'),
+      error:err=>console.log('review failed',err)
+    })
+    
   }
 }

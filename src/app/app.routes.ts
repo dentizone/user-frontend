@@ -156,6 +156,13 @@ export const routes: Routes = [
             (m) => m.CartComponent
           ),
       },
+      {
+        path: 'review',
+        loadComponent: () =>
+          import('./features/Review/review/review.component').then(
+            (m) => m.ReviewComponent
+          ),
+      },
     ],
   },
 
