@@ -18,15 +18,17 @@ export class ProductCardComponent {
   @Input() product!: any;
   @Output() showToastEvent=new EventEmitter<any>();
   showToast=false;
-  message=''
+  message='';
+  isSuccess=true;
   constructor(private cartService:CartService,private favService:FavsService){}
   Toast(message:string){
     this.showToast = true;
     this.message=message;
-    this.showToastEvent.emit({toast: this.showToast, message: this.message});
+    this.showToastEvent.emit({toast: this.showToast, message: this.message,isSuccess:this.isSuccess});
     setTimeout(() => {
       this.showToast = false;
-      this.showToastEvent.emit({toast: this.showToast, message: this.message});
+      this.isSuccess=true;
+      this.showToastEvent.emit({toast: this.showToast, message: this.message,isSuccess:this.isSuccess});
     }, 3000);
   }
   
@@ -42,6 +44,8 @@ export class ProductCardComponent {
       }
       ,error:(err)=>{
         console.log("failed to add to cart",err);
+        this.isSuccess=false;
+        this.Toast(err.error.Message);
       }
     });
   }
@@ -53,6 +57,8 @@ export class ProductCardComponent {
       }
       ,error:(err)=>{
         console.log("failed to add to favorits",err);
+        this.isSuccess=false;
+        this.Toast(err.error.Message);
       }
     });
 }

@@ -2,7 +2,7 @@
     
     <!--  -->
     <div class="w-3/4 h-screen shadow-2xl  my-20 ">
-        <app-toast *ngIf="showToast" [message]="message"></app-toast>
+        <app-toast *ngIf="showToast"[isSuccess]="isSuccess" [message]="message"></app-toast>
         <div class="w-full h-1/6 bg-blue-950 rounded-t-4xl lg:flex justify-between items-center p-8">
             <h2 class="font-bold text-white text-2xl lg:text-3xl ">Service Review</h2>
             <div class="flex flex-row justify-center space-x space-x-1 float-end">

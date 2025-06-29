@@ -13,6 +13,7 @@ import { ToastComponent } from '../../../shared/components/toast/toast.component
 export class ReviewComponent implements OnInit {
   orderId='';
   showToast=false;
+  isSuccess=true;
   message: string='';
 
   constructor(private route:ActivatedRoute,private navigationRoute:Router,private service:ReviewService){}
@@ -25,10 +26,14 @@ export class ReviewComponent implements OnInit {
   Toast(message:string){
     this.message=message;
     this.showToast = true;
-        setTimeout(() => {
-          this.showToast = false;
-          this.navigationRoute.navigate(['/home'])
-        }, 2000);
+    setTimeout(() => {
+      this.showToast = false;
+      if(this.isSuccess){
+        this.navigationRoute.navigate(['/home']);
+      }else{
+        this.isSuccess=true;
+      }
+   }, 2000);
   }
   
   userComment='';
@@ -46,14 +51,18 @@ export class ReviewComponent implements OnInit {
   }
   SubmitReview(){
     if(!this.orderId){
-      alert('order ID not found');
+      this.isSuccess=false;
+      this.Toast("order ID not found");
       return;
     }
     let comment="User comment is "+this.userComment+" User improvement is "+this.userPointOfView;
     this.service.postNewReview(this.orderId,this.value,comment)
     .subscribe({
       next:()=>this.Toast('Review Submited Successfully'),
-      error:err=>console.log('review failed',err)
+      error:err=>{console.log('review failed',err);
+        this.isSuccess=false;
+        this.Toast(err.error.Message);
+      }
     })
     
   }

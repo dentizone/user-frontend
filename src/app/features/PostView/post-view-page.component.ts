@@ -18,7 +18,9 @@ import { ToastComponent } from '../../shared/components/toast/toast.component';
 })
 export class PostViewPageComponent implements OnInit{
    showToast = false;
-   message=''
+   message='';
+   isSuccess=true;
+
   images: string[] = [];
   product:any={}
   productID=''
@@ -31,6 +33,7 @@ export class PostViewPageComponent implements OnInit{
     this.showToast = true;
         setTimeout(() => {
           this.showToast = false;
+          this.isSuccess=true;
         }, 3000);
   }
   
@@ -131,7 +134,8 @@ export class PostViewPageComponent implements OnInit{
       }
       ,error:(err)=>{
         console.log("failed to add to cart",err);
-        
+        this.isSuccess=false;
+        this.Toast(err.error.Message);
       }
     });
   }
@@ -143,6 +147,8 @@ export class PostViewPageComponent implements OnInit{
         
       ,error:(err)=>{
         console.log("failed to add to favorits",err);
+        this.isSuccess=false;
+        this.Toast(err.error.Message);
       }
     });
 }
