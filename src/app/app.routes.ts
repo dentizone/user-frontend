@@ -90,9 +90,9 @@ export const routes: Routes = [
       {
         path: 'profile',
         loadComponent: () =>
-          import('./features/Profile/components/profile-container/profile-container.component').then(
-            (m) => m.ProfileContainerComponent
-          ),
+          import(
+            './features/Profile/components/profile-container/profile-container.component'
+          ).then((m) => m.ProfileContainerComponent),
         children: [
           {
             path: '',
@@ -102,9 +102,9 @@ export const routes: Routes = [
           {
             path: 'overview',
             loadComponent: () =>
-              import('./features/Profile/components/personal-info/personal-info.component').then(
-                (m) => m.PersonalInfoComponent
-              ),
+              import(
+                './features/Profile/components/personal-info/personal-info.component'
+              ).then((m) => m.PersonalInfoComponent),
           },
           {
             path: 'orders',
@@ -116,17 +116,18 @@ export const routes: Routes = [
           {
             path: 'orders/:id',
             loadComponent: () =>
-              import('./features/Profile/order-details/order-details.component').then(
-                (m) => m.OrderDetailsComponent
-              ),
+              import(
+                './features/Profile/order-details/order-details.component'
+              ).then((m) => m.OrderDetailsComponent),
           },
           {
             path: 'your-activity',
             loadComponent: () =>
-              import('./features/Profile/components/account-management.component').then(
-                (m) => m.AccountManagementComponent
-              ),
-          },{
+              import(
+                './features/Profile/components/account-management.component'
+              ).then((m) => m.AccountManagementComponent),
+          },
+          {
             path: 'fav-list',
             loadComponent: () =>
               import('./features/FavList/fav-list/fav-list.component').then(
@@ -136,9 +137,9 @@ export const routes: Routes = [
           {
             path: 'account-management',
             loadComponent: () =>
-              import('./features/Profile/components/account-management.component').then(
-                (m) => m.AccountManagementComponent
-              ),
+              import(
+                './features/Profile/components/account-management.component'
+              ).then((m) => m.AccountManagementComponent),
           },
         ],
       },
@@ -149,6 +150,14 @@ export const routes: Routes = [
             (m) => m.AddNewPostComponent
           ),
       },
+      {
+        path: 'edit-post/:id',
+        loadComponent: () =>
+          import('./features/edit-post/edit-post/edit-post.component').then(
+            (m) => m.EditPostComponent
+          ),
+      },
+
       {
         path: 'cart',
         loadComponent: () =>

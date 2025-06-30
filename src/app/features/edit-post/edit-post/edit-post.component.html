@@ -1,0 +1,195 @@
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl">
+  <h2 class="text-2xl sm:text-3xl lg:text-4xl font-semibold lg:font-bold text-gray-800 mb-4">
+    Edit Post
+  </h2>
+  <hr class="mb-6 border-gray-300" />
+
+  <!-- Warning Alert -->
+  <div
+    *ngIf="invalidSubmit"
+    class="p-4 mb-6 text-sm text-yellow-800 rounded-lg bg-yellow-50 border border-yellow-200"
+    role="alert"
+  >
+    <span class="font-medium">Warning alert!</span> Please complete the required fields
+  </div>
+
+  <!-- Error Alert -->
+  <div
+    *ngIf="errorMessage"
+    class="p-4 mb-6 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200"
+    role="alert"
+  >
+    <span class="font-medium">Error!</span> {{ errorMessage }}
+  </div>
+
+  <!-- Loading Overlay -->
+  <div *ngIf="isLoading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+      <p class="mt-2 text-gray-600">Loading...</p>
+    </div>
+  </div>
+
+  <!-- Main Form -->
+  <ng-container *ngIf="!postUnderReview; else reviewSuccess">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Title and Price Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <label for="title" class="block text-lg font-semibold text-[#1F2A56]">Title</label>
+          <input
+            formControlName="title"
+            placeholder="Enter your Item Title"
+            type="text"
+            id="title"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <span
+            class="text-red-500 text-sm font-medium"
+            *ngIf="userForm.get('title')?.invalid && userForm.get('title')?.touched"
+          >
+            Please add Title for your post
+          </span>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-lg font-semibold text-[#1F2A56]">Price</label>
+          <div class="flex items-center space-x-2">
+            <div class="flex border border-gray-300 rounded-lg overflow-hidden flex-1">
+              <input
+                type="number"
+                formControlName="price"
+                placeholder="Enter The Price"
+                class="flex-1 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <select class="bg-gray-100 text-sm text-gray-700 px-3 py-3 border-l border-gray-300">
+                <option>EGP</option>
+              </select>
+            </div>
+          </div>
+          <span *ngIf="netPrice > 0" class="text-[#36478b] font-semibold text-sm">
+            The net price after commission will be <span class="font-bold">{{ netPrice | number:'1.2-2' }}</span> EGP
+          </span>
+          <span
+            class="text-red-500 text-sm font-medium"
+            *ngIf="userForm.get('price')?.invalid && userForm.get('price')?.touched"
+          >
+            Please enter the price that you want
+          </span>
+        </div>
+      </div>
+
+      <!-- Condition and Expiry Date -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <label for="condition" class="block text-lg font-semibold text-[#1F2A56]">Condition</label>
+          <select
+            id="condition"
+            formControlName="condition"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Choose a Condition</option>
+            <option value="new">New</option>
+            <option value="used">Used</option>
+          </select>
+          <span
+            class="text-red-500 text-sm font-medium"
+            *ngIf="userForm.get('condition')?.invalid && userForm.get('condition')?.touched"
+          >
+            Please select the condition
+          </span>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-lg font-semibold text-[#1F2A56]">
+            Material Expiry Date (If applicable)
+          </label>
+          <input
+            type="date"
+            formControlName="expiryDate"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+      </div>
+
+      <!-- Category/Subcategory -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <label for="category" class="block text-lg font-semibold text-[#1F2A56]">Category</label>
+          <select
+            formControlName="category"
+            id="category"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Choose a Category</option>
+            <!-- Add category options dynamically -->
+            <option *ngFor="let item of categories" [value]="item.id">{{ item.name }}</option>
+          </select>
+        </div>
+
+        <div class="space-y-2">
+          <label for="subcategory" class="block text-lg font-semibold text-[#1F2A56]">Subcategory</label>
+          <select
+            formControlName="subcategory"
+            id="subcategory"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Choose a Subcategory</option>
+            <option *ngFor="let item of subCategories" [value]="item.id">{{ item.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- City and Address -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <label for="city" class="block text-lg font-semibold text-[#1F2A56]">City</label>
+          <select
+            id="city"
+            formControlName="city"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Choose Your City</option>
+            <option *ngFor="let item of cities" [value]="item">{{ item }}</option>
+          </select>
+        </div>
+
+        <div class="space-y-2">
+          <label for="address" class="block text-lg font-semibold text-[#1F2A56]">Address</label>
+          <input
+            formControlName="address"
+            placeholder="Enter your address"
+            type="text"
+            id="address"
+            class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="space-y-2">
+        <label for="description" class="block text-lg font-semibold text-[#1F2A56]">Product Description</label>
+        <quill-editor
+          formControlName="description"
+          placeholder="Write your product description here..."
+          class="w-full h-1/4"
+        ></quill-editor>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end pt-6">
+        <button
+          type="submit"
+          [disabled]="isLoading"
+          class="px-8 py-3 bg-[#0077B6] hover:bg-[#005a8b] disabled:bg-gray-400 text-white font-semibold rounded-2xl transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg"
+        >
+          {{ isLoading ? 'Updating...' : 'Update Post' }}
+        </button>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-template #reviewSuccess>
+    <app-post-under-review></app-post-under-review>
+  </ng-template>
+</div>
