@@ -43,7 +43,7 @@ export class OrderDetailsComponent implements OnInit {
           });
         });
         this.isLoading = false;
-        console.log(Data);
+       
       },
       error: () => {
         this.isLoading = false;

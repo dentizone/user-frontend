@@ -18,7 +18,6 @@ export class UserPostsComponent implements OnInit{
     this.profileService.getUserPosts().subscribe({
       next:data=>{
         this.Current=data;
-        console.log(data);
       },
       error:err=>{
         this.Current=[];
@@ -138,7 +137,7 @@ export class UserPostsComponent implements OnInit{
     }
   ]
   changeCurent(input:any){
-    console.log(input)
+    
     switch(+input){
       case 0: this.Current=this.ActivePosts;this.currentTab=0;
       break;

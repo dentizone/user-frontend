@@ -6,18 +6,18 @@ import { InputTextarea } from 'primeng/inputtextarea';
 import { AuthService } from '../../../../core/services/auth.service';
 
 interface Answer {
-  id: number;
-  username: string;
+  id: string;
+  responderName: string;
   text: string;
-  time: string;
+  createdAt: string;
 }
 
 interface Question {
-  id: number;
-  username: string;
+  id: string;
+  askerName: string;
   text: string;
-  time: string;
-  answer?: Answer;
+  createdAt: string;
+  answer: Answer;
 }
 
 @Component({
@@ -31,8 +31,8 @@ interface Question {
         <img src="/assets/avatar/dentist.png" class="h-10 w-10 rounded-full" alt="user">
         <div class="flex-1">
           <div class="flex items-center justify-between">
-            <p class="font-semibold text-gray-800">{{ question.username }}</p>
-            <p class="text-sm text-gray-400">{{ question.time }}</p>
+            <p class="font-semibold text-gray-800">{{ question.askerName || "A User Asking about"}}</p>
+            <p class="text-sm text-gray-400">{{ question.createdAt | date: 'short'}}</p>
           </div>
           <p class="text-gray-600 mt-1">{{ question.text }}</p>
         </div>
@@ -46,9 +46,9 @@ interface Question {
             <div class="flex items-center space-x-2 mb-2">
               <img src="/assets/avatar/dentist.png" class="h-6 w-6 rounded-full" alt="seller">
               <div class="flex items-center space-x-2">
-                <span class="text-sm font-medium text-gray-700">{{ question.answer.username }}</span>
+                <span class="text-sm font-medium text-gray-700">{{ question.answer.responderName|| "Seller Replies" }}</span>
                 <span class="text-xs text-gray-400">•</span>
-                <span class="text-xs text-gray-400">{{ question.answer.time }}</span>
+                <span class="text-xs text-gray-400">{{ question.answer.createdAt | date: 'short' }}</span>
               </div>
             </div>
             <p class="text-gray-700 text-sm leading-relaxed">{{ question.answer.text }}</p>
@@ -56,7 +56,7 @@ interface Question {
         }
 
         <!-- Answer Form - Only shown if user is authenticated and no answer exists -->
-        @if (authService.isAuthenticated() && !question.answer) {
+        @if (authService.isAuthenticated() && !question.answer ) {
           <div class="bg-gray-50 rounded-lg p-4 border border-gray-100">
             <div class="flex items-center space-x-2 mb-3">
               <img src="/assets/avatar/dentist.png" class="h-6 w-6 rounded-full" alt="seller">
@@ -94,11 +94,16 @@ interface Question {
 })
 export class QuestionAnswerComponent {
   @Input() question!: Question;
-  @Output() answerSubmitted = new EventEmitter<{ questionId: number; answer: string }>();
+  @Input() isauthorized:any;
+  @Output() answerSubmitted = new EventEmitter<{ questionId: string; answer: string }>();
 
   newAnswer: string = '';
 
-  constructor(public readonly authService: AuthService) {}
+  constructor(public readonly authService: AuthService) {
+  }
+  check(){
+    console.log('Answer data',this.question.answer)
+  }
 
   onSubmitAnswer() {
     if (this.newAnswer.trim() && this.newAnswer.length <= 500) {

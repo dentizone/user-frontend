@@ -39,26 +39,32 @@ export class ProductCardComponent {
   onAddToCart(id:string){
     this.cartService.addToCart(id).subscribe({
       next:()=>{
-        console.log("added to cart")
         this.Toast('Product Added to Cart!')
       }
       ,error:(err)=>{
         console.log("failed to add to cart",err);
         this.isSuccess=false;
+        if(err.status==403){
+        this.Toast('You are not authorized to do this action');
+      }else{
         this.Toast(err.error.Message);
+      }
       }
     });
   }
    onSelectFav(id:string) {
     this.favService.addToFavs(id).subscribe({
       next:()=>{
-        console.log("added to favorites")
         this.Toast('Product Added to Favorites!')
       }
       ,error:(err)=>{
         console.log("failed to add to favorits",err);
         this.isSuccess=false;
+        if(err.status==403){
+        this.Toast('You are not authorized to do this action');
+      }else{
         this.Toast(err.error.Message);
+      }
       }
     });
 }

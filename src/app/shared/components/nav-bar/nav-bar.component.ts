@@ -16,7 +16,7 @@ export class NavBarComponent implements OnInit{
   ngOnInit(): void {
     this.profileService.getUserProfile().subscribe({
       next: data => {this.user = data;
-        console.log(this.user);
+        
         this.UserName=this.user.fullName.split(' ')[0];
         this.UserEmail=this.user.username;
       },
@@ -26,8 +26,8 @@ export class NavBarComponent implements OnInit{
 
   opened = false;
   mobileMenuOpened = false;
-  UserName = '';
-  UserEmail = '';
+  UserName = 'User';
+  UserEmail = 'User@Email.com';
   
   constructor(private readonly router: Router,private profileService: ProfileService) {}
 

@@ -16,7 +16,6 @@ export class PersonalInfoComponent implements OnInit{
   ngOnInit(): void {
     this.profileService.getUserProfile().subscribe({
       next: data => {this.user = data;
-        console.log(this.user);
           this.userName = this.user.fullName;
           this.generatedName = 'User-1234';
           this.userEmail = this.user.username;
@@ -35,9 +34,9 @@ export class PersonalInfoComponent implements OnInit{
     
   }
 
-  userName :string='';
+  userName :string='User';
   generatedName = 'User-1234';
-  userEmail :string='';
+  userEmail :string='UserEmail';
   verificationStatus :string='';
   academicYear :string='';
   userUniversity :string='';

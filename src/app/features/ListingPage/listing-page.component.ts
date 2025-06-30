@@ -118,7 +118,6 @@ export class ListingPageComponent implements OnInit{
       next: (data) => this.clinicalproduct = data,
       error: (err) => console.error('Error:', err)
     });
-    console.log(this.clinicalproduct);
   }
   @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
 
@@ -144,7 +143,6 @@ export class ListingPageComponent implements OnInit{
     if (this.sidebarComponent) {
       this.sidebarComponent.openSideBar();
     }
-    console.log(this.clinicalproduct);
   }
 
   onSidebarToggle(isOpen: boolean) {

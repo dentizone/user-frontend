@@ -61,7 +61,11 @@ export class ReviewComponent implements OnInit {
       next:()=>this.Toast('Review Submited Successfully'),
       error:err=>{console.log('review failed',err);
         this.isSuccess=false;
+        if(err.status==403){
+        this.Toast('You are not authorized to do this action');
+      }else{
         this.Toast(err.error.Message);
+      }
       }
     })
     
