@@ -167,7 +167,16 @@ export const routes: Routes = [
   },
 
   {
+  path: 'wallet',
+  loadComponent: () =>
+    import('./features/Wallet/wallet/wallet.component').then(
+      (m) => m.WalletComponent
+    ),
+},
+
+  {
     path: '**',
     redirectTo: 'auth/login',
   },
+
 ];
