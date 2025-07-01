@@ -56,7 +56,7 @@ interface Question {
         }
 
         <!-- Answer Form - Only shown if user is authenticated and no answer exists -->
-        @if (authService.isAuthenticated() && !question.answer ) {
+        @if (authService.isAuthenticated() && !question.answer && isauthorized) {
           <div class="bg-gray-50 rounded-lg p-4 border border-gray-100">
             <div class="flex items-center space-x-2 mb-3">
               <img src="/assets/avatar/dentist.png" class="h-6 w-6 rounded-full" alt="seller">
