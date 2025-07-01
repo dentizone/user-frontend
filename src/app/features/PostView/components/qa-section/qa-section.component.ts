@@ -7,18 +7,18 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { QuestionAnswerComponent } from '../question-answer/question-answer.component';
 
 interface Answer {
-  id: number;
-  username: string;
+  id: string;
+  responderName: string;
   text: string;
-  time: string;
+  createdAt: string;
 }
 
 interface Question {
-  id: number;
-  username: string;
+  id: string;
+  askerName: string;
   text: string;
-  time: string;
-  answer?: Answer;
+  createdAt: string;
+  answer: Answer;
 }
 
 @Component({
@@ -37,6 +37,7 @@ interface Question {
         @for (question of questions; track question.id) {
           <app-question-answer
             [question]="question"
+            [isauthorized]="authorized"
             (answerSubmitted)="onAnswerSubmitted($event)"
           ></app-question-answer>
         }
@@ -84,9 +85,10 @@ interface Question {
   `]
 })
 export class QaSectionComponent {
+  @Input() authorized:any;
   @Input() questions: Question[] = [];
   @Output() questionSubmitted = new EventEmitter<string>();
-  @Output() answerSubmitted = new EventEmitter<{ questionId: number; answer: string }>();
+  @Output() answerSubmitted = new EventEmitter<{ questionId: string; answer: string }>();
 
   newQuestion: string = '';
 
@@ -99,7 +101,7 @@ export class QaSectionComponent {
     }
   }
 
-  onAnswerSubmitted(event: { questionId: number; answer: string }) {
+  onAnswerSubmitted(event: { questionId: string; answer: string }) {
     this.answerSubmitted.emit(event);
   }
 }

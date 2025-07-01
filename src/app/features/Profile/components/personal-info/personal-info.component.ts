@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserPostsComponent } from "../user-posts/user-posts.component";
+import { ProfileService } from '../../service/profile.service';
 
 @Component({
   standalone:true,
@@ -8,46 +9,40 @@ import { UserPostsComponent } from "../user-posts/user-posts.component";
   templateUrl: './personal-info.component.html',
   styleUrl: './personal-info.component.css',
 })
-export class PersonalInfoComponent {
-  userName = 'Nourhane';
+export class PersonalInfoComponent implements OnInit{
+
+  constructor(private profileService:ProfileService){}
+  user: any;
+  ngOnInit(): void {
+    this.profileService.getUserProfile().subscribe({
+      next: data => {this.user = data;
+          this.userName = this.user.fullName;
+          this.generatedName = 'User-1234';
+          this.userEmail = this.user.username;
+          this.verificationStatus = this.user.kycStatus;
+          this.academicYear = 'Year '+this.user.academicYear;
+          this.userUniversity = this.user.unversityName;
+          this.userPhoneNumber = '+201210082921';
+          this.avatarSrc='/assets/avatar/tooth-extraction.png'
+          this.userAddress = 'Smouha, Alexanria';
+      },
+      error: err => console.error('Failed to load profile', err)
+    });
+    
+    
+
+    
+  }
+
+  userName :string='User';
   generatedName = 'User-1234';
-  rating=4.3;
-  userEmail = 'nourhane@gmail.com';
-  verificationStatus = 'verified';
-  academicYear = 'Year 5';
-  userUniversity = 'Alexanria University';
+  userEmail :string='UserEmail';
+  verificationStatus :string='';
+  academicYear :string='';
+  userUniversity :string='';
   userPhoneNumber = '+201210082921';
   avatarSrc='/assets/avatar/tooth-extraction.png'
   userAddress = 'Smouha, Alexanria';
 
-  userPosts = [
-    {
-      title: "MANI K FILES ( SIZE 6 )",
-      description: "Lorem ipsum is placeholder text commonly used in the mockups.",
-      price: "170",
-      imagesrc: "/assets/items/image1.png",
-      rating: "3.5"
-    },
-    {
-      title: "Alphasil Rubber Base impression kit",
-      description: "Lorem ipsum is placeholder text commonly used in the mockups.",
-      price: "1700",
-      imagesrc: "/assets/items/image2.png",
-      rating: "3.5"
-    },
-    {
-      title: "Calibra Veneer Esthetic Resin",
-      description: "Lorem ipsum is placeholder text commonly used in the mockups.",
-      price: "2650",
-      imagesrc: "/assets/items/image3.png",
-      rating: "3.5"
-    },
-    {
-      title: "Ultradent PermaFlo-A1",
-      description: "Lorem ipsum is placeholder text commonly used in the mockups.",
-      price: "900",
-      imagesrc: "/assets/items/image4.png",
-      rating: "3.5"
-    }
-  ];
+  userPosts = [  ];
 }

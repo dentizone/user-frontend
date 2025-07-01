@@ -19,11 +19,14 @@ export class CartComponent implements OnInit {
   city: string = '';
    showToast=false;
   message=''
+  isSuccess=true;
   Toast(message:string){
     this.message=message;
     this.showToast = true;
         setTimeout(() => {
+          
           this.showToast = false;
+          this.isSuccess=true;
         }, 3000);
   }
   constructor(private readonly _cartService:CartService){}
@@ -89,6 +92,12 @@ export class CartComponent implements OnInit {
     },
     error: (err) => {
       console.error('Failed to place order', err);
+      this.isSuccess=false;
+      if(err.status==403){
+        this.Toast('You are not authorized to do this action');
+      }else{
+        this.Toast(err.error.Message);
+      }
     }
   });
 }

@@ -1,16 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Posts } from '../../../../core/models/posts';
 import { ReviewCardsComponent } from "../review-cards/review-cards.component";
-
+import { ProfileService } from '../../service/profile.service';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-user-posts',
-  imports: [CommonModule, FormsModule, ReviewCardsComponent],
+  imports: [CommonModule, FormsModule, ReviewCardsComponent,RouterLink],
   templateUrl: './user-posts.component.html',
   styleUrl: './user-posts.component.css'
 })
-export class UserPostsComponent {
+export class UserPostsComponent implements OnInit{
+
+  constructor(private profileService:ProfileService){}
+  ngOnInit(): void {
+    this.profileService.getUserPosts().subscribe({
+      next:data=>{
+        this.Current=data;
+      },
+      error:err=>{
+        this.Current=[];
+        console.log(err)}
+    })
+  }
   currentTab=0;
   selectedTab='0'
   reviews=[{
@@ -124,7 +137,7 @@ export class UserPostsComponent {
     }
   ]
   changeCurent(input:any){
-    console.log(input)
+    
     switch(+input){
       case 0: this.Current=this.ActivePosts;this.currentTab=0;
       break;

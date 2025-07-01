@@ -8,6 +8,7 @@ import { QuillModule } from 'ngx-quill';
 import { CartService } from '../Cart/cart.service';
 import { FavsService } from '../favorites/favs.service';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
+import { QAService } from './service/qa.service';
 
 
 @Component({
@@ -17,8 +18,11 @@ import { ToastComponent } from '../../shared/components/toast/toast.component';
   templateUrl: './post-view-page.component.html',
 })
 export class PostViewPageComponent implements OnInit{
+[x: string]: any;
    showToast = false;
-   message=''
+   message='';
+   isSuccess=true;
+
   images: string[] = [];
   product:any={}
   productID=''
@@ -31,16 +35,21 @@ export class PostViewPageComponent implements OnInit{
     this.showToast = true;
         setTimeout(() => {
           this.showToast = false;
+          this.isSuccess=true;
         }, 3000);
   }
   
-
+handleToast(event: { message: string; isSuccess: boolean }) {
+  this.isSuccess=event.isSuccess;
+  this.Toast(event.message);
+}
   ngOnInit(): void {
     this.productID=this.route.snapshot.paramMap.get('id')!;
     if (this.productID) {
         this.loadPost();
       }
   }
+  
   loadPost() {
     this.posts.getPostById(this.productID).subscribe({
       next: (data) =>{
@@ -57,14 +66,13 @@ export class PostViewPageComponent implements OnInit{
         });
 
         this.isExpired = this.expirationDate.getTime() < new Date().getTime();
-        console.log(this.product);
+        
       },
       error: (err) => console.error('Error:', err)
     });
     
-    console.log(this.images)
   }
-  constructor(private route: ActivatedRoute,private posts: ListingService, private cartService:CartService, private favService:FavsService){}
+  constructor(private route: ActivatedRoute,private posts: ListingService, private cartService:CartService, private favService:FavsService,private qaService:QAService){}
   mainImage: string = this.images[0];
   activeIndex: number = 0;
   page: number = 0;
@@ -81,35 +89,16 @@ export class PostViewPageComponent implements OnInit{
 
   questions = [
     {
-      id: 1,
-      username: 'Dr. Smith',
-      text: 'Is this product still available?',
-      time: '2 hours ago',
-      answer: {
-        id: 101,
-        username: 'Seller',
-        text: 'Yes, the product is still available. We have 5 units in stock.',
-        time: '1 hour ago'
-      }
+    answer:{
+      createdAt:'',
+      id:'',
+      responderName:'',
+      text:''
     },
-    {
-      id: 2,
-      username: 'Dr. Johnson',
-      text: 'What is the expiration date?',
-      time: '1 day ago',
-      answer: {
-        id: 201,
-        username: 'Seller',
-        text: 'The product expires in 6 months from the manufacturing date.',
-        time: '12 hours ago'
-      }
-    },
-    {
-      id: 3,
-      username: 'Dr. Williams',
-      text: 'Can I get a bulk discount for 10 units?',
-      time: '3 hours ago'
-    }
+    askerName:'',
+    createdAt:'',
+    id:'',
+    text:'' }
   ];
 
   onQuestionSubmitted(question: string) {
@@ -118,7 +107,7 @@ export class PostViewPageComponent implements OnInit{
     // Add API call here
   }
 
-  onAnswerSubmitted(event: { questionId: number; answer: string }) {
+  onAnswerSubmitted(event: { questionId: string; answer: string }) {
     // Handle new answer submission
     console.log('New answer:', event);
     // Add API call here
@@ -127,22 +116,33 @@ export class PostViewPageComponent implements OnInit{
     this.cartService.addToCart(id).subscribe({
       next:()=>{
         this.Toast('Product added to cart!')
-        console.log("added to cart")
+        
       }
       ,error:(err)=>{
         console.log("failed to add to cart",err);
-        
+        this.isSuccess=false;
+        if(err.status==403){
+        this.Toast('You are not authorized to do this action');
+      }else{
+        this.Toast(err.error.Message);
+      }
       }
     });
   }
   onSelectFav(id:string) {
     this.favService.addToFavs(id).subscribe({
-      next:()=>{console.log("added to favorites")
+      next:()=>{
         this.Toast('Product added to favorites!')
       }
         
       ,error:(err)=>{
         console.log("failed to add to favorits",err);
+        this.isSuccess=false;
+        if(err.status==403){
+        this.Toast('You are not authorized to do this action');
+      }else{
+        this.Toast(err.error.Message);
+      }
       }
     });
 }

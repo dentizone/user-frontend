@@ -1,12 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-toast',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './toast.component.html',
   styleUrl: './toast.component.css'
 })
 export class ToastComponent {
-
+  @Input() isSuccess=true;
   @Input() message='';
 }

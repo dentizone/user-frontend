@@ -28,16 +28,19 @@ export class ListingPageComponent implements OnInit{
   title=''
   showToast=false;
   message=''
+  isSuccess=true;
   Toast(message:string){
     this.message=message;
     this.showToast = true;
         setTimeout(() => {
           this.showToast = false;
+          this.isSuccess=true;
         }, 3000);
   }
-  handleToast(obj: { toast: boolean, message: string }) {
+  handleToast(obj: { toast: boolean, message: string, isSuccess:boolean }) {
     this.showToast = obj.toast;
     this.message = obj.message;
+    this.isSuccess=obj.isSuccess;
   }
   
   ngOnInit(): void {
@@ -115,7 +118,6 @@ export class ListingPageComponent implements OnInit{
       next: (data) => this.clinicalproduct = data,
       error: (err) => console.error('Error:', err)
     });
-    console.log(this.clinicalproduct);
   }
   @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
 
@@ -141,7 +143,6 @@ export class ListingPageComponent implements OnInit{
     if (this.sidebarComponent) {
       this.sidebarComponent.openSideBar();
     }
-    console.log(this.clinicalproduct);
   }
 
   onSidebarToggle(isOpen: boolean) {

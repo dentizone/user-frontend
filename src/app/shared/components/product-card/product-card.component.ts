@@ -18,15 +18,17 @@ export class ProductCardComponent {
   @Input() product!: any;
   @Output() showToastEvent=new EventEmitter<any>();
   showToast=false;
-  message=''
+  message='';
+  isSuccess=true;
   constructor(private cartService:CartService,private favService:FavsService){}
   Toast(message:string){
     this.showToast = true;
     this.message=message;
-    this.showToastEvent.emit({toast: this.showToast, message: this.message});
+    this.showToastEvent.emit({toast: this.showToast, message: this.message,isSuccess:this.isSuccess});
     setTimeout(() => {
       this.showToast = false;
-      this.showToastEvent.emit({toast: this.showToast, message: this.message});
+      this.isSuccess=true;
+      this.showToastEvent.emit({toast: this.showToast, message: this.message,isSuccess:this.isSuccess});
     }, 3000);
   }
   
@@ -37,22 +39,32 @@ export class ProductCardComponent {
   onAddToCart(id:string){
     this.cartService.addToCart(id).subscribe({
       next:()=>{
-        console.log("added to cart")
         this.Toast('Product Added to Cart!')
       }
       ,error:(err)=>{
         console.log("failed to add to cart",err);
+        this.isSuccess=false;
+        if(err.status==403){
+        this.Toast('You are not authorized to do this action');
+      }else{
+        this.Toast(err.error.Message);
+      }
       }
     });
   }
    onSelectFav(id:string) {
     this.favService.addToFavs(id).subscribe({
       next:()=>{
-        console.log("added to favorites")
         this.Toast('Product Added to Favorites!')
       }
       ,error:(err)=>{
         console.log("failed to add to favorits",err);
+        this.isSuccess=false;
+        if(err.status==403){
+        this.Toast('You are not authorized to do this action');
+      }else{
+        this.Toast(err.error.Message);
+      }
       }
     });
 }

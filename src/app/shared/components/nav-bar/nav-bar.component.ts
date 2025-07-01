@@ -1,7 +1,8 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { ProfileService } from '../../../features/Profile/service/profile.service';
 
 @Component({  selector: 'app-nav-bar',
   standalone: true,
@@ -9,13 +10,26 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
 })
-export class NavBarComponent {
+export class NavBarComponent implements OnInit{
+
+  user: any;
+  ngOnInit(): void {
+    this.profileService.getUserProfile().subscribe({
+      next: data => {this.user = data;
+        
+        this.UserName=this.user.fullName.split(' ')[0];
+        this.UserEmail=this.user.username;
+      },
+      error: err => console.error('Failed to load profile', err)
+    });
+  }
+
   opened = false;
   mobileMenuOpened = false;
-  UserName = 'Nourhane';
-  UserEmail = 'nourhane@gmail.com';
+  UserName = 'User';
+  UserEmail = 'User@Email.com';
   
-  constructor(private readonly router: Router) {}
+  constructor(private readonly router: Router,private profileService: ProfileService) {}
 
   isActive(route: string): boolean {
     return this.router.url === route;
@@ -36,4 +50,10 @@ export class NavBarComponent {
       target.closest('#user-menu-button') || target.closest('#user-dropdown');
     if (!inside) this.opened = false;
   }
+
+  logout() {
+  localStorage.clear();
+  this.router.navigate(['/home']); 
+}
+
 }
