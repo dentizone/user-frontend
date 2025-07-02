@@ -14,10 +14,16 @@ token;
 headers;
   constructor(private http: HttpClient,private profileService:ProfileService) {
      this.token = localStorage.getItem('accessToken'); 
-     this.headers = new HttpHeaders({
-      Authorization: `Bearer ${this.token}`,
-      'Content-Type': 'application/json'
-    });
+     if (this.token) {
+       this.headers = new HttpHeaders({
+         Authorization: `Bearer ${this.token}`,
+         'Content-Type': 'application/json'
+       });
+     } else {
+       this.headers = new HttpHeaders({
+         'Content-Type': 'application/json'
+       });
+     }
   }
 
   getQaByPostId(postId: string): Observable<any> {

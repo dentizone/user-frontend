@@ -113,7 +113,7 @@ export class QaComponent implements OnInit{
     error: (err) => {
       console.log(err);
       this.toastMessage.emit({
-        message: 'Failed to submit question. Please try again.',
+        message: 'Failed to submit answer. Please try again.',
         isSuccess: false
       });
     }
