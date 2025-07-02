@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Posts } from '../../core/models/posts';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,13 @@ export class EditPostService {
     return this._httpClient.get(`https://apit.gitnasr.com/api/Posts/${id}`)
   }
 
-  updatePost(id:string,postData:any):Observable<any>{
-    return this._httpClient.put(`https://apit.gitnasr.com/api/Posts/${id}`,postData)
+  updatePost(id:string,postData:Posts):Observable<Posts>{
+    return this._httpClient.put<Posts>(`https://apit.gitnasr.com/api/Posts/${id}`,postData)
+      .pipe(
+        catchError((error) => {
+          // Optionally log or transform the error here
+          return throwError(() => error);
+        })
+      );
   }
 }

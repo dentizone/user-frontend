@@ -120,6 +120,7 @@
             formControlName="category"
             id="category"
             class="w-full p-3 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+            (change)="onSelectCategory()"
           >
             <option value="">Choose a Category</option>
             <!-- Add category options dynamically -->
@@ -174,6 +175,12 @@
           placeholder="Write your product description here..."
           class="w-full h-1/4"
         ></quill-editor>
+        <span
+          class="text-red-500 text-sm font-medium"
+          *ngIf="userForm.get('description')?.invalid && (userForm.get('description')?.touched || userForm.get('description')?.dirty)"
+        >
+          Please provide a product description.
+        </span>
       </div>
 
       <!-- Submit Button -->
