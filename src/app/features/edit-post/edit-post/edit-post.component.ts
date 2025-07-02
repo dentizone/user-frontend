@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EditPostService } from '../edit-post.service';
 import { PostUnderReviewComponent } from "../../../shared/components/post-under-review/post-under-review.component";
 import { QuillModule } from 'ngx-quill';
@@ -26,6 +26,7 @@ export class EditPostComponent implements OnInit {
   postUnderReview = false;
   invalidSubmit = false;
   netPrice: number = 0;
+  isDeleting = false;
 
   categories: ICategory[] = [];
   subCategories: ICategory[] = [];
@@ -58,7 +59,8 @@ export class EditPostComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private editPostService: EditPostService,
-    private postService:PostService
+    private postService:PostService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -352,6 +354,23 @@ export class EditPostComponent implements OnInit {
       }));
       this.selectedImg = { path: this.imagePreviews[0], index: 0 };
     }
+  }
+
+  deletePost(): void {
+    if (!this.postId) return;
+    this.isDeleting = true;
+    this.errorMessage = '';
+    this.postService.deletePost(this.postId).subscribe({
+      next: () => {
+        this.isDeleting = false;
+        // Optionally, redirect or show a success message
+        this.router.navigate(['/profile']);
+      },
+      error: () => {
+        this.isDeleting = false;
+        this.errorMessage = 'Failed to delete post.';
+      }
+    });
   }
 }
 
