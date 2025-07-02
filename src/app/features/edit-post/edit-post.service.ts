@@ -12,14 +12,13 @@ export class EditPostService {
   constructor(private _httpClient:HttpClient) { }
 
   getPostById(id:string):Observable<any>{
-    return this._httpClient.get(`https://apit.gitnasr.com/api/Posts/${id}`)
+    return this._httpClient.get(`https://localhost:7258/api/Posts/${id}`)
   }
 
-  updatePost(id:string,postData:Posts):Observable<Posts>{
-    return this._httpClient.put<Posts>(`https://apit.gitnasr.com/api/Posts/${id}`,postData)
+  updatePost(id: string, postData: any): Observable<any> {
+    return this._httpClient.put(`https://localhost:7258/api/Posts/${id}`, postData)
       .pipe(
         catchError((error) => {
-          // Optionally log or transform the error here
           return throwError(() => error);
         })
       );
