@@ -141,6 +141,13 @@ export const routes: Routes = [
                 './features/Profile/components/account-management.component'
               ).then((m) => m.AccountManagementComponent),
           },
+          {
+            path: 'wallet',
+            loadComponent: () =>
+              import('./features/Wallet/wallet/wallet.component').then(
+                (m) => m.WalletComponent
+              ),
+          },
         ],
       },
       {
@@ -172,11 +179,15 @@ export const routes: Routes = [
             (m) => m.ReviewComponent
           ),
       },
+     
     ],
   },
+
+ 
 
   {
     path: '**',
     redirectTo: 'auth/login',
   },
+
 ];
