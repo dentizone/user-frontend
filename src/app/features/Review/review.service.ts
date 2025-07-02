@@ -5,22 +5,22 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ReviewService {
-  private apiUrl = 'https://apit.gitnasr.com/api/Review';
+  private readonly apiUrl = 'https://apit.gitnasr.com/api/Review';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
   
-  token = 'YOUR_SECRET_TOKEN'; 
-  headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.token}`
-    });
   postNewReview(orderID:string,stars:number,comment:string){
+    const token = localStorage.getItem('accessToken');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    });
     const body = {
       orderID,
       stars,
       comment
     };
 
-    return this.http.post(this.apiUrl, body, { headers:this.headers });
+    return this.http.post(this.apiUrl, body, { headers });
   }
 }

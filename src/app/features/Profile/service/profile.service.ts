@@ -25,9 +25,8 @@ export class ProfileService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(
-      `https://apit.gitnasr.com/api/Posts/users/posts`,
-      { headers }
-    );
+
+    return this.http.get<any>(`https://apit.gitnasr.com/api/Posts/`, { headers });
+
   }
 }
