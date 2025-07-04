@@ -39,12 +39,11 @@
   } @else {
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     @for (order of orders; track order.id) {
-    <div
+    <button
+      type="button"
       class="bg-blue-50 border border-blue-200 p-6 rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-all flex flex-col justify-between min-h-[190px]"
       (click)="goToOrder(order.id)"
       (keydown.enter)="goToOrder(order.id)"
-      tabindex="0"
-      role="button"
     >
       <div class="flex items-center justify-between mb-4">
         <span class="text-base font-semibold text-blue-900 tracking-wide"
@@ -92,7 +91,7 @@
           >Reviewed</span
         >
       </div>
-    </div>
+    </button>
     }
   </div>
   }
