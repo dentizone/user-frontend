@@ -75,7 +75,7 @@ import { Router } from '@angular/router';
 })
 export class KycRequiredModalComponent {
   @Output() close = new EventEmitter<void>();
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
   onBackdropClick(event: MouseEvent) {
     this.handleClose();
   }

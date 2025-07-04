@@ -76,11 +76,11 @@ export class PostViewPageComponent implements OnInit {
     });
   }
   constructor(
-    private route: ActivatedRoute,
-    private posts: ListingService,
-    private cartService: CartService,
-    private favService: FavsService,
-    private qaService: QAService
+    private readonly route: ActivatedRoute,
+    private readonly posts: ListingService,
+    private readonly cartService: CartService,
+    private readonly favService: FavsService,
+    private readonly qaService: QAService
   ) {}
   mainImage: string = this.images[0];
   activeIndex: number = 0;

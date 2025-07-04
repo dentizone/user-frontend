@@ -139,7 +139,7 @@ export class RegisterComponent implements OnInit {
           this.isSubmitting = false;
           console.error('Registration failed:', error);
           this.toastr.error(
-            error.error?.Message || 'Registration failed. Please try again.'
+            error.error?.Message ?? 'Registration failed. Please try again.'
           );
         },
       });
