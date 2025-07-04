@@ -120,13 +120,7 @@ export const routes: Routes = [
                 './features/Profile/order-details/order-details.component'
               ).then((m) => m.OrderDetailsComponent),
           },
-          {
-            path: 'your-activity',
-            loadComponent: () =>
-              import(
-                './features/Profile/components/account-management.component'
-              ).then((m) => m.AccountManagementComponent),
-          },
+
           {
             path: 'fav-list',
             loadComponent: () =>
@@ -134,13 +128,7 @@ export const routes: Routes = [
                 (m) => m.FavListComponent
               ),
           },
-          {
-            path: 'account-management',
-            loadComponent: () =>
-              import(
-                './features/Profile/components/account-management.component'
-              ).then((m) => m.AccountManagementComponent),
-          },
+
           {
             path: 'wallet',
             loadComponent: () =>

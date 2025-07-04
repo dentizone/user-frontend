@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -9,7 +15,7 @@ import { SidebarService } from '../../../sidebarService/sidebar.service';
 @Component({
   selector: 'app-sidebar',
   imports: [CommonModule, FormsModule],
-  templateUrl: './sidebar.component.html'
+  templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   @Output() sidebarToggle = new EventEmitter<boolean>();
@@ -17,15 +23,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   // Sidebar state
   isSidebarOpen = false;
-  
+
   // Filter data
   sidebarData: SidebarData = {
     cities: [],
     categories: [],
     minPrice: 0,
-    maxPrice: 100
+    maxPrice: 100,
   };
-  
+
   // Active filters
   activeCategory = '';
   selectedCity = '';
@@ -34,11 +40,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private initialDate: Date = new Date();
   selectedConditions: string[] = [];
   sortBy = 'createdAtDesc';
-  keyword=''
+  keyword = '';
 
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private readonly sidebarService: SidebarService, private readonly router: Router, private readonly activatedRoute: ActivatedRoute) {}
+  constructor(
+    private readonly sidebarService: SidebarService,
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute
+  ) {}
 
   async ngOnInit() {
     this.initialDate = new Date();
@@ -60,75 +70,93 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private loadFiltersFromUrl(): void {
     this.activatedRoute.queryParams
       .pipe(takeUntil(this.destroy$))
-      .subscribe(params => {
-        if (params['category'] && this.sidebarData.categories.some(cat => cat.categoryName === params['category'])) {
+      .subscribe((params) => {
+        if (
+          params['category'] &&
+          this.sidebarData.categories.some(
+            (cat) => cat.categoryName === params['category']
+          )
+        ) {
           this.activeCategory = params['category'];
         }
-        
-        if (params['city'] && this.sidebarData.cities.includes(params['city'])) {
+
+        if (
+          params['city'] &&
+          this.sidebarData.cities.includes(params['city'])
+        ) {
           this.selectedCity = params['city'];
         }
-        
+
         if (params['price']) {
           const price = Number(params['price']);
-          if (price >= this.sidebarData.minPrice && price <= this.sidebarData.maxPrice) {
+          if (
+            price >= this.sidebarData.minPrice &&
+            price <= this.sidebarData.maxPrice
+          ) {
             this.desiredPrice = price;
           }
         }
-        
+
         if (params['toDate']) {
           this.toDate = new Date(params['toDate']);
         }
-        
+
         if (params['conditions']) {
-          this.selectedConditions = params['conditions'].split(',').filter((condition: string) => 
-            ['New', 'As New', 'Used'].includes(condition)
-          );
+          this.selectedConditions = params['conditions']
+            .split(',')
+            .filter((condition: string) =>
+              ['New', 'As New', 'Used'].includes(condition)
+            );
         }
-        
-        if (params['sortBy'] && ['createdAtAsc', 'createdAtDesc', 'priceAsc', 'priceDesc'].includes(params['sortBy'])) {
+
+        if (
+          params['sortBy'] &&
+          ['createdAtAsc', 'createdAtDesc', 'priceAsc', 'priceDesc'].includes(
+            params['sortBy']
+          )
+        ) {
           this.sortBy = params['sortBy'];
         }
 
-        if(params['searchKeyword']){
-          this.keyword=params['searchKeyword'];
+        if (params['searchKeyword']) {
+          this.keyword = params['searchKeyword'];
         }
       });
   }
 
   private updateUrlParams(): void {
     const queryParams: any = {};
-    
+
     if (this.activeCategory) {
       queryParams.category = this.activeCategory;
     }
-    
+
     if (this.selectedCity) {
       queryParams.city = this.selectedCity;
     }
-    
+
     if (this.desiredPrice !== this.sidebarData.maxPrice) {
       queryParams.price = this.desiredPrice;
     }
-    
+
     if (this.toDate && this.toDate.getTime() !== this.initialDate.getTime()) {
       queryParams.toDate = this.toDate.toISOString().split('T')[0];
     }
-    
+
     if (this.selectedConditions.length > 0) {
       queryParams.conditions = this.selectedConditions.join(',');
     }
-    
+
     if (this.sortBy !== 'createdAtDesc') {
       queryParams.sortBy = this.sortBy;
     }
-    if(this.keyword){
-      queryParams.searchKeyword=this.keyword;
+    if (this.keyword) {
+      queryParams.searchKeyword = this.keyword;
     }
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: queryParams,
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
   }
 
@@ -164,7 +192,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
     if (checked) {
       this.selectedConditions.push(condition);
     } else {
-      this.selectedConditions = this.selectedConditions.filter(c => c !== condition);
+      this.selectedConditions = this.selectedConditions.filter(
+        (c) => c !== condition
+      );
     }
     this.emitFilterChange();
   }
@@ -185,7 +215,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   onSearch(): void {
     // This method can be implemented to handle search functionality
     this.emitFilterChange();
-    console.log(this.keyword)
+    console.log(this.keyword);
   }
 
   clearFilters(): void {
@@ -195,7 +225,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.toDate = new Date();
     this.selectedConditions = [];
     this.sortBy = 'createdAtDesc';
-    this.keyword=''
+    this.keyword = '';
     this.emitFilterChange();
   }
 
@@ -207,9 +237,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
       toDate: this.toDate,
       conditions: this.selectedConditions,
       sortBy: this.sortBy,
-      keyword:this.keyword
+      keyword: this.keyword,
     };
-    
+
     this.updateUrlParams();
     this.filterChange.emit(filters);
   }
@@ -224,7 +254,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     return this.sidebarData.cities;
   }
 
-  get categories(): Array<{id: string; categoryName: string; icon: string}> {
+  get categories(): Array<{ id: string; categoryName: string; icon: string }> {
     return this.sidebarData.categories;
   }
 
