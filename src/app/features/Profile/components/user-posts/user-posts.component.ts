@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Posts } from '../../../../core/models/posts';
 import { ProfileService } from '../../service/profile.service';
 @Component({
@@ -11,7 +11,7 @@ import { ProfileService } from '../../service/profile.service';
 })
 export class UserPostsComponent implements OnInit {
   Current: Posts[] = [];
-  constructor(private profileService: ProfileService) {}
+  constructor(private profileService: ProfileService, private router: Router) {}
   ngOnInit(): void {
     this.profileService.getUserPosts().subscribe({
       next: (data) => {
@@ -26,5 +26,13 @@ export class UserPostsComponent implements OnInit {
 
   trackById(index: number, item: Posts) {
     return item.id;
+  }
+
+  onEditPost(id: string) {
+    this.router.navigate(['/edit-post', id]);
+  }
+
+  onAddNewPost() {
+    this.router.navigate(['/add-new-post']);
   }
 }
