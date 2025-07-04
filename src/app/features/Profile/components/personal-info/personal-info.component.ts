@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProfileService } from '../../service/profile.service';
 import { UserPostsComponent } from '../user-posts/user-posts.component';
 
@@ -11,7 +12,7 @@ import { UserPostsComponent } from '../user-posts/user-posts.component';
   styleUrl: './personal-info.component.css',
 })
 export class PersonalInfoComponent implements OnInit {
-  constructor(private profileService: ProfileService) {}
+  constructor(private profileService: ProfileService, private router: Router) {}
   user: any;
   ngOnInit(): void {
     this.profileService.getUserProfile().subscribe({
@@ -119,6 +120,21 @@ export class PersonalInfoComponent implements OnInit {
           default:
             return 'Please complete your profile verification.';
         }
+    }
+  }
+
+  goToKycIfNotVerified() {
+    if (!this.user) return;
+    const unverifiedStatuses = [
+      'Pending',
+      'InProgress',
+      'Rejected',
+      'Expired',
+      'Cancelled',
+      'Suspended',
+    ];
+    if (unverifiedStatuses.includes(this.user.kycStatus)) {
+      this.router.navigate(['/auth/kyc']);
     }
   }
 }

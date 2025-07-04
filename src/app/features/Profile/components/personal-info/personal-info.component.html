@@ -103,8 +103,20 @@
         <span
           [ngClass]="
             verificationBadgeColor +
-            ' font-semibold flex items-center rounded-xl px-3 py-1 capitalize text-sm'
+            ' font-semibold flex items-center rounded-xl px-3 py-1 capitalize text-sm' +
+            (user &&
+            [
+              'Pending',
+              'InProgress',
+              'Rejected',
+              'Expired',
+              'Cancelled',
+              'Suspended'
+            ].includes(user.kycStatus)
+              ? ' cursor-pointer'
+              : '')
           "
+          (click)="goToKycIfNotVerified()"
         >
           <ng-container [ngSwitch]="verificationBadgeText">
             <!-- Pending Verification -->
