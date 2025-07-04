@@ -1,25 +1,34 @@
 <nav class="bg-white">
   <div
     class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
-  >    <a routerLink="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+  >
+    <a routerLink="/" class="flex items-center space-x-3 rtl:space-x-reverse">
       <img
         src="/assets/logo/logoWithoutBackground.png"
         class="h-12"
         alt="Dentista Logo"
       />
-      
     </a>
     <div
       class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
     >
       <a
-       routerLink="/profile"
+        *ngIf="!authService.isAuthenticated()"
+        routerLink="/auth/login"
+        class="flex items-center py-2 px-3 mx-3.5 text-white font-bold bg-blue-900 rounded-md"
+      >
+        <img src="/assets/Icons/padlock.png" class="w-4 h-4 mx-1" />
+        <span>Login</span>
+      </a>
+      <a
+        routerLink="/profile"
         class="hidden lg:flex items-center py-2 px-3 mx-3.5 text-white font-bold bg-blue-900 rounded-md"
+        *ngIf="authService.isAuthenticated()"
       >
         <img src="/assets/Profile/wave.png" class="w-4 h-4 mx-1" />
         <span>{{ UserName }}</span>
       </a>
-      <div class="relative">
+      <div class="relative" *ngIf="authService.isAuthenticated()">
         <button
           type="button"
           class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300"
@@ -35,6 +44,49 @@
             alt="user photo"
           />
         </button>
+        <div
+          class="z-50 absolute right-0 mt-2 w-48 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg"
+          id="user-dropdown"
+          [ngClass]="{ block: opened, hidden: !opened }"
+        >
+          <div class="px-4 py-3 bg-blue-300">
+            <span class="block text-sm text-gray-900">{{ UserName }}</span>
+            <span class="block text-sm text-gray-500 truncate">{{
+              UserEmail
+            }}</span>
+          </div>
+          <ul class="py-2" aria-labelledby="user-menu-button">
+            <li>
+              <a
+                routerLink="/profile"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >Profile</a
+              >
+            </li>
+            <li>
+              <a
+                routerLink="/profile/fav-list"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >Favorite List</a
+              >
+            </li>
+            <li>
+              <a
+                routerLink="/settings"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >Settings</a
+              >
+            </li>
+
+            <li>
+              <a
+                (click)="logout()"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >Sign out</a
+              >
+            </li>
+          </ul>
+        </div>
       </div>
       <button
         data-collapse-toggle="navbar-user"
@@ -69,12 +121,15 @@
     >
       <ul
         class="flex flex-col font-medium p-4 md:p-0 mt-4 border rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white"
-      >        <li>
+      >
+        <li>
           <a
             routerLink="/"
-            [class]="isActive('/') ? 
-              'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2' : 
-              'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'"
+            [class]="
+              isActive('/')
+                ? 'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2'
+                : 'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'
+            "
             aria-current="page"
           >
             Home
@@ -83,9 +138,11 @@
         <li>
           <a
             routerLink="/catalog"
-            [class]="isActive('/marketplace') ? 
-              'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2' : 
-              'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'"
+            [class]="
+              isActive('/marketplace')
+                ? 'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2'
+                : 'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'
+            "
           >
             Marketplace
           </a>
@@ -93,9 +150,11 @@
         <li>
           <a
             routerLink="/about"
-            [class]="isActive('/about') ? 
-              'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2' : 
-              'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'"
+            [class]="
+              isActive('/about')
+                ? 'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2'
+                : 'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'
+            "
           >
             About
           </a>
@@ -103,9 +162,11 @@
         <li>
           <a
             routerLink="/services"
-            [class]="isActive('/services') ? 
-              'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2' : 
-              'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'"
+            [class]="
+              isActive('/services')
+                ? 'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2'
+                : 'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'
+            "
           >
             Services
           </a>
@@ -113,55 +174,16 @@
         <li>
           <a
             routerLink="/cart"
-            [class]="isActive('/cart') ? 
-              'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2' : 
-              'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'"
+            [class]="
+              isActive('/cart')
+                ? 'block py-2 px-3 text-blue-900 font-bold bg-blue-50 rounded-md md:bg-blue-50 md:text-blue-900 md:font-bold md:p-2'
+                : 'block py-2 px-3 text-black rounded-md hover:bg-blue-50 hover:text-blue-900 md:hover:bg-blue-50 md:hover:text-blue-900 md:p-2'
+            "
           >
             Cart
           </a>
         </li>
       </ul>
     </div>
-  </div>
-  <div
-    class="z-50 absolute right-4 top-16 w-48 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg"
-    id="user-dropdown"
-    [ngClass]="{ block: opened, hidden: !opened }"
-  >
-    <div class="px-4 py-3 bg-blue-300">
-      <span class="block text-sm text-gray-900">{{ UserName }}</span>
-      <span class="block text-sm text-gray-500 truncate">{{ UserEmail }}</span>
-    </div>
-    <ul class="py-2" aria-labelledby="user-menu-button">
-      <li>
-        <a
-        routerLink="/profile"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-          >Profile</a
-        >
-      </li>  
-          <li>
-        <a
-        routerLink="/profile/fav-list"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-          >Favorite List</a
-        >
-      </li> 
-      <li>
-        <a
-          routerLink="/settings"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-          >Settings</a
-        >
-      </li>
-
-      <li>
-        <a
-          (click)="logout()"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-          >Sign out</a
-        >
-      </li>
-    </ul>
   </div>
 </nav>

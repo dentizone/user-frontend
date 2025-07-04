@@ -35,8 +35,8 @@ export class NavBarComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private profileService: ProfileService,
-    private authService: AuthService
+    public profileService: ProfileService,
+    public authService: AuthService
   ) {}
 
   isActive(route: string): boolean {
