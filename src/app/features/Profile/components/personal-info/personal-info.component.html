@@ -52,7 +52,7 @@
         <div class="flex items-center gap-4 mt-2">
           <span class="text-blue-700 text-base font-semibold flex items-center">
             <svg
-              class="w-5 h-5 mr-2 text-blue-400"
+              class="w-4 h-4 mr-2 text-blue-400"
               fill="none"
               stroke="currentColor"
               stroke-width="1.5"
@@ -61,12 +61,12 @@
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                d="M17.657 16.657L13.414 12.414A6 6 0 1 0 12 18a5.978 5.978 0 0 0 4.243-1.757z"
+                d="M12 3L2 8l10 5 10-5-10-5z"
               />
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                d="M15 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"
+                d="M4 11v5c0 2 3.6 3.5 8 3.5s8-1.5 8-3.5v-5l-8 4-8-4z"
               />
             </svg>
             {{ userUniversity }}
@@ -102,193 +102,100 @@
       <div class="flex flex-col items-end mt-4">
         <span
           [ngClass]="
-            verificationBadgeColor +
-            ' font-semibold flex items-center rounded-xl px-3 py-1 capitalize text-sm' +
-            (user &&
-            [
-              'Pending',
-              'InProgress',
-              'Rejected',
-              'Expired',
-              'Cancelled',
-              'Suspended'
-            ].includes(user.kycStatus)
-              ? ' cursor-pointer'
-              : '')
+            userStateBadgeColor +
+            ' font-semibold flex items-center rounded-xl px-3 py-1 capitalize text-sm'
           "
-          (click)="goToKycIfNotVerified()"
+          title="Account Status"
         >
-          <ng-container [ngSwitch]="verificationBadgeText">
-            <!-- Pending Verification -->
-            <svg
-              *ngSwitchCase="'Pending Verification'"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
+          <svg
+            *ngIf="userStateBadgeText === 'Active'"
+            class="w-4 h-4 mr-1 text-green-500"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
               stroke="currentColor"
-              class="w-5 h-5 mr-1"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 6v6l4 2"
-              />
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-                stroke="currentColor"
-                stroke-width="1.5"
-                fill="none"
-              />
-            </svg>
-            <!-- Verification In Progress -->
-            <svg
-              *ngSwitchCase="'Verification In Progress'"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
               stroke-width="1.5"
-              stroke="currentColor"
-              class="w-5 h-5 mr-1"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 6v6l4 2"
-              />
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-                stroke="currentColor"
-                stroke-width="1.5"
-                fill="none"
-              />
-            </svg>
-            <!-- Verified -->
-            <svg
-              *ngSwitchCase="'Verified'"
-              xmlns="http://www.w3.org/2000/svg"
               fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8 12l2 2 4-4"
+            />
+          </svg>
+          <svg
+            *ngIf="userStateBadgeText === 'Pending Verification'"
+            class="w-4 h-4 mr-1 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
               stroke="currentColor"
-              class="w-5 h-5 mr-1"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4.5 12.75l6 6 9-13.5"
-              />
-            </svg>
-            <!-- Rejected -->
-            <svg
-              *ngSwitchCase="'Rejected'"
-              xmlns="http://www.w3.org/2000/svg"
+              stroke-width="1.5"
               fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 8v4l3 2"
+            />
+          </svg>
+          <svg
+            *ngIf="userStateBadgeText === 'Blacklisted'"
+            class="w-4 h-4 mr-1 text-red-500"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
               stroke="currentColor"
-              class="w-5 h-5 mr-1"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-            <!-- Suspended -->
-            <svg
-              *ngSwitchCase="'Suspended'"
-              xmlns="http://www.w3.org/2000/svg"
+              stroke-width="1.5"
               fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8 8l8 8M16 8l-8 8"
+            />
+          </svg>
+          <svg
+            *ngIf="userStateBadgeText === 'Deleted'"
+            class="w-4 h-4 mr-1 text-gray-500"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
               stroke="currentColor"
-              class="w-5 h-5 mr-1"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 6v6l4 2"
-              />
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-                stroke="currentColor"
-                stroke-width="1.5"
-                fill="none"
-              />
-            </svg>
-            <!-- Expired -->
-            <svg
-              *ngSwitchCase="'Verification Expired'"
-              xmlns="http://www.w3.org/2000/svg"
+              stroke-width="1.5"
               fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-5 h-5 mr-1"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 6v6l4 2"
-              />
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-                stroke="currentColor"
-                stroke-width="1.5"
-                fill="none"
-              />
-            </svg>
-            <!-- Cancelled -->
-            <svg
-              *ngSwitchCase="'Verification Cancelled'"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-5 h-5 mr-1"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-            <!-- Unverified/default -->
-            <svg
-              *ngSwitchDefault
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-5 h-5 mr-1"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 6v6l4 2"
-              />
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-                stroke="currentColor"
-                stroke-width="1.5"
-                fill="none"
-              />
-            </svg>
-          </ng-container>
-          {{ verificationBadgeText }}
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+          {{ userStateBadgeText }}
         </span>
         <span class="text-xs text-gray-500 mt-1 text-right w-full block">
           {{ verificationDescription }}

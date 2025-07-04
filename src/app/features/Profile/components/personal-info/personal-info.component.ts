@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+// No need to import enums, status is a string
 import { ProfileService } from '../../service/profile.service';
 import { UserPostsComponent } from '../user-posts/user-posts.component';
 
@@ -33,7 +34,7 @@ export class PersonalInfoComponent implements OnInit {
           this.user.avatarUrl || '/assets/avatar/tooth-extraction.png';
         this.userAddress = this.user.address || '';
         // Badge logic
-        this.setVerificationBadge(this.user.kycStatus);
+        this.setUserStateBadge(this.user.status);
       },
       error: (err) => console.error('Failed to load profile', err),
     });
@@ -42,9 +43,8 @@ export class PersonalInfoComponent implements OnInit {
   userName: string = 'User';
   generatedName = 'User-1234';
   userEmail: string = 'UserEmail';
-  verificationStatus: string = '';
-  verificationBadgeColor: string = 'bg-gray-300 text-gray-700';
-  verificationBadgeText: string = 'Unverified';
+  userStateBadgeColor: string = 'bg-gray-300 text-gray-700';
+  userStateBadgeText: string = 'Unknown';
   academicYear: string = '';
   userUniversity: string = '';
   userPhoneNumber = '+201210082921';
@@ -53,42 +53,35 @@ export class PersonalInfoComponent implements OnInit {
 
   userPosts = [];
 
-  setVerificationBadge(kycStatus: string) {
-    // kycStatus is now a string: 'Pending', 'InProgress', 'Approved', 'Rejected', 'Expired', 'Cancelled', 'Suspended'
-    switch (kycStatus) {
-      case 'Pending':
-        this.verificationBadgeColor = 'bg-gray-200 text-gray-700';
-        this.verificationBadgeText = 'Unverified';
+  setUserStateBadge(userState: string) {
+    switch (userState) {
+      case 'PendingVerification':
+        this.userStateBadgeColor = 'bg-gray-200 text-gray-700';
+        this.userStateBadgeText = 'Pending Verification';
         break;
-      case 'InProgress':
-        this.verificationBadgeColor = 'bg-yellow-100 text-yellow-700';
-        this.verificationBadgeText = 'Verification In Progress';
+      case 'EmailVerified':
+        this.userStateBadgeColor = 'bg-blue-100 text-blue-700';
+        this.userStateBadgeText = 'Email Verified';
         break;
-      case 'Approved':
-        this.verificationBadgeColor = 'bg-emerald-100 text-emerald-700';
-        this.verificationBadgeText = 'Verified';
+      case 'Active':
+        this.userStateBadgeColor = 'bg-green-100 text-green-700';
+        this.userStateBadgeText = 'Active';
         break;
-      case 'Rejected':
-        this.verificationBadgeColor = 'bg-red-100 text-red-700';
-        this.verificationBadgeText = 'Rejected';
+      case 'Blacklisted':
+        this.userStateBadgeColor = 'bg-red-100 text-red-700';
+        this.userStateBadgeText = 'Blacklisted';
         break;
-      case 'Expired':
-        this.verificationBadgeColor = 'bg-gray-300 text-gray-700';
-        this.verificationBadgeText = 'Verification Expired';
-        break;
-      case 'Cancelled':
-        this.verificationBadgeColor = 'bg-gray-300 text-gray-700';
-        this.verificationBadgeText = 'Verification Cancelled';
-        break;
-      case 'Suspended':
-        this.verificationBadgeColor = 'bg-orange-100 text-orange-700';
-        this.verificationBadgeText = 'Suspended';
+      case 'Deleted':
+        this.userStateBadgeColor = 'bg-gray-400 text-gray-800';
+        this.userStateBadgeText = 'Deleted';
         break;
       default:
-        this.verificationBadgeColor = 'bg-gray-300 text-gray-700';
-        this.verificationBadgeText = 'Unverified';
+        this.userStateBadgeColor = 'bg-gray-300 text-gray-700';
+        this.userStateBadgeText = 'Unknown';
     }
   }
+
+  // No KYC navigation logic needed
 
   get verificationDescription(): string {
     if (!this.user) return '';
@@ -108,33 +101,8 @@ export class PersonalInfoComponent implements OnInit {
         return 'Unverified: Please verify your email to activate your account.';
       default:
         // Active
-        switch (this.user.kycStatus) {
-          case 'Pending':
-            return 'Unverified: Please verify your email to activate your account.';
-          case 'InProgress':
-            return 'KYC in progress. Please complete KYC to order or post for sale.';
-          case 'Approved':
-            return 'Verified: You have full access to all features.';
-          case 'Rejected':
-            return 'KYC rejected. Please resubmit your documents.';
-          default:
-            return 'Please complete your profile verification.';
-        }
-    }
-  }
-
-  goToKycIfNotVerified() {
-    if (!this.user) return;
-    const unverifiedStatuses = [
-      'Pending',
-      'InProgress',
-      'Rejected',
-      'Expired',
-      'Cancelled',
-      'Suspended',
-    ];
-    if (unverifiedStatuses.includes(this.user.kycStatus)) {
-      this.router.navigate(['/auth/kyc']);
+        // No KYC status to check here, so return a generic message
+        return 'Please complete your profile verification.';
     }
   }
 }
