@@ -26,7 +26,8 @@ export class PersonalInfoComponent implements OnInit {
         this.academicYear = this.user.academicYear
           ? 'Year ' + this.user.academicYear
           : '';
-        this.userUniversity = this.user.universityName || '';
+        this.userUniversity =
+          this.user.universityName || this.user.unversityName || '';
         this.userPhoneNumber = this.user.phoneNumber || '';
         this.avatarSrc =
           this.user.avatarUrl || '/assets/avatar/tooth-extraction.png';
