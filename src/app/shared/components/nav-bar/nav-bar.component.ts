@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { ProfileService } from '../../../features/Profile/service/profile.service';
 
@@ -14,30 +15,33 @@ import { ProfileService } from '../../../features/Profile/service/profile.servic
 })
 export class NavBarComponent implements OnInit {
   user: any;
-  ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
-      this.profileService.getUserProfile().subscribe({
-        next: (data) => {
-          this.user = data;
-
-          this.UserName = this.user.fullName.split(' ')[0];
-          this.UserEmail = this.user.username;
-        },
-        error: (err) => console.error('Failed to load profile', err),
-      });
-    }
-  }
-
   opened = false;
   mobileMenuOpened = false;
   UserName = 'User';
   UserEmail = 'User@Email.com';
+  private userSub?: Subscription;
 
   constructor(
     private readonly router: Router,
     public profileService: ProfileService,
     public authService: AuthService
   ) {}
+
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.userSub = this.authService.currentUser$.subscribe((user) => {
+        if (user) {
+          this.user = user;
+          this.UserName = user.fullName?.split(' ')[0] || 'User';
+          this.UserEmail = user.email || user.username || 'User@Email.com';
+        }
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.userSub?.unsubscribe();
+  }
 
   isActive(route: string): boolean {
     return this.router.url === route;

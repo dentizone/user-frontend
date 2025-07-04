@@ -8,7 +8,7 @@
     >
       <img
         src="/assets/logo/LogoWithBackground.png"
-        alt="Dentista Logo"
+        alt="Dentizone Logo"
         class="max-w-[80%] h-auto"
       />
     </div>
@@ -178,12 +178,20 @@
                 [disabled]="isLoadingUniversities || isSubmitting"
               >
                 <option value="">Select University</option>
-                <option *ngFor="let university of universities" [value]="university.id">
+                <option
+                  *ngFor="let university of universities"
+                  [value]="university.id"
+                >
                   {{ university.name }}
                 </option>
               </select>
-              <div *ngIf="isLoadingUniversities" class="absolute right-3 top-1/2 -translate-y-1/2">
-                <div class="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+              <div
+                *ngIf="isLoadingUniversities"
+                class="absolute right-3 top-1/2 -translate-y-1/2"
+              >
+                <div
+                  class="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full"
+                ></div>
               </div>
             </div>
             <div
@@ -325,8 +333,13 @@
           class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg mt-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 relative"
           [disabled]="registerForm.invalid || isSubmitting"
         >
-          <div *ngIf="isSubmitting" class="absolute inset-y-0 left-0 flex items-center pl-3">
-            <div class="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+          <div
+            *ngIf="isSubmitting"
+            class="absolute inset-y-0 left-0 flex items-center pl-3"
+          >
+            <div
+              class="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"
+            ></div>
           </div>
           <span *ngIf="!isSubmitting">Sign Up</span>
           <span *ngIf="isSubmitting" class="ml-6">Signing up...</span>
@@ -346,4 +359,6 @@
   </div>
 </div>
 
-<app-verification-sent-modal *ngIf="showVerificationModal"></app-verification-sent-modal>
+<app-verification-sent-modal
+  *ngIf="showVerificationModal"
+></app-verification-sent-modal>
