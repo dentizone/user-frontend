@@ -1,6 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { QuillEditorComponent } from 'ngx-quill';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -9,10 +21,15 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Subject, takeUntil } from 'rxjs';
 
 import { AuthService } from '../../core/services/auth.service';
-import { ICategory, IPost, PostService } from '../../core/services/post.service';
+import {
+  ICategory,
+  IPost,
+  PostService,
+} from '../../core/services/post.service';
 
-import "quill/dist/quill.core.css";
+import 'quill/dist/quill.core.css';
 import { PostUnderReviewComponent } from '../../shared/components/post-under-review/post-under-review.component';
+import { KycRequiredModalComponent } from '../Auth/KYC/kyc-required.component';
 
 interface ImagePreview {
   path: string;
@@ -38,16 +55,17 @@ interface ImageUploadState {
     DropdownModule,
     FormsModule,
     QuillEditorComponent,
-    PostUnderReviewComponent
+    PostUnderReviewComponent,
+    KycRequiredModalComponent, // Add the modal component here
   ],
   templateUrl: './add-new-post.component.html',
-  styleUrl: './add-new-post.component.css'
+  styleUrl: './add-new-post.component.css',
 })
 export class AddNewPostComponent implements OnInit, OnDestroy {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-  
+
   private readonly destroy$ = new Subject<void>();
-  
+
   categories: ICategory[] = [];
   subCategories: ICategory[] = [];
   userForm!: FormGroup;
@@ -55,32 +73,49 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
   invalidSubmit = false;
   invalid = false;
   isLoading = false;
-  
+
   // Loading states for categories
   isLoadingCategories = false;
   isLoadingSubcategories = false;
-  
+
   // Image handling
   selectedImages: File[] = [];
-  selectedImg: ImagePreview = { path: '/assets/Icons/image-gallery.png', index: 0 };
+  selectedImg: ImagePreview = {
+    path: '/assets/Icons/image-gallery.png',
+    index: 0,
+  };
   imagePreviews: string[] = [];
   imageUploadStates: ImageUploadState[] = [];
   errorMessage: string = '';
   isUploadingAnyImage = false;
-  
+
   // Price calculation
   netPrice = 0;
   commissionValue = 0;
   commissionRate = 0.02;
-  
+
   // Cities list
   cities = [
-    'Alexandria', 'Aswan', 'Asyut', 'Cairo', 'Damietta',
-    'Fayoum', 'Giza', 'Ismailia', 'Luxor', 'Mansoura',
-    'Port Said', 'Shubra El-Kheima', 'Suez', 'Tanta', 'Zagazig',
+    'Alexandria',
+    'Aswan',
+    'Asyut',
+    'Cairo',
+    'Damietta',
+    'Fayoum',
+    'Giza',
+    'Ismailia',
+    'Luxor',
+    'Mansoura',
+    'Port Said',
+    'Shubra El-Kheima',
+    'Suez',
+    'Tanta',
+    'Zagazig',
   ];
 
   postUnderReview = false;
+  showKycModal = false;
+  private userKycStatus: number | undefined;
 
   constructor(
     private readonly postService: PostService,
@@ -89,6 +124,13 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.authService.currentUser$.subscribe((user) => {
+      this.userKycStatus = user?.kycStatus;
+      if (this.userKycStatus !== 3) {
+        // 3 = Approved
+        this.showKycModal = true;
+      }
+    });
     this.initializeForm();
     this.loadCategories();
   }
@@ -108,12 +150,13 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
       condition: new FormControl('', [Validators.required]),
       price: new FormControl('', [Validators.required, Validators.min(0)]),
       city: new FormControl('', [Validators.required]),
-      address: new FormControl('', [Validators.required])
+      address: new FormControl('', [Validators.required]),
     });
 
     // Listen to price changes for commission calculation
-    this.userForm.get('price')?.valueChanges
-      .pipe(takeUntil(this.destroy$))
+    this.userForm
+      .get('price')
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.calculateCommission();
       });
@@ -121,7 +164,8 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
 
   private loadCategories(): void {
     this.isLoadingCategories = true;
-    this.postService.getCategories()
+    this.postService
+      .getCategories()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (categories) => {
@@ -131,7 +175,7 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
         error: (error) => {
           console.error('Error fetching categories:', error);
           this.isLoadingCategories = false;
-        }
+        },
       });
   }
 
@@ -143,13 +187,14 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
     }
 
     this.isLoadingSubcategories = true;
-    this.postService.getSubcategories(categoryId)
+    this.postService
+      .getSubcategories(categoryId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (subCategories) => {
           this.subCategories = subCategories;
           this.isLoadingSubcategories = false;
-          
+
           // Auto-select the first subcategory if available
           if (subCategories.length > 0) {
             this.userForm.patchValue({ subcategory: subCategories[0].id });
@@ -162,7 +207,7 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
           console.error('Error fetching subcategories:', error);
           this.isLoadingSubcategories = false;
           this.userForm.patchValue({ subcategory: '' });
-        }
+        },
       });
   }
 
@@ -184,7 +229,9 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
   }
 
   private updateUploadingState(): void {
-    this.isUploadingAnyImage = this.imageUploadStates.some(state => state.isUploading);
+    this.isUploadingAnyImage = this.imageUploadStates.some(
+      (state) => state.isUploading
+    );
   }
 
   onDeleteImage(index: number): void {
@@ -192,9 +239,10 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
     const uploadState = this.imageUploadStates[index];
     if (uploadState && uploadState.imageId) {
       const imageId = uploadState.imageId; // Store in variable to avoid undefined issues
-      
+
       // Call delete API
-      this.postService.deleteImage(imageId)
+      this.postService
+        .deleteImage(imageId)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
@@ -212,14 +260,14 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
             if (imageIdIndex > -1) {
               this.imageIDs.splice(imageIdIndex, 1);
             }
-          }
+          },
         });
     }
-    
+
     // Remove from local state
     this.imageUploadStates.splice(index, 1);
     this.imagePreviews.splice(index, 1);
-    
+
     if (this.imagePreviews.length > 0) {
       this.selectedImg = { path: this.imagePreviews[0], index: 0 };
     } else {
@@ -255,20 +303,20 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
           file,
           preview,
           isUploading: true,
-          uploadSuccess: false
+          uploadSuccess: false,
         };
-        
+
         this.imageUploadStates.push(uploadState);
         this.imagePreviews.push(preview);
-        
+
         // Set as selected image if it's the first one
         if (this.imagePreviews.length === 1) {
           this.selectedImg = { path: preview, index: 0 };
         }
-        
+
         // Update uploading state
         this.updateUploadingState();
-        
+
         // Upload the image
         this.uploadImage(uploadState, this.imageUploadStates.length - 1);
       };
@@ -283,8 +331,9 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
     uploadState.isUploading = true;
     uploadState.uploadError = undefined;
     this.updateUploadingState();
-    
-    this.postService.uploadImage(uploadState.file)
+
+    this.postService
+      .uploadImage(uploadState.file)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
@@ -301,11 +350,14 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
           uploadState.uploadError = 'Failed to upload image. Please try again.';
           uploadState.uploadSuccess = false;
           this.updateUploadingState();
-        }
+        },
       });
   }
 
   onSubmit(): void {
+    if (this.showKycModal) {
+      return;
+    }
     this.invalidSubmit = false;
     this.invalid = false;
 
@@ -315,17 +367,19 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
     }
 
     // Check if we have any successfully uploaded images
-    const successfulUploads = this.imageUploadStates.filter(state => state.uploadSuccess);
+    const successfulUploads = this.imageUploadStates.filter(
+      (state) => state.uploadSuccess
+    );
     if (successfulUploads.length === 0) {
       this.invalid = true;
       return;
     }
 
     const formValue = this.userForm.value;
-    
+
     // Convert condition string to numeric value
     const conditionValue = formValue.condition === 'new' ? 1 : 0;
-    
+
     const postData: IPost = {
       title: formValue.title,
       description: formValue.description,
@@ -336,11 +390,12 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
       categoryId: formValue.category,
       subCategoryId: formValue.subcategory,
       expireDate: formValue.expiryDate || undefined,
-      assetIds: this.imageIDs
+      assetIds: this.imageIDs,
     };
 
     this.isLoading = true;
-    this.postService.createPost(postData)
+    this.postService
+      .createPost(postData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
@@ -352,7 +407,11 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
           console.error('Error creating post:', error);
           this.isLoading = false;
           this.errorMessage = 'Failed to create post. Please try again.';
-        }
+        },
       });
+  }
+
+  closeKycModal() {
+    this.showKycModal = false;
   }
 }
