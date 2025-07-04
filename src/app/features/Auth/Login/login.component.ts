@@ -6,10 +6,10 @@ import {
 } from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 
-import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -41,7 +41,7 @@ export class LoginComponent {
       this.authService.login({ email, password }).subscribe({
         next: () => {
           this.isLoading = false;
-          this.router.navigate(['/']);
+          window.location.href = '/marketplace';
         },
         error: (error) => {
           this.isLoading = false;
