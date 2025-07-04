@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { KycStatus } from '../../../../core/models/auth.models';
 import { ProfileService } from '../../service/profile.service';
 import { UserPostsComponent } from '../user-posts/user-posts.component';
 
@@ -53,33 +52,34 @@ export class PersonalInfoComponent implements OnInit {
 
   userPosts = [];
 
-  setVerificationBadge(kycStatus: KycStatus) {
+  setVerificationBadge(kycStatus: string) {
+    // kycStatus is now a string: 'Pending', 'InProgress', 'Approved', 'Rejected', 'Expired', 'Cancelled', 'Suspended'
     switch (kycStatus) {
-      case KycStatus.Pending:
+      case 'Pending':
         this.verificationBadgeColor = 'bg-gray-200 text-gray-700';
-        this.verificationBadgeText = 'Pending Verification';
+        this.verificationBadgeText = 'Unverified';
         break;
-      case KycStatus.InProgress:
+      case 'InProgress':
         this.verificationBadgeColor = 'bg-yellow-100 text-yellow-700';
         this.verificationBadgeText = 'Verification In Progress';
         break;
-      case KycStatus.Approved:
+      case 'Approved':
         this.verificationBadgeColor = 'bg-emerald-100 text-emerald-700';
         this.verificationBadgeText = 'Verified';
         break;
-      case KycStatus.Rejected:
+      case 'Rejected':
         this.verificationBadgeColor = 'bg-red-100 text-red-700';
         this.verificationBadgeText = 'Rejected';
         break;
-      case KycStatus.Expired:
+      case 'Expired':
         this.verificationBadgeColor = 'bg-gray-300 text-gray-700';
         this.verificationBadgeText = 'Verification Expired';
         break;
-      case KycStatus.Cancelled:
+      case 'Cancelled':
         this.verificationBadgeColor = 'bg-gray-300 text-gray-700';
         this.verificationBadgeText = 'Verification Cancelled';
         break;
-      case KycStatus.Suspended:
+      case 'Suspended':
         this.verificationBadgeColor = 'bg-orange-100 text-orange-700';
         this.verificationBadgeText = 'Suspended';
         break;
@@ -91,8 +91,8 @@ export class PersonalInfoComponent implements OnInit {
 
   get verificationDescription(): string {
     if (!this.user) return '';
-    // UserState: 'Active', 'Inactive', 'Blocked', 'Deleted', 'Pending', 'Suspended'
-    // KycStatus: Pending = 1, InProgress = 2, Approved = 3, Rejected = 4, Expired = 5, Cancelled = 6, Suspended = 7
+    // UserState: 'Active', 'Inactive', 'Blocked', 'Deleted', 'Pending', 'Suspended', 'PendingVerification'
+    // kycStatus: 'Pending', 'InProgress', 'Approved', 'Rejected', 'Expired', 'Cancelled', 'Suspended'
     switch (this.user.status) {
       case 'Deleted':
         return 'This account has been permanently banned.';
@@ -103,16 +103,18 @@ export class PersonalInfoComponent implements OnInit {
       case 'Pending':
       case 'Inactive':
         return 'Account not active. Please complete registration.';
+      case 'PendingVerification':
+        return 'Unverified: Please verify your email to activate your account.';
       default:
         // Active
         switch (this.user.kycStatus) {
-          case 1: // Pending
+          case 'Pending':
             return 'Unverified: Please verify your email to activate your account.';
-          case 2: // InProgress
+          case 'InProgress':
             return 'KYC in progress. Please complete KYC to order or post for sale.';
-          case 3: // Approved
+          case 'Approved':
             return 'Verified: You have full access to all features.';
-          case 4: // Rejected
+          case 'Rejected':
             return 'KYC rejected. Please resubmit your documents.';
           default:
             return 'Please complete your profile verification.';
