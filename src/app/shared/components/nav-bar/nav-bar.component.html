@@ -39,55 +39,142 @@
           />
         </button>
         <div
-          class="z-50 absolute right-0 mt-2 w-48 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg"
+          class="z-50 absolute right-0 mt-2 w-56 text-base list-none bg-white divide-y divide-gray-100 rounded-xl shadow-2xl border border-gray-200"
           id="user-dropdown"
           [ngClass]="{ block: opened, hidden: !opened }"
         >
-          <div class="px-4 py-3 bg-blue-300">
-            <span class="block text-sm text-gray-900">{{ UserName }}</span>
-            <span class="block text-sm text-gray-500 truncate">{{
-              UserEmail
+          <div
+            class="px-4 py-4 bg-blue-300 rounded-t-xl flex items-center gap-3"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-8 h-8 text-blue-700 bg-white rounded-full p-1 border border-blue-200"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4.5 19.5a7.5 7.5 0 1115 0v.75a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V19.5z"
+              />
+            </svg>
+            <span class="block text-lg font-semibold text-gray-900">{{
+              user?.fullName || UserName
             }}</span>
           </div>
           <ul class="py-2" aria-labelledby="user-menu-button">
             <li>
               <a
                 routerLink="/profile"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-150 rounded-md"
                 (click)="closeDropdown()"
-                >Profile</a
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-5 h-5 text-blue-600"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4.5 19.5a7.5 7.5 0 1115 0v.75a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V19.5z"
+                  />
+                </svg>
+                Profile
+              </a>
             </li>
             <li>
               <a
                 routerLink="/profile/fav-list"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-150 rounded-md"
                 (click)="closeDropdown()"
-                >Favorite List</a
               >
-            </li>
-            <li>
-              <a
-                routerLink="/settings"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                (click)="closeDropdown()"
-                >Settings</a
-              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-5 h-5 text-pink-500"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M16.5 3.75a4.5 4.5 0 00-3.75 7.28A4.5 4.5 0 1016.5 3.75z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3c3.08 0 5.5 2.42 5.5 5.5 0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                  />
+                </svg>
+                Favorite List
+              </a>
             </li>
             <li>
               <a
                 routerLink="/cart"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-150 rounded-md"
                 (click)="closeDropdown()"
-                >Cart</a
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-5 h-5 text-green-600"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M2.25 3h1.386a.75.75 0 01.728.546l.347 1.385m2.25 9.75h9.708a.75.75 0 00.728-.546l3.172-12.69A.75.75 0 0019.5 1.5H6.75a.75.75 0 00-.728.546l-3.172 12.69a.75.75 0 00.728.954h1.386m2.25 0a2.25 2.25 0 104.5 0m-4.5 0a2.25 2.25 0 104.5 0"
+                  />
+                </svg>
+                Cart
+              </a>
             </li>
             <li>
               <a
                 (click)="logout()"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >Sign out</a
+                class="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-150 rounded-md cursor-pointer"
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-5 h-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M18 12h-9m0 0l3-3m-3 3l3 3"
+                  />
+                </svg>
+                Sign out
+              </a>
             </li>
           </ul>
         </div>
