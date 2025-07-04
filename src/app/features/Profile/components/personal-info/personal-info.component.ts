@@ -88,4 +88,35 @@ export class PersonalInfoComponent implements OnInit {
         this.verificationBadgeText = 'Unverified';
     }
   }
+
+  get verificationDescription(): string {
+    if (!this.user) return '';
+    // UserState: 'Active', 'Inactive', 'Blocked', 'Deleted', 'Pending', 'Suspended'
+    // KycStatus: Pending = 1, InProgress = 2, Approved = 3, Rejected = 4, Expired = 5, Cancelled = 6, Suspended = 7
+    switch (this.user.status) {
+      case 'Deleted':
+        return 'This account has been permanently banned.';
+      case 'Suspended':
+        return 'Account suspended due to violation of terms. Contact support.';
+      case 'Blocked':
+        return 'Account blocked. Please contact support.';
+      case 'Pending':
+      case 'Inactive':
+        return 'Account not active. Please complete registration.';
+      default:
+        // Active
+        switch (this.user.kycStatus) {
+          case 1: // Pending
+            return 'Unverified: Please verify your email to activate your account.';
+          case 2: // InProgress
+            return 'KYC in progress. Please complete KYC to order or post for sale.';
+          case 3: // Approved
+            return 'Verified: You have full access to all features.';
+          case 4: // Rejected
+            return 'KYC rejected. Please resubmit your documents.';
+          default:
+            return 'Please complete your profile verification.';
+        }
+    }
+  }
 }
