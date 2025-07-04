@@ -24,9 +24,16 @@ export class ProfileContainerComponent implements OnInit {
   avatarSrc = '/assets/avatar/tooth-extraction.png';
   userAddress = '';
 
+  sidebarOpen = false;
+  isDesktop = true;
+  resizeListener: any;
+
   constructor(private profileService: ProfileService) {}
 
   ngOnInit(): void {
+    this.updateSidebarMode();
+    this.resizeListener = () => this.updateSidebarMode();
+    window.addEventListener('resize', this.resizeListener);
     this.profileService.getUserProfile().subscribe({
       next: (data) => {
         this.user = data;
@@ -48,6 +55,19 @@ export class ProfileContainerComponent implements OnInit {
       },
       error: (err) => console.error('Failed to load profile', err),
     });
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('resize', this.resizeListener);
+  }
+
+  updateSidebarMode() {
+    this.isDesktop = window.innerWidth >= 768;
+    if (this.isDesktop) {
+      this.sidebarOpen = true;
+    } else {
+      this.sidebarOpen = false;
+    }
   }
 
   setUserStateBadge(userState: string) {

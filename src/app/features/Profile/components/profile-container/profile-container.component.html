@@ -1,8 +1,34 @@
 <div
-  class="flex min-h-screen bg-gradient-to-tr from-blue-50 via-white to-slate-100"
+  class="flex flex-col md:flex-row min-h-screen bg-gradient-to-tr from-blue-50 via-white to-slate-100"
 >
+  <!-- Mobile Hamburger Button -->
+  <button
+    class="md:hidden absolute top-4 left-4 z-30 p-2 rounded-lg bg-white/80 shadow-lg border border-slate-200"
+    (click)="sidebarOpen = !sidebarOpen"
+    aria-label="Open sidebar"
+  >
+    <svg
+      class="w-6 h-6 text-blue-700"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M4 6h16M4 12h16M4 18h16"
+      />
+    </svg>
+  </button>
   <aside
-    class="w-72 h-[90vh] m-6 rounded-3xl bg-white/70 shadow-2xl border border-slate-200 flex flex-col items-center backdrop-blur-xl overflow-y-auto"
+    class="fixed md:static top-0 left-0 z-20 w-64 md:w-72 h-full md:h-[90vh] m-0 md:m-6 rounded-none md:rounded-3xl bg-white/90 shadow-2xl border border-slate-200 flex flex-col items-center backdrop-blur-xl overflow-y-auto transition-transform duration-300 ease-in-out md:translate-x-0"
+    [ngClass]="{
+      '-translate-x-full': !sidebarOpen,
+      'translate-x-0': sidebarOpen,
+      'md:translate-x-0': true
+    }"
+    *ngIf="sidebarOpen || isDesktop"
   >
     <!-- Profile Info Card -->
     <div class="flex flex-col items-center mt-8 mb-6 w-full px-4">
@@ -279,7 +305,7 @@
     ></div>
     <div class="text-xs text-slate-400 mb-6">Dentizone &copy; 2024</div>
   </aside>
-  <main class="flex-1 p-8 bg-transparent">
+  <main class="flex-1 p-2 md:p-8 bg-transparent mt-20 md:mt-0">
     <router-outlet></router-outlet>
   </main>
 </div>
