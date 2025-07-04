@@ -1,71 +1,76 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, OnInit, afterNextRender } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
 import { Posts } from '../../core/models/posts';
-import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
-import { SidebarComponent } from './components/sideBar/sidebar/sidebar.component';
-import { ActivatedRoute } from '@angular/router';
-import { ListingService } from './listingService/listing.service';
-import { ToastComponent } from "../../shared/components/toast/toast.component";
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
+import { ToastComponent } from '../../shared/components/toast/toast.component';
+import { SidebarComponent } from './components/sideBar/sidebar/sidebar.component';
+import { ListingService } from './listingService/listing.service';
 @Component({
   selector: 'app-listing-page',
-  imports: [PaginatorModule, CommonModule, ProductCardComponent, SidebarComponent, ToastComponent,LoaderComponent],
+  imports: [
+    PaginatorModule,
+    CommonModule,
+    ProductCardComponent,
+    SidebarComponent,
+    ToastComponent,
+    LoaderComponent,
+  ],
   templateUrl: './listing-page.component.html',
 })
-export class ListingPageComponent implements OnInit{
-
-  selectedCategory='';
+export class ListingPageComponent implements OnInit {
+  selectedCategory = '';
   selectedCity = '';
-  desiredPrice!:number
+  desiredPrice!: number;
   toDate: Date = new Date();
-  sortby=''
-  SortDirection!:boolean;
+  sortby = '';
+  SortDirection!: boolean;
   private initialDate: Date = new Date();
-  selectedConditions: string='';
+  selectedConditions: string = '';
 
-  waitLoading=true;
-  title=''
-  showToast=false;
-  message=''
-  isSuccess=true;
-  Toast(message:string){
-    this.message=message;
+  waitLoading = true;
+  title = '';
+  showToast = false;
+  message = '';
+  isSuccess = true;
+  Toast(message: string) {
+    this.message = message;
     this.showToast = true;
-        setTimeout(() => {
-          this.showToast = false;
-          this.isSuccess=true;
-        }, 3000);
+    setTimeout(() => {
+      this.showToast = false;
+      this.isSuccess = true;
+    }, 3000);
   }
-  handleToast(obj: { toast: boolean, message: string, isSuccess:boolean }) {
+  handleToast(obj: { toast: boolean; message: string; isSuccess: boolean }) {
     this.showToast = obj.toast;
     this.message = obj.message;
-    this.isSuccess=obj.isSuccess;
+    this.isSuccess = obj.isSuccess;
   }
-  
+
   ngOnInit(): void {
-    
-   this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.selectedCategory = params['category'];
-      this.selectedCity=params['city'];
+      this.selectedCity = params['city'];
       this.desiredPrice = params['price'];
-      this.toDate=params['toDate']
-      this.sortby=params['sortBy']
-      this.selectedConditions=params['conditions']
-      this.title=params['category'];
-    
+      this.toDate = params['toDate'];
+      this.sortby = params['sortBy'];
+      this.selectedConditions = params['conditions'];
+      this.title = params['category'];
+
       if (this.selectedCategory && this.desiredPrice) {
-        this.waitLoading=false
+        this.waitLoading = false;
         this.loadItems();
-      }else{
+      } else {
         setTimeout(() => {
-          this.waitLoading=false;
+          this.waitLoading = false;
           this.loadItems();
         }, 1000);
       }
     });
   }
-  
+
   loadItems() {
     this.waitLoading = true;
     let condition;
@@ -74,7 +79,9 @@ export class ListingPageComponent implements OnInit{
     } else {
       condition = 1;
     }
-    if (this.selectedCity == 'all' || this.selectedCity == undefined) { this.selectedCity = ''; }
+    if (this.selectedCity == 'all' || this.selectedCity == undefined) {
+      this.selectedCity = '';
+    }
 
     let sortField = '';
     let sortDirection = true;
@@ -101,8 +108,12 @@ export class ListingPageComponent implements OnInit{
         break;
     }
 
-    if (!this.desiredPrice && this.sidebarComponent) { this.desiredPrice = this.sidebarComponent.maxPrice; }
-    if (this.selectedCategory == 'all') { this.selectedCategory = ''; }
+    if (!this.desiredPrice && this.sidebarComponent) {
+      this.desiredPrice = this.sidebarComponent.maxPrice;
+    }
+    if (this.selectedCategory == 'all') {
+      this.selectedCategory = '';
+    }
 
     let body = {
       category: this.selectedCategory,
@@ -111,12 +122,12 @@ export class ListingPageComponent implements OnInit{
       Condition: condition,
       SortBy: sortField,
       SortDirection: sortDirection,
-      keyword: this.sidebarComponent ? this.sidebarComponent.keyword : ''
+      keyword: this.sidebarComponent ? this.sidebarComponent.keyword : '',
     };
     this.waitLoading = false;
     this.posts.getPostsByCategory(body).subscribe({
-      next: (data) => this.clinicalproduct = data,
-      error: (err) => console.error('Error:', err)
+      next: (data) => (this.clinicalproduct = data),
+      error: (err) => console.error('Error:', err),
     });
   }
   @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
@@ -126,7 +137,10 @@ export class ListingPageComponent implements OnInit{
   totalPages = 5;
   pages: number[] = [];
 
-  constructor(private route: ActivatedRoute,private posts: ListingService) {
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly posts: ListingService
+  ) {
     this.updatePages();
   }
 

@@ -28,7 +28,7 @@ export class ProfileContainerComponent implements OnInit {
   isDesktop = true;
   resizeListener: any;
 
-  constructor(private profileService: ProfileService) {}
+  constructor(private readonly profileService: ProfileService) {}
 
   ngOnInit(): void {
     this.updateSidebarMode();

@@ -11,7 +11,10 @@ import { ProfileService } from '../../service/profile.service';
 })
 export class UserPostsComponent implements OnInit {
   Current: Posts[] = [];
-  constructor(private profileService: ProfileService, private router: Router) {}
+  constructor(
+    private readonly profileService: ProfileService,
+    private readonly router: Router
+  ) {}
   ngOnInit(): void {
     this.profileService.getUserPosts().subscribe({
       next: (data) => {

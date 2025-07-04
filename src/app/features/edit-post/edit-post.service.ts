@@ -4,18 +4,18 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EditPostService {
+  constructor(private readonly _httpClient: HttpClient) {}
 
-  constructor(private _httpClient:HttpClient) { }
-
-  getPostById(id:string):Observable<any>{
-    return this._httpClient.get(`https://apit.gitnasr.com/api/Posts/${id}`)
+  getPostById(id: string): Observable<any> {
+    return this._httpClient.get(`https://apit.gitnasr.com/api/Posts/${id}`);
   }
 
   updatePost(id: string, postData: any): Observable<any> {
-    return this._httpClient.put(`https://apit.gitnasr.com/api/Posts/${id}`, postData)
+    return this._httpClient
+      .put(`https://apit.gitnasr.com/api/Posts/${id}`, postData)
       .pipe(
         catchError((error) => {
           return throwError(() => error);

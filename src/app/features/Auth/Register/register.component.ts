@@ -55,11 +55,11 @@ export class RegisterComponent implements OnInit {
   showVerificationModal = false;
 
   constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private authService: AuthService,
-    private universityService: UniversityService,
-    private toastr: ToastrService
+    private readonly fb: FormBuilder,
+    private readonly router: Router,
+    private readonly authService: AuthService,
+    private readonly universityService: UniversityService,
+    private readonly toastr: ToastrService
   ) {
     this.registerForm = this.fb.group(
       {

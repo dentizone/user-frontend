@@ -9,7 +9,10 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './kyc.component.css',
 })
 export class KycComponent {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router
+  ) {}
 
   logout() {
     this.authService.logout().subscribe({

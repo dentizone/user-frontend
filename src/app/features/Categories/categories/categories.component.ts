@@ -6,12 +6,12 @@ import { LoaderComponent } from '../../../shared/components/loader/loader.compon
 import { CategoriesService } from '../categories.service';
 import { Category } from '../category';
 
-import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, LoaderComponent,FormsModule],
+  imports: [CommonModule, LoaderComponent, FormsModule],
   templateUrl: './categories.component.html',
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
@@ -19,7 +19,10 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private readonly _categoriesService: CategoriesService,private router: Router) {}
+  constructor(
+    private readonly _categoriesService: CategoriesService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit(): void {
     this._categoriesService
@@ -42,7 +45,9 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
   navigateToListing(category: any) {
-    this.router.navigate(['/marketplace'], { queryParams: { category: category.name } });
+    this.router.navigate(['/marketplace'], {
+      queryParams: { category: category.name },
+    });
   }
   // categories: Category[] = [
   //   {

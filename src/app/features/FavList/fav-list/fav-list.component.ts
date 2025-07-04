@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FavsService } from '../../favorites/favs.service';
 import { RouterLink } from '@angular/router';
+import { FavsService } from '../../favorites/favs.service';
 
 @Component({
   selector: 'app-fav-list',
@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
 })
 export class FavListComponent implements OnInit {
   favlist: any = [];
-  constructor(private favService: FavsService) {}
+  constructor(private readonly favService: FavsService) {}
   ngOnInit(): void {
     this.loadFav();
   }
