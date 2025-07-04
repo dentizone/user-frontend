@@ -55,6 +55,10 @@ export class NavBarComponent implements OnInit {
     this.mobileMenuOpened = !this.mobileMenuOpened;
   }
 
+  closeDropdown() {
+    this.opened = false;
+  }
+
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {
     const target = event.target as HTMLElement;
