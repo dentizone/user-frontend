@@ -2,34 +2,42 @@ import { Component, HostListener, OnInit } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 import { ProfileService } from '../../../features/Profile/service/profile.service';
 
-@Component({  selector: 'app-nav-bar',
+@Component({
+  selector: 'app-nav-bar',
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
 })
-export class NavBarComponent implements OnInit{
-
+export class NavBarComponent implements OnInit {
   user: any;
   ngOnInit(): void {
-    this.profileService.getUserProfile().subscribe({
-      next: data => {this.user = data;
-        
-        this.UserName=this.user.fullName.split(' ')[0];
-        this.UserEmail=this.user.username;
-      },
-      error: err => console.error('Failed to load profile', err)
-    });
+    if (this.authService.isAuthenticated()) {
+      this.profileService.getUserProfile().subscribe({
+        next: (data) => {
+          this.user = data;
+
+          this.UserName = this.user.fullName.split(' ')[0];
+          this.UserEmail = this.user.username;
+        },
+        error: (err) => console.error('Failed to load profile', err),
+      });
+    }
   }
 
   opened = false;
   mobileMenuOpened = false;
   UserName = 'User';
   UserEmail = 'User@Email.com';
-  
-  constructor(private readonly router: Router,private profileService: ProfileService) {}
+
+  constructor(
+    private readonly router: Router,
+    private profileService: ProfileService,
+    private authService: AuthService
+  ) {}
 
   isActive(route: string): boolean {
     return this.router.url === route;
@@ -52,8 +60,7 @@ export class NavBarComponent implements OnInit{
   }
 
   logout() {
-  localStorage.clear();
-  this.router.navigate(['/home']); 
-}
-
+    localStorage.clear();
+    this.router.navigate(['/home']);
+  }
 }

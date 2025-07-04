@@ -73,7 +73,6 @@ export const routes: Routes = [
 
   {
     path: '',
-    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -89,6 +88,7 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
+        canActivate: [AuthGuard],
         loadComponent: () =>
           import(
             './features/Profile/components/profile-container/profile-container.component'
@@ -152,6 +152,7 @@ export const routes: Routes = [
       },
       {
         path: 'add-new-post',
+        canActivate: [AuthGuard],
         loadComponent: () =>
           import('./features/add-new-post/add-new-post.component').then(
             (m) => m.AddNewPostComponent
@@ -159,14 +160,15 @@ export const routes: Routes = [
       },
       {
         path: 'edit-post/:id',
+        canActivate: [AuthGuard],
         loadComponent: () =>
           import('./features/edit-post/edit-post/edit-post.component').then(
             (m) => m.EditPostComponent
           ),
       },
-
       {
         path: 'cart',
+        canActivate: [AuthGuard],
         loadComponent: () =>
           import('./features/Cart/cart/cart.component').then(
             (m) => m.CartComponent
@@ -174,20 +176,17 @@ export const routes: Routes = [
       },
       {
         path: 'review',
+        canActivate: [AuthGuard],
         loadComponent: () =>
           import('./features/Review/review/review.component').then(
             (m) => m.ReviewComponent
           ),
       },
-     
     ],
   },
-
- 
 
   {
     path: '**',
     redirectTo: 'auth/login',
   },
-
 ];
