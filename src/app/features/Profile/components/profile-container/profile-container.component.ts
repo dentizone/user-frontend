@@ -37,20 +37,20 @@ export class ProfileContainerComponent implements OnInit {
     this.profileService.getUserProfile().subscribe({
       next: (data) => {
         this.user = data;
-        this.userName = this.user.fullName || this.user.username || 'User';
+        this.userName = this.user.fullName ?? this.user.username ?? 'User';
         this.generatedName =
-          this.user.username ||
+          this.user.username ??
           'user-' + (this.user.id ? this.user.id.slice(-4) : 'xxxx');
-        this.userEmail = this.user.email || this.user.username || '';
+        this.userEmail = this.user.email ?? this.user.username ?? '';
         this.academicYear = this.user.academicYear
           ? 'Year ' + this.user.academicYear
           : '';
         this.userUniversity =
-          this.user.universityName || this.user.unversityName || '';
-        this.userPhoneNumber = this.user.phoneNumber || '';
+          this.user.universityName ?? this.user.unversityName ?? '';
+        this.userPhoneNumber = this.user.phoneNumber ?? '';
         this.avatarSrc =
-          this.user.avatarUrl || '/assets/avatar/tooth-extraction.png';
-        this.userAddress = this.user.address || '';
+          this.user.avatarUrl ?? '/assets/avatar/tooth-extraction.png';
+        this.userAddress = this.user.address ?? '';
         this.setUserStateBadge(this.user.status);
       },
       error: (err) => console.error('Failed to load profile', err),

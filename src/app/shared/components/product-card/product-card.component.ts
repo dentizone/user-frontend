@@ -42,7 +42,7 @@ export class ProductCardComponent {
 
   getFirstLines(html: string, lines = 2): string {
     const plainText =
-      new DOMParser().parseFromString(html, 'text/html').body.textContent || '';
+      new DOMParser().parseFromString(html, 'text/html').body.textContent ?? '';
     return plainText.split('.').slice(0, lines).join('.');
   }
   onAddToCart(id: string) {

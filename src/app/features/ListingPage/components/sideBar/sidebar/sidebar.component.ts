@@ -63,7 +63,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   private initializeFilters(): void {
     this.desiredPrice = this.sidebarData.maxPrice;
-    this.activeCategory = this.sidebarData.categories[0]?.categoryName || '';
+    this.activeCategory = this.sidebarData.categories[0]?.categoryName ?? '';
     this.selectedCity = 'all';
   }
 
@@ -219,8 +219,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   clearFilters(): void {
-    this.activeCategory = this.sidebarData.categories[0]?.categoryName || '';
-    this.selectedCity = this.sidebarData.cities[0] || '';
+    this.activeCategory = this.sidebarData.categories[0]?.categoryName ?? '';
+    this.selectedCity = this.sidebarData.cities[0] ?? '';
     this.desiredPrice = this.sidebarData.maxPrice;
     this.toDate = new Date();
     this.selectedConditions = [];

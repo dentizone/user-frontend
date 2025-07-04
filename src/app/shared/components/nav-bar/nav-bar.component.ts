@@ -32,8 +32,8 @@ export class NavBarComponent implements OnInit {
       this.userSub = this.authService.currentUser$.subscribe((user) => {
         if (user) {
           this.user = user;
-          this.UserName = user.fullName?.split(' ')[0] || 'User';
-          this.UserEmail = user.email || user.username || 'User@Email.com';
+          this.UserName = user.fullName?.split(' ')[0] ?? 'User';
+          this.UserEmail = user.email ?? user.username ?? 'User@Email.com';
         }
       });
     }

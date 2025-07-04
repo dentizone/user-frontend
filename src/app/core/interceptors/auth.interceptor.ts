@@ -1,18 +1,34 @@
-import { BehaviorSubject, Observable, catchError, filter, switchMap, take, throwError } from 'rxjs';
-import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpHandlerFn,
+  HttpInterceptorFn,
+  HttpRequest,
+} from '@angular/common/http';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  filter,
+  switchMap,
+  take,
+  throwError,
+} from 'rxjs';
 
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
-export const AuthInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
+export const AuthInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn
+) => {
   const authService = inject(AuthService);
   const router = inject(Router);
   let isRefreshing = false;
   const refreshTokenSubject = new BehaviorSubject<any>(null);
 
-  const accessToken = authService.getAccessToken();
-  
+  const accessToken = authService.getAccessToken() ?? '';
+
   if (accessToken) {
     req = addToken(req, accessToken);
   }
@@ -20,7 +36,14 @@ export const AuthInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401 && !req.url.includes('refresh')) {
-        return handle401Error(req, next, authService, router, isRefreshing, refreshTokenSubject);
+        return handle401Error(
+          req,
+          next,
+          authService,
+          router,
+          isRefreshing,
+          refreshTokenSubject
+        );
       }
       return throwError(() => error);
     })
@@ -30,8 +53,8 @@ export const AuthInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
 function addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
   return request.clone({
     setHeaders: {
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
 }
 
@@ -54,29 +77,31 @@ function handle401Error(
       return throwError(() => new Error('No refresh token available'));
     }
 
-    return authService.refreshToken({
-      refreshToken,
-      accessToken: authService.getAccessToken() || ''
-    }).pipe(
-      switchMap((response) => {
-        isRefreshing = false;
-        refreshTokenSubject.next(response.accessToken);
-        return next(addToken(request, response.accessToken));
-      }),
-      catchError((err) => {
-        isRefreshing = false;
-        authService.clearAuthData();
-        router.navigate(['/auth/login']);
-        return throwError(() => err);
+    return authService
+      .refreshToken({
+        refreshToken,
+        accessToken: authService.getAccessToken() ?? '',
       })
-    );
+      .pipe(
+        switchMap((response) => {
+          isRefreshing = false;
+          refreshTokenSubject.next(response.accessToken);
+          return next(addToken(request, response.accessToken));
+        }),
+        catchError((err) => {
+          isRefreshing = false;
+          authService.clearAuthData();
+          router.navigate(['/auth/login']);
+          return throwError(() => err);
+        })
+      );
   }
 
   return refreshTokenSubject.pipe(
-    filter(token => token != null),
+    filter((token) => token != null),
     take(1),
-    switchMap(token => {
+    switchMap((token) => {
       return next(addToken(request, token));
     })
   );
-} 
+}

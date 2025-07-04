@@ -1,23 +1,33 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { EditPostService } from '../edit-post.service';
-import { PostUnderReviewComponent } from "../../../shared/components/post-under-review/post-under-review.component";
-import { QuillModule } from 'ngx-quill';
 import { CommonModule } from '@angular/common';
-import { ICategory, PostService } from '../../../core/services/post.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { QuillModule } from 'ngx-quill';
 import { Subject, takeUntil } from 'rxjs';
+import { ICategory, PostService } from '../../../core/services/post.service';
+import { PostUnderReviewComponent } from '../../../shared/components/post-under-review/post-under-review.component';
+import { EditPostService } from '../edit-post.service';
 
 @Component({
   selector: 'app-edit-post',
-  imports: [PostUnderReviewComponent, QuillModule, CommonModule,ReactiveFormsModule,FormsModule],
+  imports: [
+    PostUnderReviewComponent,
+    QuillModule,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
   templateUrl: './edit-post.component.html',
-  styleUrl: './edit-post.component.css'
+  styleUrl: './edit-post.component.css',
 })
 export class EditPostComponent implements OnInit {
-
   private readonly destroy$ = new Subject<void>();
-
 
   userForm!: FormGroup;
   postId!: string;
@@ -31,14 +41,26 @@ export class EditPostComponent implements OnInit {
   categories: ICategory[] = [];
   subCategories: ICategory[] = [];
 
-    // Loading states for categories
+  // Loading states for categories
   isLoadingCategories = false;
   isLoadingSubcategories = false;
 
   cities = [
-    'Alexandria', 'Aswan', 'Asyut', 'Cairo', 'Damietta',
-    'Fayoum', 'Giza', 'Ismailia', 'Luxor', 'Mansoura',
-    'Port Said', 'Shubra El-Kheima', 'Suez', 'Tanta', 'Zagazig',
+    'Alexandria',
+    'Aswan',
+    'Asyut',
+    'Cairo',
+    'Damietta',
+    'Fayoum',
+    'Giza',
+    'Ismailia',
+    'Luxor',
+    'Mansoura',
+    'Port Said',
+    'Shubra El-Kheima',
+    'Suez',
+    'Tanta',
+    'Zagazig',
   ];
 
   status: string = '';
@@ -51,7 +73,10 @@ export class EditPostComponent implements OnInit {
   imageIDs: string[] = [];
   imageUploadStates: ImageUploadState[] = [];
   imagePreviews: string[] = [];
-  selectedImg: ImagePreview = { path: '/assets/Icons/image-gallery.png', index: 0 };
+  selectedImg: ImagePreview = {
+    path: '/assets/Icons/image-gallery.png',
+    index: 0,
+  };
   isUploadingAnyImage = false;
   invalid = false;
 
@@ -59,7 +84,7 @@ export class EditPostComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private editPostService: EditPostService,
-    private postService:PostService,
+    private postService: PostService,
     private router: Router
   ) {}
 
@@ -92,32 +117,37 @@ export class EditPostComponent implements OnInit {
     this.editPostService.getPostById(this.postId).subscribe({
       next: (post: any) => {
         // Find category ID by name
-        const category = this.categories.find(cat => cat.name === post.category);
+        const category = this.categories.find(
+          (cat) => cat.name === post.category
+        );
         const categoryId = category ? category.id : '';
         // Patch category first
         this.userForm.patchValue({
-          category: categoryId
+          category: categoryId,
         });
         // Load subcategories for this category, then patch subcategory
         if (categoryId) {
           this.isLoadingSubcategories = true;
-          this.postService.getSubcategories(categoryId)
+          this.postService
+            .getSubcategories(categoryId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (subCategories) => {
                 this.subCategories = subCategories;
                 this.isLoadingSubcategories = false;
                 // Find subcategory ID by name
-                const subCategory = subCategories.find(sub => sub.name === post.subCatgory);
+                const subCategory = subCategories.find(
+                  (sub) => sub.name === post.subCatgory
+                );
                 const subCategoryId = subCategory ? subCategory.id : '';
                 this.userForm.patchValue({
-                  subcategory: subCategoryId
+                  subcategory: subCategoryId,
                 });
               },
               error: () => {
                 this.isLoadingSubcategories = false;
                 this.userForm.patchValue({ subcategory: '' });
-              }
+              },
             });
         }
         // Patch the rest of the form
@@ -157,7 +187,9 @@ export class EditPostComponent implements OnInit {
       return;
     }
     // Check if we have any successfully uploaded images
-    const successfulUploads = this.imageUploadStates.filter(state => state.uploadSuccess);
+    const successfulUploads = this.imageUploadStates.filter(
+      (state) => state.uploadSuccess
+    );
     if (successfulUploads.length === 0) {
       this.invalid = true;
       return;
@@ -173,70 +205,70 @@ export class EditPostComponent implements OnInit {
       city: formValue.city,
       categoryId: formValue.category,
       subCategoryId: formValue.subcategory,
-      expireDate: formValue.expiryDate || undefined,
-      assetIds: this.imageIDs
+      expireDate: formValue.expiryDate ?? undefined,
+      assetIds: this.imageIDs,
     };
     this.isLoading = true;
-    this.editPostService
-      .updatePost(this.postId, postData)
+    this.editPostService.updatePost(this.postId, postData).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.postUnderReview = true;
+      },
+      error: () => {
+        this.errorMessage = 'Failed to update post.';
+        this.isLoading = false;
+      },
+    });
+  }
+  private loadCategories(): void {
+    this.isLoadingCategories = true;
+    this.postService
+      .getCategories()
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: () => {
-          this.isLoading = false;
-          this.postUnderReview = true;
+        next: (categories) => {
+          this.categories = categories;
+          this.isLoadingCategories = false;
+          this.loadPost();
         },
-        error: () => {
-          this.errorMessage = 'Failed to update post.';
-          this.isLoading = false;
+        error: (error) => {
+          console.error('Error fetching categories:', error);
+          this.isLoadingCategories = false;
         },
       });
   }
-  private loadCategories(): void {
-      this.isLoadingCategories = true;
-      this.postService.getCategories()
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (categories) => {
-            this.categories = categories;
-            this.isLoadingCategories = false;
-            this.loadPost();
-          },
-          error: (error) => {
-            console.error('Error fetching categories:', error);
-            this.isLoadingCategories = false;
-          }
-        });
-    }
 
   onSelectCategory(): void {
-      const categoryId = this.userForm.get('category')?.value;
-      if (!categoryId) {
-        this.subCategories = [];
-        return;
-      }
-  
-      this.isLoadingSubcategories = true;
-      this.postService.getSubcategories(categoryId)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (subCategories) => {
-            this.subCategories = subCategories;
-            this.isLoadingSubcategories = false;
-            
-            // Auto-select the first subcategory if available
-            if (subCategories.length > 0) {
-              this.userForm.patchValue({ subcategory: subCategories[0].id });
-            } else {
-              // Reset subcategory selection if no subcategories available
-              this.userForm.patchValue({ subcategory: '' });
-            }
-          },
-          error: (error) => {
-            console.error('Error fetching subcategories:', error);
-            this.isLoadingSubcategories = false;
+    const categoryId = this.userForm.get('category')?.value;
+    if (!categoryId) {
+      this.subCategories = [];
+      return;
+    }
+
+    this.isLoadingSubcategories = true;
+    this.postService
+      .getSubcategories(categoryId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (subCategories) => {
+          this.subCategories = subCategories;
+          this.isLoadingSubcategories = false;
+
+          // Auto-select the first subcategory if available
+          if (subCategories.length > 0) {
+            this.userForm.patchValue({ subcategory: subCategories[0].id });
+          } else {
+            // Reset subcategory selection if no subcategories available
             this.userForm.patchValue({ subcategory: '' });
           }
-        });
-    }
+        },
+        error: (error) => {
+          console.error('Error fetching subcategories:', error);
+          this.isLoadingSubcategories = false;
+          this.userForm.patchValue({ subcategory: '' });
+        },
+      });
+  }
 
   // Image upload logic
   onFileSelected(event: any): void {
@@ -255,7 +287,7 @@ export class EditPostComponent implements OnInit {
           file,
           preview,
           isUploading: true,
-          uploadSuccess: false
+          uploadSuccess: false,
         };
         this.imageUploadStates.push(uploadState);
         this.imagePreviews.push(preview);
@@ -275,7 +307,8 @@ export class EditPostComponent implements OnInit {
     uploadState.uploadError = undefined;
     this.updateUploadingState();
     if (uploadState.file) {
-      this.postService.uploadImage(uploadState.file)
+      this.postService
+        .uploadImage(uploadState.file)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (response) => {
@@ -287,10 +320,11 @@ export class EditPostComponent implements OnInit {
           },
           error: (error) => {
             uploadState.isUploading = false;
-            uploadState.uploadError = 'Failed to upload image. Please try again.';
+            uploadState.uploadError =
+              'Failed to upload image. Please try again.';
             uploadState.uploadSuccess = false;
             this.updateUploadingState();
-          }
+          },
         });
     }
   }
@@ -299,7 +333,8 @@ export class EditPostComponent implements OnInit {
     const uploadState = this.imageUploadStates[index];
     if (uploadState && uploadState.imageId) {
       const imageId = uploadState.imageId;
-      this.postService.deleteImage(imageId)
+      this.postService
+        .deleteImage(imageId)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
@@ -313,7 +348,7 @@ export class EditPostComponent implements OnInit {
             if (imageIdIndex > -1) {
               this.imageIDs.splice(imageIdIndex, 1);
             }
-          }
+          },
         });
     }
     this.imageUploadStates.splice(index, 1);
@@ -337,20 +372,22 @@ export class EditPostComponent implements OnInit {
   }
 
   private updateUploadingState(): void {
-    this.isUploadingAnyImage = this.imageUploadStates.some(state => state.isUploading);
+    this.isUploadingAnyImage = this.imageUploadStates.some(
+      (state) => state.isUploading
+    );
   }
 
   // On load, initialize image upload state from assets
   private initializeImagesFromAssets(): void {
     if (this.assets && this.assets.length > 0) {
-      this.imageIDs = this.assets.map(asset => asset.id);
-      this.imagePreviews = this.assets.map(asset => asset.url);
+      this.imageIDs = this.assets.map((asset) => asset.id);
+      this.imagePreviews = this.assets.map((asset) => asset.url);
       this.imageUploadStates = this.assets.map((asset, idx) => ({
         file: null,
         preview: asset.url,
         isUploading: false,
         uploadSuccess: true,
-        imageId: asset.id
+        imageId: asset.id,
       }));
       this.selectedImg = { path: this.imagePreviews[0], index: 0 };
     }
@@ -369,7 +406,7 @@ export class EditPostComponent implements OnInit {
       error: () => {
         this.isDeleting = false;
         this.errorMessage = 'Failed to delete post.';
-      }
+      },
     });
   }
 }

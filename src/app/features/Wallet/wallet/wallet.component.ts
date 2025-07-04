@@ -53,7 +53,7 @@ export class WalletComponent implements OnInit {
         error: (err) => {
           console.error(err);
           this.toastr.error(
-            err.error?.Message || 'Something went wrong during withdrawal.'
+            err.error?.Message ?? 'Something went wrong during withdrawal.'
           );
         },
       });
