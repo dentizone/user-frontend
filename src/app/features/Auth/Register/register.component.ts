@@ -6,17 +6,25 @@ import {
   Validators,
 } from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { University, UniversityService } from '../../../core/services/university.service';
+import {
+  University,
+  UniversityService,
+} from '../../../core/services/university.service';
 
-import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 import { VerificationSentModalComponent } from './Component/verification-sent-modal/verification-sent-modal.component';
 
 @Component({
   standalone: true,
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule, ToastrModule, VerificationSentModalComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ToastrModule,
+    VerificationSentModalComponent,
+  ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
@@ -97,7 +105,7 @@ export class RegisterComponent implements OnInit {
         console.error('Failed to load universities:', error);
         this.toastr.error('Failed to load universities. Please try again.');
         this.isLoadingUniversities = false;
-      }
+      },
     });
   }
 
@@ -110,26 +118,30 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     if (this.registerForm.valid) {
       this.isSubmitting = true;
-      const { name, email, password, academicYear, universityId } = this.registerForm.value;
+      const { name, email, password, academicYear, universityId } =
+        this.registerForm.value;
       const registerData = {
         email,
         password,
         fullName: name,
         username: email.split('@')[0], // Using email prefix as username
         academicYear: parseInt(academicYear.split(' ')[1]),
-        universityId
+        universityId,
       };
 
       this.authService.register(registerData).subscribe({
         next: (response) => {
           this.isSubmitting = false;
+          this.authService['handleAuthentication'](response);
           this.showVerificationModal = true;
         },
         error: (error) => {
           this.isSubmitting = false;
           console.error('Registration failed:', error);
-          this.toastr.error(error.error?.Message || 'Registration failed. Please try again.');
-        }
+          this.toastr.error(
+            error.error?.Message || 'Registration failed. Please try again.'
+          );
+        },
       });
     } else {
       this.markFormGroupTouched(this.registerForm);
