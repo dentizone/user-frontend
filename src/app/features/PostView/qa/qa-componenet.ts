@@ -5,6 +5,7 @@ import { CarouselModule } from 'primeng/carousel';
 import { ProfileService } from '../../Profile/service/profile.service';
 import { QaSectionComponent } from '../components/qa-section/qa-section.component';
 import { QAService } from '../service/qa.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-qa-component',
@@ -25,21 +26,24 @@ export class QaComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly qaService: QAService,
-    private readonly profileService: ProfileService
+    private readonly profileService: ProfileService,
+    public readonly authService: AuthService
   ) {}
   ngOnInit(): void {
     this.productID = this.route.snapshot.paramMap.get('id')!;
     this.loadQuestions();
-    this.profileService.getUserProfile().subscribe({
-      next: (data) => {
-        this.userID = data.id;
-        //console.log(data.id)
-        if (this.userID === this.sellerID) {
-          this.authorized = true;
-        }
-        //console.log(this.userID,' seller  ',this.sellerID,'    ',this.authorized);
-      },
-    });
+    if (this.authService.isAuthenticated()) {
+      this.profileService.getUserProfile().subscribe({
+        next: (data) => {
+          this.userID = data.id;
+          //console.log(data.id)
+          if (this.userID === this.sellerID) {
+            this.authorized = true;
+          }
+          //console.log(this.userID,' seller  ',this.sellerID,'    ',this.authorized);
+        },
+      });
+    }
   }
   loadQuestions() {
     this.qaService.getQaByPostId(this.productID).subscribe({
