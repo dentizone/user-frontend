@@ -172,12 +172,12 @@ export class ListingPageComponent implements OnInit {
 
   onFilterChange(filters: any) {
     this.waitLoading = true;
+    this.currentPage = 1; // Reset pagination to first page on filter change
     this.selectedCategory = filters.category;
     this.selectedCity = filters.city;
     this.desiredPrice = filters.price;
     this.toDate = filters.toDate;
     this.sortby = filters.sortBy;
     this.selectedConditions = filters.conditions;
-    // Do NOT call loadItems here; let queryParams subscription handle it
   }
 }
