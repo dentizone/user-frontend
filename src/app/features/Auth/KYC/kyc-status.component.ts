@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-kyc-status',
   templateUrl: './kyc-status.component.html',
-  styleUrls: ['./kyc-status.component.css'],
   imports: [CommonModule],
   standalone: true,
 })
