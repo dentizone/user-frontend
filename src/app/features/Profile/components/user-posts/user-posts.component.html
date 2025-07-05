@@ -17,10 +17,10 @@
     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center mt-8"
   >
     <div
-      *ngFor="let item of Current; let i = index"
-      class="w-full max-w-sm flex flex-col justify-between bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden p-4 hover:shadow-2xl transition-all duration-200 min-h-[380px]"
+      *ngFor="let item of Current; trackBy: trackById"
+      class="w-full max-w-sm flex flex-col justify-between bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden p-4 hover:shadow-2xl transition-all duration-200 min-h-[450px]"
     >
-      <div class="relative w-full h-40 mb-4">
+      <div class="relative w-full h-40 mb-3">
         <button
           type="button"
           class="absolute top-2 right-2 z-10 p-1 bg-white border border-gray-300 cursor-pointer hover:bg-gray-200 rounded-full transition-colors duration-200"
@@ -29,28 +29,43 @@
         >
           <img src="/assets/Icons/edit.png" class="w-5 h-5" alt="edit" />
         </button>
+        <div class="absolute top-2 left-2 z-10 px-2 py-1 bg-white bg-opacity-80 rounded-lg text-xs font-medium">
+          <span [ngClass]="{
+            'text-green-600': item.status === 'Active',
+            'text-yellow-600': item.status === 'Pending',
+            'text-red-600': item.status === 'Inactive'
+          }">{{ item.status }}</span>
+        </div>
         <img
           class="w-full h-full object-cover rounded-xl"
-          [src]="item.assets[0].url"
+          [src]="(item.assets && item.assets.length > 0) ? item.assets[0].url : '/assets/items/image1.png'"
           alt="product"
         />
       </div>
-      <div class="flex flex-col flex-grow p-4">
-        <h5 class="text-xl font-semibold tracking-tight text-gray-900 mb-3">
-          {{ item.title }}
-        </h5>
-        <div class="text-sm text-gray-600 mb-5 relative">
+      <div class="flex flex-col  px-1">
+        <div class="flex justify-between items-start mb-1">
+          <h5 class="text-lg font-semibold tracking-tight text-gray-900 flex-grow truncate">
+            {{ item.title }}
+          </h5>
+          <span class="text-lg font-bold text-[#0077B6] whitespace-nowrap ml-2">
+            {{ item.price }} EGP
+          </span>
+        </div>
+        
+        <div class="flex flex-wrap gap-2 mb-2">
+          <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded-full">{{ item.category }}</span>
+          <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-0.5 rounded-full">{{ item.subCatgory }}</span>
+          <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-0.5 rounded-full">{{ item.condition }}</span>
+        </div>
+        
+        <div class="text-sm text-gray-600 mb-3 relative">
           <div class="ql-container ql-snow border-0">
-            <div class="ql-editor p-0 max-h-24 overflow-hidden" [innerHTML]="trimQuillContent(item.description)"></div>
+            <div class="ql-editor p-0 max-h-20 overflow-hidden" [innerHTML]="trimQuillContent(item.description)"></div>
             <div class="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent"></div>
           </div>
         </div>
-        <div class="mt-auto text-right">
-          <span class="text-xl font-bold text-[#0077B6]"
-            >{{ item.price }} EGP</span
-          >
-        </div>
-      </div>
+        
+      
     </div>
   </div>
   <button

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
@@ -8,7 +8,7 @@ import { ProfileService } from '../../service/profile.service';
 
 @Component({
   selector: 'app-user-posts',
-  imports: [CommonModule, RouterLink, QuillModule],
+  imports: [CommonModule, RouterLink, QuillModule, DatePipe],
   templateUrl: './user-posts.component.html',
   styleUrls: ['./user-posts.component.css'],
 })
@@ -109,7 +109,7 @@ export class UserPostsComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustHtml(truncated);
   }
 
-  trackById(item: Post) {
+  trackById(index: number, item: Post) {
     return item.id;
   }
 
