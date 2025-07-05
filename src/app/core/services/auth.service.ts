@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap, switchMap, catchError } from 'rxjs';
 import {
     AuthResponse,
     LoginRequestDto,
@@ -18,7 +18,7 @@ import { environment } from '../../../environments/environment';
 })
 export class AuthService {
   private readonly API_URL = `${environment.apiUrl}/api/auth`;
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  private readonly currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private readonly http: HttpClient) {
@@ -32,9 +32,9 @@ export class AuthService {
     }
   }
 
-  login(credentials: LoginRequestDto): Observable<AuthResponse> {
+  login(credentials: LoginRequestDto): Observable<User> {
     return this.http.post<AuthResponse>(`${this.API_URL}/login`, credentials).pipe(
-      tap(response => this.handleAuthentication(response))
+      switchMap(response => this.handleAuthentication(response))
     );
   }
 
@@ -83,21 +83,23 @@ export class AuthService {
     });
   }
 
-  private handleAuthentication(response: AuthResponse): void {
+  private handleAuthentication(response: AuthResponse): Observable<User> {
     localStorage.setItem('accessToken', response.accessToken);
     localStorage.setItem('refreshToken', response.refreshToken);
-    // Fetch and store user data
-    this.fetchCurrentUser();
+    return this.http.get<User>(`${environment.apiUrl}/api/Users/me`).pipe(
+      tap((user) => {
+        this.currentUserSubject.next(user);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      }),
+      catchError((err) => {
+        this.clearAuthData();
+        throw err;
+      })
+    );
   }
 
   private fetchCurrentUser(): void {
-    this.http.get<User>(`${environment.apiUrl}/api/Users/me`).subscribe({
-      next: (user) => {
-        this.currentUserSubject.next(user);
-        localStorage.setItem('currentUser', JSON.stringify(user));
-      },
-      error: () => this.clearAuthData()
-    });
+    // Method intentionally left blank or can be removed if not used
   }
 
   clearAuthData(): void {
@@ -119,9 +121,22 @@ export class AuthService {
     return localStorage.getItem('refreshToken');
   }
 
-  verifyEmail( token: string): Observable<any> {
+  verifyEmail(token: string): Observable<any> {
     return this.http.get(`${this.API_URL}/confirm-email`, {
-      params: {  token }
+      params: { token }
     });
+  }
+
+  fetchCurrentUserForGuard(): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/api/Users/me`).pipe(
+      tap((user) => {
+        this.currentUserSubject.next(user);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      }),
+      catchError((err) => {
+        this.clearAuthData();
+        throw err;
+      })
+    );
   }
 }
