@@ -46,6 +46,13 @@ export const routes: Routes = [
             (m) => m.KycComponent
           ),
       },
+      {
+        path: 'kyc/status',
+        loadComponent: () =>
+          import('./features/Auth/KYC/kyc-status.component').then(
+            (m) => m.KycStatusComponent
+          ),
+      },
     ],
   },
   {
