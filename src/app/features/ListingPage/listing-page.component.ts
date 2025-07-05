@@ -124,10 +124,15 @@ export class ListingPageComponent implements OnInit {
       SortDirection: sortDirection,
       keyword: this.sidebarComponent ? this.sidebarComponent.keyword : '',
     };
-    this.waitLoading = false;
     this.posts.getPostsByCategory(body).subscribe({
-      next: (data) => (this.clinicalproduct = data),
-      error: (err) => console.error('Error:', err),
+      next: (data) => {
+        this.clinicalproduct = data;
+        this.waitLoading = false;
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        this.waitLoading = false;
+      },
     });
   }
   @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
@@ -162,5 +167,16 @@ export class ListingPageComponent implements OnInit {
   onSidebarToggle(isOpen: boolean) {
     // Handle sidebar toggle event if needed
     console.log('Sidebar is now:', isOpen ? 'open' : 'closed');
+  }
+
+  onFilterChange(filters: any) {
+    this.waitLoading = true;
+    this.selectedCategory = filters.category;
+    this.selectedCity = filters.city;
+    this.desiredPrice = filters.price;
+    this.toDate = filters.toDate;
+    this.sortby = filters.sortBy;
+    this.selectedConditions = filters.conditions;
+    // Do NOT call loadItems here; let queryParams subscription handle it
   }
 }
