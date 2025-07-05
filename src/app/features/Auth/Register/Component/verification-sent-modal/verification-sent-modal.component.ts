@@ -53,6 +53,7 @@ export class VerificationSentModalComponent {
   }
 
   navigateToMarketplace() {
-    this.router.navigate(['/marketplace']);
+    window.location.href = '/marketplace';
+   
   }
 }
