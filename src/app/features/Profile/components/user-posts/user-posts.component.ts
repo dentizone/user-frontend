@@ -43,7 +43,7 @@ export class UserPostsComponent implements OnInit {
     tempDiv.innerHTML = html;
 
     // Get plain text to check length
-    const textContent = tempDiv.textContent || tempDiv.innerText || '';
+    const textContent = tempDiv.textContent ?? tempDiv.innerText ?? '';
 
     // If the text is short enough, return the original HTML
     if (textContent.length <= 150) {
@@ -60,7 +60,7 @@ export class UserPostsComponent implements OnInit {
       if (charCount >= maxChars) return output;
 
       if (node.nodeType === Node.TEXT_NODE) {
-        const text = node.textContent || '';
+        const text = node.textContent ?? '';
         const remainingChars = maxChars - charCount;
 
         if (charCount + text.length <= maxChars) {
@@ -83,15 +83,15 @@ export class UserPostsComponent implements OnInit {
 
         // Start tag
         output += `<${tagName}`;
-        for (let i = 0; i < element.attributes.length; i++) {
-          const attr = element.attributes[i];
+        for (const attr of element.attributes) {
           output += ` ${attr.name}="${attr.value}"`;
         }
         output += '>';
 
         // Process children
-        for (let i = 0; i < element.childNodes.length && charCount < maxChars; i++) {
-          output = processNode(element.childNodes[i], output);
+        for (const childNode of element.childNodes) {
+          if (charCount >= maxChars) break;
+          output = processNode(childNode, output);
         }
 
         // End tag
@@ -102,8 +102,9 @@ export class UserPostsComponent implements OnInit {
     };
 
     // Process the root nodes
-    for (let i = 0; i < tempDiv.childNodes.length && charCount < maxChars; i++) {
-      truncated = processNode(tempDiv.childNodes[i], truncated);
+    for (const childNode of tempDiv.childNodes) {
+      if (charCount >= maxChars) break;
+      truncated = processNode(childNode, truncated);
     }
 
     return this.sanitizer.bypassSecurityTrustHtml(truncated);
