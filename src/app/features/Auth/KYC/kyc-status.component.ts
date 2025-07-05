@@ -21,10 +21,18 @@ export class KycStatusComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe((user) => {
-      this.user = user;
-      this.kycStatus = user?.kycStatus ?? null;
-      this.loading = false;
+    this.loading = true;
+    this.authService.fetchCurrentUserForGuard().subscribe({
+      next: (user) => {
+        this.user = user;
+        this.kycStatus = user?.kycStatus ?? null;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.user = null;
+        this.kycStatus = null;
+      }
     });
   }
 
