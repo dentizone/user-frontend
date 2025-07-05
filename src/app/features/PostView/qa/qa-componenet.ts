@@ -36,11 +36,9 @@ export class QaComponent implements OnInit {
       this.profileService.getUserProfile().subscribe({
         next: (data) => {
           this.userID = data.id;
-          //console.log(data.id)
           if (this.userID === this.sellerID) {
             this.authorized = true;
           }
-          //console.log(this.userID,' seller  ',this.sellerID,'    ',this.authorized);
         },
       });
     }
@@ -50,10 +48,7 @@ export class QaComponent implements OnInit {
       next: (data) => {
         this.questions = data;
       },
-      error: (err) => {
-        // this.isSuccess=false;
-        // this.Toast("Something went wrong please refresh the page");
-      },
+      
     });
   }
   images: string[] = [
