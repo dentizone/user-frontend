@@ -61,8 +61,8 @@
               </ng-container>
             </ng-container>
             <ng-template #productList>
-              <ng-container *ngIf="clinicalproduct.length > 0; else noProducts">
-                @for (item of clinicalproduct; track $index) {
+              <ng-container *ngIf="Products.length > 0; else noProducts">
+                @for (item of Products; track $index) {
                   <app-product-card (showToastEvent)="handleToast($event)"  [product]="item"></app-product-card>
                 }
               </ng-container>

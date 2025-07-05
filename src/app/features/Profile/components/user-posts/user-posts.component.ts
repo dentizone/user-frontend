@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Posts } from '../../../../core/models/posts';
+import { Post } from '../../../../core/models/posts';
 import { ProfileService } from '../../service/profile.service';
 @Component({
   selector: 'app-user-posts',
@@ -10,7 +10,7 @@ import { ProfileService } from '../../service/profile.service';
   styleUrl: './user-posts.component.css',
 })
 export class UserPostsComponent implements OnInit {
-  Current: Posts[] = [];
+  Current: Post[] = [];
   constructor(
     private readonly profileService: ProfileService,
     private readonly router: Router
@@ -27,7 +27,7 @@ export class UserPostsComponent implements OnInit {
     });
   }
 
-  trackById(index: number, item: Posts) {
+  trackById(item: Post) {
     return item.id;
   }
 

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
-import { Posts } from '../../core/models/posts';
+import { Post, PostsResponse } from '../../core/models/posts';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
 import { SidebarComponent } from './components/sideBar/sidebar/sidebar.component';
@@ -85,7 +85,6 @@ export class ListingPageComponent implements OnInit {
     switch (this.sortby) {
       case 'createdAtAsc':
         sortField = 'createdAt';
-        sortDirection = true;
         break;
       case 'createdAtDesc':
         sortField = 'createdAt';
@@ -93,15 +92,13 @@ export class ListingPageComponent implements OnInit {
         break;
       case 'priceAsc':
         sortField = 'price';
-        sortDirection = true;
         break;
       case 'priceDesc':
         sortField = 'price';
         sortDirection = false;
         break;
       default:
-        sortField = '';
-        sortDirection = true;
+        // No additional sorting, use default sortField and sortDirection
         break;
     }
 
@@ -112,7 +109,8 @@ export class ListingPageComponent implements OnInit {
       this.selectedCategory = '';
     }
 
-    let body = {
+    // Include pagination in request
+    const body = {
       category: this.selectedCategory,
       city: this.selectedCity,
       MaxPrice: this.desiredPrice,
@@ -120,10 +118,14 @@ export class ListingPageComponent implements OnInit {
       SortBy: sortField,
       SortDirection: sortDirection,
       keyword: this.sidebarComponent ? this.sidebarComponent.keyword : '',
+      PageNumber: this.currentPage,
+  
     };
     this.posts.getPostsByCategory(body).subscribe({
-      next: (data) => {
-        this.clinicalproduct = data;
+      next: (data: PostsResponse) => {
+        this.Products = data.items;
+        this.totalPages = data.totalPages;
+        this.updatePages();
         this.waitLoading = false;
       },
       error: (err) => {
@@ -134,16 +136,17 @@ export class ListingPageComponent implements OnInit {
   }
   @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
 
-  clinicalproduct: Posts[] = [];
+  Products: Post[] = [];
   currentPage = 1;
-  totalPages = 5;
+  pageSize = 10;
+  totalPages = 0;
   pages: number[] = [];
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly posts: ListingService
   ) {
-    this.updatePages();
+    this.updatePages(); // initialize pagination
   }
 
   updatePages() {
@@ -153,6 +156,7 @@ export class ListingPageComponent implements OnInit {
   goToPage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
+    this.loadItems();
   }
 
   toggleSidebar() {
