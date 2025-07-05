@@ -21,8 +21,8 @@ export class KycComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
-    if (user && user.kycStatus !== KycStatus.Pending) {
+    const user = JSON.parse(localStorage.getItem('currentUser') ?? 'null');
+    if (user?.kycStatus !== KycStatus.Pending) {
       this.router.navigate(['/auth/kyc/status']);
     }
   }
