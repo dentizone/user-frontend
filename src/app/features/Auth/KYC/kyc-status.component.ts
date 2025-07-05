@@ -21,6 +21,15 @@ export class KycStatusComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Trigger refresh token on KYC status page load
+    const refreshToken = this.authService.getRefreshToken();
+    const accessToken = this.authService.getAccessToken();
+    if (refreshToken && accessToken) {
+      this.authService.refreshToken({ refreshToken, accessToken }).subscribe({
+        next: () => {},
+        error: () => {}
+      });
+    }
     this.loading = true;
     this.authService.fetchCurrentUserForGuard().subscribe({
       next: (user) => {
