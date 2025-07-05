@@ -1,148 +1,124 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Posts } from '../../../../core/models/posts';
-import { ReviewCardsComponent } from "../review-cards/review-cards.component";
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Router, RouterLink } from '@angular/router';
+import { QuillModule } from 'ngx-quill';
+import { Post } from '../../../../core/models/posts';
 import { ProfileService } from '../../service/profile.service';
-import { RouterLink } from '@angular/router';
+
 @Component({
   selector: 'app-user-posts',
-  imports: [CommonModule, FormsModule, ReviewCardsComponent,RouterLink],
+  imports: [CommonModule, RouterLink, QuillModule, DatePipe],
   templateUrl: './user-posts.component.html',
-  styleUrl: './user-posts.component.css'
+  styleUrls: ['./user-posts.component.css'],
 })
-export class UserPostsComponent implements OnInit{
-
-  constructor(private profileService:ProfileService){}
+export class UserPostsComponent implements OnInit {
+  Current: Post[] = [];
+  constructor(
+    private readonly profileService: ProfileService,
+    private readonly router: Router,
+    private readonly sanitizer: DomSanitizer
+  ) {}
   ngOnInit(): void {
     this.profileService.getUserPosts().subscribe({
-      next:data=>{
-        this.Current=data;
+      next: (data) => {
+        this.Current = data;
       },
-      error:err=>{
-        this.Current=[];
-        console.log(err)}
-    })
+      error: (err) => {
+        this.Current = [];
+        console.log(err);
+      },
+    });
   }
-  currentTab=0;
-  selectedTab='0'
-  reviews=[{
-    username:'User-1234',
-    avatarSrc:'/assets/avatar/tooth-extraction.png',
-    rate:3.5,
-    purchasedItemTitle:'File size 6',
-    comment:'Great seller'
-  },{
-    username:'User-Abc2',
-    avatarSrc:'/assets/avatar/dentist.png',
-    rate:5,
-    purchasedItemTitle:'File size 6',
-    comment:''
-  },{
-    username:'User-12uy',
-    avatarSrc:'/assets/avatar/tooth-extraction.png',
-    rate:4.5,
-    purchasedItemTitle:'Ultradent PermaFlo-A1',
-    comment:'Great product'
-  },{
-    username:'User-14iu',
-    avatarSrc:'/assets/avatar/tooth-extraction.png',
-    rate:5,
-    purchasedItemTitle:'Orthodontics Textbook',
-    comment:'The textbook had few more highlights than i expected'
-  },{
-    username:'User-1525',
-    avatarSrc:'/assets/avatar/dentist.png',
-    rate:3,
-    purchasedItemTitle:'File size 6',
-    comment:''
-  }]
-  ActivePosts:Posts[]=[
-    {title:"MANI K FILES ( SIZE 6 )",
-      id:'',
-      description:"Lorem ipsum is placeholder text commonly used in the mockups.",
-      price:"170",
-      assets:[{id:'',url:'/assets/items/image1.png'}],
-      rating:"3.5"
-    },{title:"Alphasil Rubber Base impression kit",
-      id:'',
-      description:"Lorem ipsum is placeholder text commonly used in the mockups.",
-      price:"1700",
-      assets:[{id:'',url:'/assets/items/image2.png'}],
-      rating:"3.5"
-    },
-    {title:"Calibra Veneer Esthetic Resin",
-      id:'',
-      description:"Lorem ipsum is placeholder text commonly used in the mockups.",
-      price:"2650",
-      assets:[{id:'',url:'/assets/items/image3.png'}],
-      rating:"3.5"
-    },
-    {title:"Ultradent PermaFlo-A1",
-      id:'',
-      description:"Lorem ipsum is placeholder text commonly used in the mockups.",
-      price:"900",
-      assets:[{id:'',url:'/assets/items/image4.png'}],
-      rating:"3.5"
+
+  // Method to sanitize HTML content
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
+
+  // Method to truncate the HTML content
+  trimQuillContent(html: string): SafeHtml {
+    // Create a temporary div to parse HTML content
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+
+    // Get plain text to check length
+    const textContent = tempDiv.textContent ?? tempDiv.innerText ?? '';
+
+    // If the text is short enough, return the original HTML
+    if (textContent.length <= 150) {
+      return this.sanitizer.bypassSecurityTrustHtml(html);
     }
-  ]
-  Current:Posts[]=this.ActivePosts
-  PendingPosts:Posts[]=[
-    {title:"Calibra Veneer Esthetic Resin",
-      id:'',
-      description:"Lorem ipsum is placeholder text commonly used in the mockups.",
-      price:"2650",
-      assets:[{id:'',url:'/assets/items/image3.png'}],
-      rating:"3.5"
-    },
-    {title:"Ultradent PermaFlo-A1",
-      id:'',
-      description:"Lorem ipsum is placeholder text commonly used in the mockups.",
-      price:"900",
-      assets:[{id:'',url:'/assets/items/image4.png'}],
-      rating:"3.5"
-    },{title:"MANI K FILES ( SIZE 6 )",
-      id:'',
-      description:"Lorem ipsum is placeholder text commonly used in the mockups.",
-      price:"170",
-      assets:[{id:'',url:'/assets/items/image1.png'}],
-      rating:"3.5"
-    },{title:"Alphasil Rubber Base impression kit",
-      id:'',
-      description:"Lorem ipsum is placeholder text commonly used in the mockups.",
-      price:"1700",
-      assets:[{id:'',url:'/assets/items/image2.png'}],
-      rating:"3.5"
+
+    // Simple truncation for text nodes
+    let truncated = '';
+    let charCount = 0;
+    const maxChars = 150;
+
+    // Process each child node
+    const processNode = (node: Node, output: string): string => {
+      if (charCount >= maxChars) return output;
+
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent ?? '';
+        const remainingChars = maxChars - charCount;
+
+        if (charCount + text.length <= maxChars) {
+          // Add the entire text
+          output += text;
+          charCount += text.length;
+        } else {
+          // Add truncated text with ellipsis
+          output += text.substring(0, remainingChars) + '...';
+          charCount = maxChars;
+        }
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const element = node as Element;
+        const tagName = element.tagName.toLowerCase();
+
+        // Skip certain elements
+        if (['script', 'style'].includes(tagName)) {
+          return output;
+        }
+
+        // Start tag
+        output += `<${tagName}`;
+        for (const attr of element.attributes) {
+          output += ` ${attr.name}="${attr.value}"`;
+        }
+        output += '>';
+
+        // Process children
+        for (const childNode of element.childNodes) {
+          if (charCount >= maxChars) break;
+          output = processNode(childNode, output);
+        }
+
+        // End tag
+        output += `</${tagName}>`;
+      }
+
+      return output;
+    };
+
+    // Process the root nodes
+    for (const childNode of tempDiv.childNodes) {
+      if (charCount >= maxChars) break;
+      truncated = processNode(childNode, truncated);
     }
-  ]
-  UnactivePosts:Posts[]=[
-    {title:"Ultradent PermaFlo-A1",
-      id:'',
-      description:"Lorem ipsum is placeholder text commonly used in the mockups.",
-      price:"900",
-      assets:[{id:'',url:'/assets/items/image2.png'}],
-      rating:"3.5"
-    },{title:"MANI K FILES ( SIZE 6 )",
-      id:'',
-      description:"Lorem ipsum is placeholder text commonly used in the mockups.",
-      price:"170",
-      assets:[{id:'',url:'/assets/items/image2.png'}],
-      rating:"3.5"
-    },{title:"Alphasil Rubber Base impression kit",
-      id:'',
-      description:"Lorem ipsum is placeholder text commonly used in the mockups.",
-      price:"1700",
-      assets:[{id:'',url:'/assets/items/image2.png'}],
-      rating:"3.5"
-    }
-  ]
-  changeCurent(input:any){
-    
-    switch(+input){
-      case 0: this.Current=this.ActivePosts;this.currentTab=0;
-      break;
-      case 1:this.Current=this.PendingPosts;this.currentTab=1;
-      break;
-    }
+
+    return this.sanitizer.bypassSecurityTrustHtml(truncated);
+  }
+
+  trackById(index: number, item: Post) {
+    return item.id;
+  }
+
+  onEditPost(id: string) {
+    this.router.navigate(['/edit-post', id]);
+  }
+
+  onAddNewPost() {
+    this.router.navigate(['/add-new-post']);
   }
 }

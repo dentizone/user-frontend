@@ -1,24 +1,28 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, ObservableInput } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { PostsResponse } from '../../../core/models/posts';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ListingService {
-  private apiUrl = 'https://apit.gitnasr.com/api/Posts/search';
-  private token = 'YOUR_SECRET_TOKEN';
+  private readonly apiUrl = 'https://apit.gitnasr.com/api/Posts/search';
+  private readonly token = 'YOUR_SECRET_TOKEN';
   headers = new HttpHeaders({
-      Authorization: `Bearer ${this.token}`
+    Authorization: `Bearer ${this.token}`,
+  });
+  constructor(private readonly http: HttpClient) {}
+
+  getPostById(id: string): Observable<any> {
+    return this.http.get<any>(`https://apit.gitnasr.com/api/Posts/${id}`, {
+      headers: this.headers,
     });
-  constructor(private http: HttpClient) { }
-  
-  
-  getPostById(id:string):Observable<any>{
-    return this.http.get<any>(`https://apit.gitnasr.com/api/Posts/${id}`,{headers:this.headers});
   }
 
-  getPostsByCategory(body: any): Observable<any> {
-
-    return this.http.get<any>(this.apiUrl,{headers: this.headers,params:body });
+  getPostsByCategory(params: any): Observable<PostsResponse> {
+    return this.http.get<PostsResponse>(this.apiUrl, {
+      headers: this.headers,
+      params,
+    });
   }
 }

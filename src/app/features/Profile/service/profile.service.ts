@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class ProfileService {
   private apiUrl = 'https://apit.gitnasr.com/api/Users/me';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getUserProfile(): Observable<any> {
     const token = localStorage.getItem('accessToken');
@@ -26,7 +26,8 @@ export class ProfileService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.get<any>(`https://apit.gitnasr.com/api/Posts/`, { headers });
-
+    return this.http.get<any>(`https://apit.gitnasr.com/api/Posts/`, {
+      headers,
+    });
   }
 }

@@ -45,20 +45,19 @@ export interface User {
 }
 
 export enum KycStatus {
-  Pending = 1,
-  InProgress = 2,
-  Approved = 3,
-  Rejected = 4,
-  Expired = 5,
-  Cancelled = 6,
-  Suspended = 7
+  Approved = "Approved", // KYC Approved
+  Pending = "Pending", // KYC Pending
+  Rejected = "Rejected", // KYC Rejected
+  Expired = "Expired", // KYC Expired
+  UnderReview = "UnderReview", // KYC Under Review
+  NotSubmitted = "NotSubmitted", // KYC Not Submitted
+  Blocked = "Blocked" // KYC Blocked
 }
 
 export enum UserState {
-  Active = 0,
-  Inactive = 1,
-  Blocked = 2,
-  Deleted = 3,
-  Pending = 4,
-  Suspended = 5
+  PendingVerification = "PendingVerification", // Registered but not verified (Ghost)
+  EmailVerified = "EmailVerified",       // Registered and email verified (Partily Verified)
+  Active = "Active",              // Active user (KYC Approved)
+  Blacklisted = "Blacklisted",         // Blocked from our system
+  Deleted = "Deleted"              // Deleted user
 } 

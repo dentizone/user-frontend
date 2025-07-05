@@ -1,122 +1,79 @@
-<div class="justify-center flex mb-7">
-  <div class="border-b border-gray-200 w-full bg-white shadow-2xs">
-    <ul
-      class="flex cursor-pointer border-b border-gray-200 flex-wrap -mb-px text-sm font-medium text-center text-gray-500"
+<div class="w-full mx-auto py-8">
+  <div
+    *ngIf="Current.length === 0"
+    class="flex flex-col justify-center items-center bg-blue-100 w-5/6 p-8 rounded-2xl mx-auto mt-12 mb-8 text-center border-2 border-dashed border-[#0077B6]"
+  >
+    <h4 class="text-2xl font-semibold mb-2">No Posts Yet</h4>
+    <p class="capitalize mb-4">Go to add your first Post</p>
+    <button
+      routerLink="/add-new-post"
+      class="font-semibold bg-[#0077B6] px-6 py-2 rounded-2xl text-xl text-white shadow hover:bg-[#005f87] transition-all duration-200 mt-2"
     >
-      <li class="me-2" (click)="changeCurent(0)">
-        <div
-          class="inline-flex text-base items-center justify-center p-4 border-b-2 rounded-t-lg group"
-          [ngClass]="{
-            'border-[#0077B6] text-[#0077B6] active hover:text-[#32aef0]':
-              currentTab == 0,
-            'hover:text-gray-600 border-transparent hover:border-gray-300 text-gray-500':
-              currentTab != 0
-          }"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="mr-3"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            width="30"
-            height="30"
-          >
-            <path
-              d="M21.41 11.58l-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.41l9 9a2 2 0 0 0 2.82 0l7-7a2 2 0 0 0 0-2.83zM5.5 7A1.5 1.5 0 1 1 7 5.5 1.5 1.5 0 0 1 5.5 7z"
-            />
-          </svg>
-          For Sale ({{ ActivePosts.length }})
-        </div>
-      </li>
-      <li class="me-2" (click)="changeCurent(1)">
-        <div
-          class="inline-flex text-base items-center justify-center p-4 border-b-2 rounded-t-lg group"
-          [ngClass]="{
-            'border-[#0077B6] text-[#0077B6] hover:text-[#32aef0] active':
-              currentTab == 1,
-            'border-transparent hover:text-gray-600 hover:border-gray-300 text-gray-500':
-              currentTab != 1
-          }"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="mr-3"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            width="30"
-            height="30"
-          >
-            <path
-              d="M12 2l2.9 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 7.1-1.01L12 2z"
-            />
-          </svg>
-          Reviews ({{ reviews.length }})
-        </div>
-      </li>
-    </ul>
-    <div
-      [ngClass]="{ hidden: currentTab != 0 }"
-      class="flex space-x-2 mt-5 ms-5"
-    >
-      <span class="font-medium text-base mt-1">Filter by</span>
-      <select
-        id="small"
-        class="block p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-      >
-        <option selected>Choose a Condition</option>
-        <option value="active">Active posts</option>
-        <option value="pending">Pending Posts</option>
-        <option value="rejected">Rejected Posts</option>
-        <option value="unActive">Un-Active Posts</option>
-      </select>
-    </div>
-    <div
-      *ngIf="currentTab == 0; else review"
-      class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center"
-    >
-      @if(Current.length==0){
-        <div class="flex flex-col justify-center items-center md:col-span-2 lg:space-y-3 lg:col-span-3 bg-blue-100 w-5/6 p-5 mb-5 rounded-2xl">
-      <h4 class="text-2xl font-semibold">No Posts Yet</h4>
-      <p class="capitalize">Go to add your first Post</p>
-      <button routerLink="/add-new-post" class="mb-5 bg-[#0077B6] px-4 py-1 rounded-2xl text-xl text-white">Add New Post</button>
-    </div>  
-    } @else{ @for (item of Current; track $index) {
-      <div
-        class="w-full max-w-sm flex flex-col justify-between bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden p-5"
-        style="margin: 0;"
-      >
-        <div class="relative w-full h-36">
-          <button
-            type="button"
-            class="absolute top-2 right-2 z-10 p-1 bg-white border border-gray-300 cursor-pointer hover:bg-gray-200 text-white rounded-sm transition-colors duration-200"
-            aria-label="Edit product"
-          >
-            <img src="/assets/Icons/edit.png" class="w-5 h-5" alt="edit" />
-          </button>
-          <img
-            class="w-full h-full object-cover rounded"
-            [src]="item.assets[0].url"
-            alt="product "
-          />
-        </div>
-        <div class="flex flex-col justify-between flex-grow px-3 py-3">
-          <div class="flex">
-            <h5 class="text-xl font-semibold tracking-tight text-gray-900">
-              {{ item.title }}
-            </h5>
-          </div>
-          <p class="text-sm text-gray-600 mt-3">{{ item.description }}</p>
-          <div class="mt-4 text-right">
-            <span class="text-xl font-bold text-[#0077B6]"
-              >{{ item.price }} EGP</span
-            >
-          </div>
-        </div>
-      </div>
-      } }
-    </div>
-    <ng-template #review>
-      <app-review-cards [reviews]="reviews"></app-review-cards>
-    </ng-template>
+      Add New Post
+    </button>
   </div>
+  <div
+    *ngIf="Current.length > 0"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center mt-8"
+  >
+    <div
+      *ngFor="let item of Current; trackBy: trackById"
+      class="w-full max-w-sm flex flex-col justify-between bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden p-4 hover:shadow-2xl transition-all duration-200 min-h-[450px]"
+    >
+      <div class="relative w-full h-40 mb-3">
+        <button
+          type="button"
+          class="absolute top-2 right-2 z-10 p-1 bg-white border border-gray-300 cursor-pointer hover:bg-gray-200 rounded-full transition-colors duration-200"
+          aria-label="Edit product"
+          (click)="onEditPost(item.id)"
+        >
+          <img src="/assets/Icons/edit.png" class="w-5 h-5" alt="edit" />
+        </button>
+        <div class="absolute top-2 left-2 z-10 px-2 py-1 bg-white bg-opacity-80 rounded-lg text-xs font-medium">
+          <span [ngClass]="{
+            'text-green-600': item.status === 'Active',
+            'text-yellow-600': item.status === 'Pending',
+            'text-red-600': item.status === 'Inactive'
+          }">{{ item.status }}</span>
+        </div>
+        <img
+          class="w-full h-full object-cover rounded-xl"
+          [src]="(item.assets && item.assets.length > 0) ? item.assets[0].url : '/assets/items/image1.png'"
+          alt="product"
+        />
+      </div>
+      <div class="flex flex-col  px-1">
+        <div class="flex justify-between items-start mb-1">
+          <h5 class="text-lg font-semibold tracking-tight text-gray-900 flex-grow truncate">
+            {{ item.title }}
+          </h5>
+          <span class="text-lg font-bold text-[#0077B6] whitespace-nowrap ml-2">
+            {{ item.price }} EGP
+          </span>
+        </div>
+        
+        <div class="flex flex-wrap gap-2 mb-2">
+          <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded-full">{{ item.category }}</span>
+          <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-0.5 rounded-full">{{ item.subCatgory }}</span>
+          <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-0.5 rounded-full">{{ item.condition }}</span>
+        </div>
+        
+        <div class="text-sm text-gray-600 mb-3 relative">
+          <div class="ql-container ql-snow border-0">
+            <div class="ql-editor p-0 max-h-20 overflow-hidden" [innerHTML]="trimQuillContent(item.description)"></div>
+            <div class="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent"></div>
+          </div>
+        </div>
+        
+      
+    </div>
+  </div>
+  <button
+    *ngIf="Current.length > 0"
+    (click)="onAddNewPost()"
+    class="fixed bottom-8 right-8 z-50 bg-[#0077B6] hover:bg-[#005f87] text-white rounded-full shadow-lg w-16 h-16 flex items-center justify-center text-3xl transition-all duration-200"
+    aria-label="Add New Post"
+  >
+    +
+  </button>
 </div>

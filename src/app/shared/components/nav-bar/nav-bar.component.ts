@@ -2,34 +2,46 @@ import { Component, HostListener, OnInit } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../../core/services/auth.service';
 import { ProfileService } from '../../../features/Profile/service/profile.service';
 
-@Component({  selector: 'app-nav-bar',
+@Component({
+  selector: 'app-nav-bar',
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
 })
-export class NavBarComponent implements OnInit{
-
+export class NavBarComponent implements OnInit {
   user: any;
-  ngOnInit(): void {
-    this.profileService.getUserProfile().subscribe({
-      next: data => {this.user = data;
-        
-        this.UserName=this.user.fullName.split(' ')[0];
-        this.UserEmail=this.user.username;
-      },
-      error: err => console.error('Failed to load profile', err)
-    });
-  }
-
   opened = false;
   mobileMenuOpened = false;
   UserName = 'User';
   UserEmail = 'User@Email.com';
-  
-  constructor(private readonly router: Router,private profileService: ProfileService) {}
+  private userSub?: Subscription;
+
+  constructor(
+    private readonly router: Router,
+    public profileService: ProfileService,
+    public authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.userSub = this.authService.currentUser$.subscribe((user) => {
+        if (user) {
+          this.user = user;
+          this.UserName = user.fullName?.split(' ')[0] ?? 'User';
+          this.UserEmail = user.email ?? user.username ?? 'User@Email.com';
+        }
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.userSub?.unsubscribe();
+  }
 
   isActive(route: string): boolean {
     return this.router.url === route;
@@ -43,6 +55,10 @@ export class NavBarComponent implements OnInit{
     this.mobileMenuOpened = !this.mobileMenuOpened;
   }
 
+  closeDropdown() {
+    this.opened = false;
+  }
+
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {
     const target = event.target as HTMLElement;
@@ -52,8 +68,7 @@ export class NavBarComponent implements OnInit{
   }
 
   logout() {
-  localStorage.clear();
-  this.router.navigate(['/home']); 
-}
-
+    localStorage.clear();
+    window.location.href = '/home';
+  }
 }

@@ -1,71 +1,92 @@
 <div class="p-6 max-w-6xl mx-auto">
+  <h1 class="text-3xl font-bold mb-6">Shopping Cart</h1>
 
-    <h1 class="text-3xl font-bold mb-6">Shopping Cart</h1>
-
-    <app-toast *ngIf="showToast" [isSuccess]="isSuccess" [message]="message"></app-toast>
-    <div class="flex flex-col lg:flex-row gap-8">
-        <div *ngIf="cartItems.length > 0; else emptyCart" class="flex-1 bg-white p-6 shadow rounded-xl" id="cart-items">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-2xl font-semibold">Your Items</h2>
-                <button (click)="clearCart()" class="text-red-600 hover:text-red-800 text-sm font-medium underline">
-                    Clear Cart
-                </button>
+  <app-toast
+    *ngIf="showToast"
+    [isSuccess]="isSuccess"
+    [message]="message"
+  ></app-toast>
+  <app-kyc-required-modal
+    *ngIf="showKycModal"
+    (close)="closeKycModal()"
+  ></app-kyc-required-modal>
+  <div class="flex flex-col lg:flex-row gap-8">
+    <div
+      *ngIf="cartItems.length > 0; else emptyCart"
+      class="flex-1 bg-white p-6 shadow rounded-xl"
+      id="cart-items"
+    >
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-2xl font-semibold">Your Items</h2>
+        <button
+          (click)="clearCart()"
+          class="text-red-600 hover:text-red-800 text-sm font-medium underline"
+        >
+          Clear Cart
+        </button>
+      </div>
+      <div class="space-y-6">
+        <div *ngFor="let cartItem of cartItems">
+          <div class="flex items-center border-b pb-4">
+            <i
+              class="pi pi-trash text-gray-500 hover:text-red-600 text-xl mr-4 cursor-pointer"
+              (click)="removeItem(cartItem.id)"
+              (keydown.enter)="removeItem(cartItem.id)"
+            ></i>
+            <img
+              [src]="cartItem.url"
+              [alt]="cartItem.title"
+              class="w-20 h-20 object-contain mr-4"
+            />
+            <div class="flex-1">
+              <p class="font-bold text-lg">{{ cartItem.title }}</p>
             </div>
-            <div class="space-y-6">
-
-                <div *ngFor="let cartItem of cartItems">
-                    <div class="flex items-center border-b pb-4">
-                        <i class="pi pi-trash text-gray-500 hover:text-red-600 text-xl mr-4 cursor-pointer"
-                            (click)="removeItem(cartItem.id)"
-                            (keydown.enter)="removeItem(cartItem.id)"></i>
-                        <img [src]="cartItem.url" [alt]="cartItem.title" class="w-20 h-20 object-contain mr-4" />
-                        <div class="flex-1">
-                            <p class="font-bold text-lg">{{ cartItem.title }}</p>
-                        </div>
-                        <p class="font-bold text-indigo-900 text-lg">
-                            {{ cartItem.price }}
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <p class="font-bold text-indigo-900 text-lg">
+              {{ cartItem.price }}
+            </p>
+          </div>
         </div>
-
-        <ng-template #emptyCart>
-            <div class="flex-1 bg-white p-6 shadow rounded-xl h-[300px] flex items-center justify-center">
-                <p class="text-gray-500 text-xl font-semibold">Your cart is empty.</p>
-            </div>
-        </ng-template>
-
-        <div class="w-full lg:w-1/3 bg-blue-50 p-6 rounded-xl shadow min-h-[450px] flex flex-col justify-between"
-            id="cart-summary">
-
-            <h2 class="text-xl font-bold mb-4 border-b pb-2">Order Summary</h2>
-            <div class="flex justify-between mb-2">
-                <span class="text-gray-700">Subtotal</span>
-                <span class="text-gray-900 font-medium">{{ total }} EGP</span>
-            </div>
-            <div class="flex justify-between mb-4">
-                <span class="text-gray-700">Shipping</span>
-                <span class="text-gray-700">At Checkout</span>
-            </div>
-            <div class="border-t pt-4 flex justify-between mb-4">
-                <span class="font-semibold text-lg">Total</span>
-                <span class="font-semibold text-lg">{{ total }} EGP ++</span>
-            </div>
-
-            <div class="mb-4">
-                <app-address-form
-                    [(address)]="address"
-                    [(city)]="city">
-                </app-address-form>
-            </div>
-
-            <button
-                (click)="checkOut()"
-                class="w-full mt-2 bg-[#0077B6] hover:bg-blue-900 text-white font-bold py-3 rounded-xl transition-all disabled:bg-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed"
-                [disabled]="cartItems.length === 0 || !address || !city">
-                Place Order
-            </button>
-        </div>
+      </div>
     </div>
+
+    <ng-template #emptyCart>
+      <div
+        class="flex-1 bg-white p-6 shadow rounded-xl h-[300px] flex items-center justify-center"
+      >
+        <p class="text-gray-500 text-xl font-semibold">Your cart is empty.</p>
+      </div>
+    </ng-template>
+
+    <div
+      class="w-full lg:w-1/3 bg-blue-50 p-6 rounded-xl shadow min-h-[450px] flex flex-col justify-between"
+      id="cart-summary"
+    >
+      <h2 class="text-xl font-bold mb-4 border-b pb-2">Order Summary</h2>
+      <div class="flex justify-between mb-2">
+        <span class="text-gray-700">Subtotal</span>
+        <span class="text-gray-900 font-medium">{{ total }} EGP</span>
+      </div>
+      <div class="flex justify-between mb-4">
+        <span class="text-gray-700">Shipping</span>
+        <span class="text-gray-700">At Checkout</span>
+      </div>
+      <div class="border-t pt-4 flex justify-between mb-4">
+        <span class="font-semibold text-lg">Total</span>
+        <span class="font-semibold text-lg">{{ total }} EGP ++</span>
+      </div>
+
+      <div class="mb-4">
+        <app-address-form [(address)]="address" [(city)]="city">
+        </app-address-form>
+      </div>
+
+      <button
+        (click)="checkOut()"
+        class="w-full mt-2 bg-[#0077B6] hover:bg-blue-900 text-white font-bold py-3 rounded-xl transition-all disabled:bg-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed"
+        [disabled]="cartItems.length === 0 || !address || !city"
+      >
+        Place Order
+      </button>
+    </div>
+  </div>
 </div>

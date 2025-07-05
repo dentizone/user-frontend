@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { PaginatorModule } from 'primeng/paginator';
 import { Posts } from '../../../core/models/posts';
+import { ProductCardComponent } from '../../../shared/components/product-card/product-card.component';
 
 
 
 @Component({
   selector: 'app-listing-page',
-  imports: [PaginatorModule,CommonModule],
+  imports: [PaginatorModule, CommonModule, ProductCardComponent],
   templateUrl: './listing-page.component.html'
 
 })

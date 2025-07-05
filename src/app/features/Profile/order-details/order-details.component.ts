@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import html2canvas from 'html2canvas-pro';
+import { jsPDF } from 'jspdf';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { ListingService } from '../../ListingPage/listingService/listing.service';
 import { OrderServiceService } from '../OrderService/order-service.service';
-import html2canvas from 'html2canvas-pro';
-import { jsPDF } from 'jspdf';
 
 @Component({
   standalone: true,
@@ -23,7 +23,7 @@ export class OrderDetailsComponent implements OnInit {
       next: (Data) => {
         this.orderDetails = Data;
         this.orderItems = this.orderDetails.orderItems;
-        this.statusTimeline = this.orderDetails.statusTimeline || [];
+        this.statusTimeline = this.orderDetails.statusTimeline ?? [];
 
         this.createdAt = new Date(
           this.orderDetails.createdAt
@@ -43,7 +43,6 @@ export class OrderDetailsComponent implements OnInit {
           });
         });
         this.isLoading = false;
-       
       },
       error: () => {
         this.isLoading = false;
@@ -61,9 +60,13 @@ export class OrderDetailsComponent implements OnInit {
 
   getStatusTimestamp(statusKey: string): string | null {
     const found = this.statusTimeline.find((s: any) => s.status === statusKey);
-    return found ? new Date(found.timestamp).toLocaleDateString('en-GB', {
-      year: 'numeric', month: 'short', day: 'numeric'
-    }) : null;
+    return found
+      ? new Date(found.timestamp).toLocaleDateString('en-GB', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        })
+      : null;
   }
 
   getCurrentStatusIndex(): number {

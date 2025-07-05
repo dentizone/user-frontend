@@ -1,39 +1,311 @@
-<div class="flex min-h-screen">
-  <aside class="w-56 bg-slate-50 border-r border-slate-200 py-8 px-4">
-    <ul class="space-y-2">
+<div
+  class="flex flex-col md:flex-row min-h-screen bg-gradient-to-tr from-blue-50 via-white to-slate-100"
+>
+  <!-- Mobile Hamburger Button -->
+  <button
+    class="md:hidden absolute top-4 left-4 z-30 p-2 rounded-lg bg-white/80 shadow-lg border border-slate-200"
+    (click)="sidebarOpen = !sidebarOpen"
+    aria-label="Open sidebar"
+  >
+    <svg
+      class="w-6 h-6 text-blue-700"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M4 6h16M4 12h16M4 18h16"
+      />
+    </svg>
+  </button>
+  <aside
+    class="fixed md:static top-0 left-0 z-20 w-64 md:w-72 h-full md:h-[90vh] m-0 md:m-6 rounded-none md:rounded-3xl bg-white/90 shadow-2xl border border-slate-200 flex flex-col items-center backdrop-blur-xl overflow-y-auto transition-transform duration-300 ease-in-out md:translate-x-0"
+    [ngClass]="{
+      '-translate-x-full': !sidebarOpen,
+      'translate-x-0': sidebarOpen,
+      'md:translate-x-0': true
+    }"
+    *ngIf="sidebarOpen || isDesktop"
+  >
+    <!-- Profile Info Card -->
+    <div class="flex flex-col items-center mt-8 mb-6 w-full px-4">
+      <div
+        class="w-24 h-24 rounded-full border-4 border-blue-200 shadow-lg overflow-hidden bg-gradient-to-tr from-blue-100 to-blue-300 flex items-center justify-center"
+      >
+        <img
+          [src]="avatarSrc"
+          class="object-cover w-full h-full"
+          alt="Avatar"
+        />
+      </div>
+      <h3 class="font-extrabold text-xl text-gray-900 mt-3">{{ userName }}</h3>
+      <span class="text-gray-500 text-sm flex items-center"
+        ><span class="mr-1">&commat;</span>{{ generatedName }}</span
+      >
+      <div class="flex items-center gap-2 mt-2">
+        <span class="text-blue-700 text-xs font-semibold flex items-center">
+          <svg
+            class="w-4 h-4 mr-1 text-blue-400"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 3L2 8l10 5 10-5-10-5z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 11v5c0 2 3.6 3.5 8 3.5s8-1.5 8-3.5v-5l-8 4-8-4z"
+            />
+          </svg>
+          {{ userUniversity }}
+        </span>
+        <span class="text-gray-700 text-xs flex items-center">
+          <svg
+            class="w-4 h-4 mr-1 text-blue-400"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 3L2 8l10 5 10-5-10-5z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 11v5c0 2 3.6 3.5 8 3.5s8-1.5 8-3.5v-5l-8 4-8-4z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M18 8.8v4.2a2 2 0 1 0 2 0V7.8l-2 .9z"
+            />
+          </svg>
+          {{ academicYear }}
+        </span>
+      </div>
+      <span
+        class="mt-3 font-semibold flex items-center rounded-xl px-3 py-1 capitalize text-xs"
+        [ngClass]="userStateBadgeColor"
+        title="Account Status"
+      >
+        <ng-container [ngSwitch]="userStateBadgeText">
+          <svg
+            *ngSwitchCase="'Active'"
+            class="w-4 h-4 mr-1 text-green-500"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="1.5"
+              fill="none"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8 12l2 2 4-4"
+            />
+          </svg>
+          <svg
+            *ngSwitchCase="'Pending Verification'"
+            class="w-4 h-4 mr-1 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="1.5"
+              fill="none"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 8v4l3 2"
+            />
+          </svg>
+          <svg
+            *ngSwitchCase="'Blacklisted'"
+            class="w-4 h-4 mr-1 text-red-500"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="1.5"
+              fill="none"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8 8l8 8M16 8l-8 8"
+            />
+          </svg>
+          <svg
+            *ngSwitchCase="'Deleted'"
+            class="w-4 h-4 mr-1 text-gray-500"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="1.5"
+              fill="none"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </ng-container>
+        {{ userStateBadgeText }}
+      </span>
+    </div>
+    <div
+      class="w-4/5 h-px bg-gradient-to-r from-blue-200 via-slate-200 to-transparent mb-6"
+    ></div>
+    <ul class="w-full flex-1 space-y-2 px-4">
       <li>
-        <a routerLink="overview" routerLinkActive="bg-blue-600 text-white font-semibold rounded-md shadow" [routerLinkActiveOptions]="{exact:true}"
-          class="block text-slate-700 hover:bg-blue-100 rounded-md cursor-pointer px-4 py-3 transition-colors">
-          Profile Overview
+        <a
+          routerLink="overview"
+          routerLinkActive="!bg-blue-50 !text-blue-700 !font-bold !shadow-lg !border-l-4 !border-blue-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center gap-4 text-slate-700 hover:bg-blue-100 hover:text-blue-700 rounded-xl cursor-pointer px-5 py-3 transition-all duration-200 group relative"
+        >
+          <!-- Heroicon: User Circle -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 text-blue-400 group-hover:text-blue-600 transition-colors"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M18 19.5A6.75 6.75 0 0012 16.5a6.75 6.75 0 00-6 3M12 12a4.5 4.5 0 100-9 4.5 4.5 0 000 9z"
+            />
+          </svg>
+          <span>Profile Overview</span>
         </a>
       </li>
       <li>
-        <a routerLink="orders" routerLinkActive="bg-blue-600 text-white font-semibold rounded-md shadow"
-          class="block text-slate-700 hover:bg-blue-100 rounded-md cursor-pointer px-4 py-3 transition-colors">
-          My Orders
+        <a
+          routerLink="orders"
+          routerLinkActive="!bg-blue-50 !text-blue-700 !font-bold !shadow-lg !border-l-4 !border-blue-600"
+          class="flex items-center gap-4 text-slate-700 hover:bg-blue-100 hover:text-blue-700 rounded-xl cursor-pointer px-5 py-3 transition-all duration-200 group relative"
+        >
+          <!-- Heroicon: Clipboard Document List -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 text-blue-400 group-hover:text-blue-600 transition-colors"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 12h6m-6 4h6m2 4.5A2.25 2.25 0 0019.5 18V6A2.25 2.25 0 0017.25 3.75h-10.5A2.25 2.25 0 004.5 6v12A2.25 2.25 0 006.75 21.75h10.5z"
+            />
+          </svg>
+          <span>My Orders</span>
         </a>
       </li>
       <li>
-        <a routerLink="your-activity" routerLinkActive="bg-blue-600 text-white font-semibold rounded-md shadow"
-          class="block text-slate-700 hover:bg-blue-100 rounded-md cursor-pointer px-4 py-3 transition-colors">
-          Your Activity
+        <a
+          routerLink="wallet"
+          routerLinkActive="!bg-blue-50 !text-blue-700 !font-bold !shadow-lg !border-l-4 !border-blue-600"
+          class="flex items-center gap-4 text-slate-700 hover:bg-blue-100 hover:text-blue-700 rounded-xl cursor-pointer px-5 py-3 transition-all duration-200 group relative"
+        >
+          <!-- Heroicon: Wallet -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 text-blue-400 group-hover:text-blue-600 transition-colors"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M2.25 7.5v9A2.25 2.25 0 004.5 18.75h15a2.25 2.25 0 002.25-2.25v-9A2.25 2.25 0 0019.5 5.25h-15A2.25 2.25 0 002.25 7.5z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M17.25 12.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
+            />
+          </svg>
+          <span>Wallet</span>
         </a>
       </li>
       <li>
-        <a routerLink="account-management" routerLinkActive="bg-blue-600 text-white font-semibold rounded-md shadow"
-          class="block text-slate-700 hover:bg-blue-100 rounded-md cursor-pointer px-4 py-3 transition-colors">
-          Account Management
-        </a>
-      </li>
-        <li>
-        <a routerLink="wallet" routerLinkActive="bg-blue-600 text-white font-semibold rounded-md shadow"
-          class="block text-slate-700 hover:bg-blue-100 rounded-md cursor-pointer px-4 py-3 transition-colors">
-          Wallet
+        <a
+          routerLink="fav-list"
+          routerLinkActive="!bg-blue-50 !text-blue-700 !font-bold !shadow-lg !border-l-4 !border-blue-600"
+          class="flex items-center gap-4 text-slate-700 hover:bg-blue-100 hover:text-blue-700 rounded-xl cursor-pointer px-5 py-3 transition-all duration-200 group relative"
+        >
+          <!-- Heroicon: Heart -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 text-pink-400 group-hover:text-pink-600 transition-colors"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 8.25c0-2.485-2.239-4.5-5-4.5-1.54 0-2.94.805-3.75 2.016C10.94 4.555 9.54 3.75 8 3.75c-2.761 0-5 2.015-5 4.5 0 7.25 9 12 9 12s9-4.75 9-12z"
+            />
+          </svg>
+          <span>Favorite List</span>
         </a>
       </li>
     </ul>
+    <div class="flex-1"></div>
+    <div
+      class="w-4/5 h-px bg-gradient-to-r from-transparent via-slate-200 to-blue-200 mt-6 mb-4"
+    ></div>
+    <div class="text-xs text-slate-400 mb-6">Dentizone &copy; 2024</div>
   </aside>
-  <main class="flex-1 p-8 bg-slate-100">
+  <main class="flex-1 p-2 md:p-8 bg-transparent mt-20 md:mt-0">
     <router-outlet></router-outlet>
   </main>
 </div>

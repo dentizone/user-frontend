@@ -7,11 +7,11 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div 
+    <div
       class="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4 z-50"
       (click)="onBackdropClick($event)"
     >
-      <div 
+      <div
         class="bg-white/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full text-center"
         (click)="$event.stopPropagation()"
       >
@@ -36,10 +36,10 @@ import { Router } from '@angular/router';
           your inbox and click the link to verify your account.
         </p>
         <button
-          (click)="navigateToLogin()"
+          (click)="navigateToMarketplace()"
           class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
         >
-          Back to Login
+          Check Marketplace
         </button>
       </div>
     </div>
@@ -52,7 +52,7 @@ export class VerificationSentModalComponent {
     this.router.navigate(['/']);
   }
 
-  navigateToLogin() {
-    this.router.navigate(['/auth/login']);
+  navigateToMarketplace() {
+    this.router.navigate(['/marketplace']);
   }
 }
