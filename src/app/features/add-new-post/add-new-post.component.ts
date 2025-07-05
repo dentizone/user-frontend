@@ -391,7 +391,7 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
       city: formValue.city,
       categoryId: formValue.category,
       subCategoryId: formValue.subcategory,
-      expireDate: formValue.expiryDate ?? undefined,
+      expireDate: !formValue.expiryDate || formValue.expiryDate === '' ? null : formValue.expiryDate,
       assetIds: this.imageIDs,
     };
 
