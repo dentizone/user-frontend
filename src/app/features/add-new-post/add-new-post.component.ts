@@ -19,6 +19,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { Subject, takeUntil } from 'rxjs';
+import { KycStatus, UserState } from '../../core/models/auth.models';
 
 import { AuthService } from '../../core/services/auth.service';
 import {
@@ -115,7 +116,7 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
 
   postUnderReview = false;
   showKycModal = false;
-  private userKycStatus: number | undefined;
+  private userKycStatus: string | undefined;
 
   constructor(
     private readonly postService: PostService,
@@ -126,8 +127,8 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
       this.userKycStatus = user?.kycStatus;
-      if (this.userKycStatus !== 3) {
-        // 3 = Approved
+      if (this.userKycStatus !== KycStatus.Approved || user?.status !== UserState.Active) {
+        // Only users with KYC Approved status and Active user state can post
         this.showKycModal = true;
       }
     });
@@ -355,7 +356,8 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.showKycModal) {
+    // Prevent submission if user doesn't have proper status
+    if (this.showKycModal || this.userKycStatus !== KycStatus.Approved) {
       return;
     }
     this.invalidSubmit = false;

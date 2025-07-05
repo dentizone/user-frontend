@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { KycStatus, UserState } from '../../../core/models/auth.models';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastComponent } from '../../../shared/components/toast/toast.component';
 import { KycRequiredModalComponent } from '../../Auth/KYC/kyc-required.component';
@@ -27,7 +28,7 @@ export class CartComponent implements OnInit {
   message = '';
   isSuccess = true;
   showKycModal = false;
-  private userKycStatus: number | undefined;
+  private userKycStatus: string | undefined;
   Toast(message: string) {
     this.message = message;
     this.showToast = true;
@@ -44,8 +45,9 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
       this.userKycStatus = user?.kycStatus;
-      if (this.userKycStatus !== 3) {
-        // 3 = Approved
+
+      if (this.userKycStatus !== KycStatus.Approved || user?.status !== UserState.Active) {
+        // Only users with KYC Approved status and Active user state can place orders
         this.showKycModal = true;
       }
     });
@@ -91,7 +93,10 @@ export class CartComponent implements OnInit {
   }
 
   checkOut(): void {
-    if (this.showKycModal) {
+    // Prevent checkout if user doesn't have proper status
+    if (this.showKycModal || this.userKycStatus !== KycStatus.Approved) {
+      this.isSuccess = false;
+      this.Toast('KYC verification required before placing orders');
       return;
     }
     const orderRequest = {
