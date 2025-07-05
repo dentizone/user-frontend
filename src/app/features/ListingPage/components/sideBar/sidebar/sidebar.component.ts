@@ -43,6 +43,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   keyword = '';
 
   private readonly destroy$ = new Subject<void>();
+  private searchDebounceTimer: any;
 
   constructor(
     private readonly sidebarService: SidebarService,
@@ -227,6 +228,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
     // This method can be implemented to handle search functionality
     this.emitFilterChange();
     console.log(this.keyword);
+  }
+
+  onSearchDebounced() {
+    if (this.searchDebounceTimer) {
+      clearTimeout(this.searchDebounceTimer);
+    }
+    this.searchDebounceTimer = setTimeout(() => {
+      this.onSearch();
+    }, 400);
   }
 
   clearFilters(): void {
