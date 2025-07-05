@@ -3,7 +3,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
 import { Posts } from '../../core/models/posts';
-import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
 import { SidebarComponent } from './components/sideBar/sidebar/sidebar.component';
@@ -16,7 +15,6 @@ import { ListingService } from './listingService/listing.service';
     ProductCardComponent,
     SidebarComponent,
     ToastComponent,
-    LoaderComponent,
   ],
   templateUrl: './listing-page.component.html',
 })
@@ -27,7 +25,6 @@ export class ListingPageComponent implements OnInit {
   toDate: Date = new Date();
   sortby = '';
   SortDirection!: boolean;
-  private initialDate: Date = new Date();
   selectedConditions: string = '';
 
   waitLoading = true;

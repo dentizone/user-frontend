@@ -51,29 +51,31 @@ export class SidebarComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute
   ) {}
 
-  async ngOnInit() {
-    this.initialDate = new Date();
-    try {
-      this.sidebarData = await this.sidebarService.getSidebar();
-      this.initializeFilters();
-      // If no query params, set defaults in URL
-      const params = this.activatedRoute.snapshot.queryParams;
-      const today = new Date().toISOString().split('T')[0];
-      if (!params['category'] && !params['city'] && !params['toDate']) {
-        this.router.navigate([], {
-          relativeTo: this.activatedRoute,
-          queryParams: {
-            category: 'all',
-            city: 'all',
-            toDate: today
-          },
-          queryParamsHandling: 'merge',
-        });
+  ngOnInit(): void {
+    (async () => {
+      this.initialDate = new Date();
+      try {
+        this.sidebarData = await this.sidebarService.getSidebar();
+        this.initializeFilters();
+        // If no query params, set defaults in URL
+        const params = this.activatedRoute.snapshot.queryParams;
+        const today = new Date().toISOString().split('T')[0];
+        if (!params['category'] && !params['city'] && !params['toDate']) {
+          this.router.navigate([], {
+            relativeTo: this.activatedRoute,
+            queryParams: {
+              category: 'all',
+              city: 'all',
+              toDate: today
+            },
+            queryParamsHandling: 'merge',
+          });
+        }
+        this.loadFiltersFromUrl();
+      } catch (error) {
+        console.error('Error loading sidebar:', error);
       }
-      this.loadFiltersFromUrl();
-    } catch (error) {
-      console.error('Error loading sidebar:', error);
-    }
+    })();
   }
 
   private initializeFilters(): void {
@@ -137,38 +139,31 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   private updateUrlParams(): void {
+    // Build queryParams from scratch
     const queryParams: any = {};
 
-    if (this.activeCategory) {
-      queryParams.category = this.activeCategory;
-    }
-
-    if (this.selectedCity) {
-      queryParams.city = this.selectedCity;
-    }
-
+    queryParams['category'] = this.activeCategory;
+    queryParams['city'] = this.selectedCity;
     if (this.desiredPrice !== this.sidebarData.maxPrice) {
-      queryParams.price = this.desiredPrice;
+      queryParams['price'] = this.desiredPrice;
     }
-
     if (this.toDate && this.toDate.getTime() !== this.initialDate.getTime()) {
-      queryParams.toDate = this.toDate.toISOString().split('T')[0];
+      queryParams['toDate'] = this.toDate.toISOString().split('T')[0];
     }
-
     if (this.selectedConditions.length > 0) {
-      queryParams.conditions = this.selectedConditions.join(',');
+      queryParams['conditions'] = this.selectedConditions.join(',');
     }
-
     if (this.sortBy !== 'createdAtDesc') {
-      queryParams.sortBy = this.sortBy;
+      queryParams['sortBy'] = this.sortBy;
     }
     if (this.keyword) {
-      queryParams.searchKeyword = this.keyword;
+      queryParams['searchKeyword'] = this.keyword;
     }
+    console.debug('[updateUrlParams] keyword:', this.keyword, 'queryParams:', queryParams);
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: queryParams,
-      queryParamsHandling: 'merge',
+      queryParams: queryParams
+      // No queryParamsHandling: 'merge' here
     });
   }
 
@@ -301,5 +296,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
   closeSidebar(): void {
     this.isSidebarOpen = false;
     this.sidebarToggle.emit(this.isSidebarOpen);
+  }
+
+  clearSearch() {
+    this.keyword = '';
+    console.debug('[clearSearch] keyword after clear:', this.keyword);
+    this.emitFilterChange();
   }
 }
