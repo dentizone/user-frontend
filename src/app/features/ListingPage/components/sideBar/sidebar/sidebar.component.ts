@@ -55,6 +55,20 @@ export class SidebarComponent implements OnInit, OnDestroy {
     try {
       this.sidebarData = await this.sidebarService.getSidebar();
       this.initializeFilters();
+      // If no query params, set defaults in URL
+      const params = this.activatedRoute.snapshot.queryParams;
+      const today = new Date().toISOString().split('T')[0];
+      if (!params['category'] && !params['city'] && !params['toDate']) {
+        this.router.navigate([], {
+          relativeTo: this.activatedRoute,
+          queryParams: {
+            category: 'all',
+            city: 'all',
+            toDate: today
+          },
+          queryParamsHandling: 'merge',
+        });
+      }
       this.loadFiltersFromUrl();
     } catch (error) {
       console.error('Error loading sidebar:', error);
@@ -63,7 +77,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   private initializeFilters(): void {
     this.desiredPrice = this.sidebarData.maxPrice;
-    this.activeCategory = this.sidebarData.categories[0]?.categoryName ?? '';
+    // Prefer 'all' if present, otherwise first category
+    const allCategory = this.sidebarData.categories.find(cat => cat.categoryName?.toLowerCase() === 'all');
+    this.activeCategory = allCategory ? allCategory.categoryName : this.sidebarData.categories[0]?.categoryName ?? '';
     this.selectedCity = 'all';
   }
 
@@ -71,12 +87,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.activatedRoute.queryParams
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
-        if (
-          params['category'] &&
-          this.sidebarData.categories.some(
-            (cat) => cat.categoryName === params['category']
-          )
-        ) {
+        if (params['category']) {
           this.activeCategory = params['category'];
         }
 

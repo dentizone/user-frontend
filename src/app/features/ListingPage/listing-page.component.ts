@@ -51,13 +51,13 @@ export class ListingPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.selectedCategory = params['category'];
+      this.selectedCategory = params['category'] ?? 'all';
       this.selectedCity = params['city'];
       this.desiredPrice = params['price'];
       this.toDate = params['toDate'];
       this.sortby = params['sortBy'];
       this.selectedConditions = params['conditions'];
-      this.title = params['category'];
+      this.title = params['category'] ?? 'All Categories';
 
       if (this.selectedCategory && this.desiredPrice) {
         this.waitLoading = false;
