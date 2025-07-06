@@ -86,6 +86,7 @@ export class PostViewPageComponent implements OnInit {
   activeIndex: number = 0;
   page: number = 0;
   isAuthenticated: boolean = false; // This should come from your auth service
+  isFavorite: boolean = false;
 
   onPageChange(event: any) {
     this.activeIndex = event.page;
@@ -141,9 +142,9 @@ export class PostViewPageComponent implements OnInit {
   onSelectFav(id: string) {
     this.favService.addToFavs(id).subscribe({
       next: () => {
+        this.isFavorite = true;
         this.Toast('Product added to favorites!');
       },
-
       error: (err) => {
         console.log('failed to add to favorits', err);
         this.isSuccess = false;
@@ -154,5 +155,15 @@ export class PostViewPageComponent implements OnInit {
         }
       },
     });
+  }
+
+  toggleFavorite(id: string) {
+    if (!this.isFavorite) {
+      this.onSelectFav(id);
+    } else {
+      // Optionally, implement remove from favorites here
+      this.isFavorite = false;
+      this.Toast('Product removed from favorites!');
+    }
   }
 }
