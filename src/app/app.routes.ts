@@ -177,6 +177,13 @@ export const routes: Routes = [
             (m) => m.ReviewComponent
           ),
       },
+      {
+        path: 'about',
+        loadComponent: () =>
+          import('./features/About/about.component').then(
+            (m) => m.AboutComponent
+          ),
+      },
     ],
   },
 
