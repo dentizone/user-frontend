@@ -18,12 +18,21 @@ export class VerificationComponent implements OnInit {
   showResendButton = true;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly authService: AuthService
   ) {}
 
   ngOnInit() {
+    // Trigger refresh token on Email Verification page load
+    const refreshToken = this.authService.getRefreshToken();
+    const accessToken = this.authService.getAccessToken();
+    if (refreshToken && accessToken) {
+      this.authService.refreshToken({ refreshToken, accessToken }).subscribe({
+        next: () => {},
+        error: () => {}
+      });
+    }
     this.verifyEmail();
   }
 

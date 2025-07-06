@@ -39,7 +39,7 @@ export class LoginComponent {
       const { email, password } = this.loginForm.value;
 
       this.authService.login({ email, password }).subscribe({
-        next: () => {
+        next: (user) => {
           this.isLoading = false;
           window.location.href = '/marketplace';
         },

@@ -46,6 +46,13 @@ export const routes: Routes = [
             (m) => m.KycComponent
           ),
       },
+      {
+        path: 'kyc/status',
+        loadComponent: () =>
+          import('./features/Auth/KYC/kyc-status.component').then(
+            (m) => m.KycStatusComponent
+          ),
+      },
     ],
   },
   {
@@ -168,6 +175,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/Review/review/review.component').then(
             (m) => m.ReviewComponent
+          ),
+      },
+      {
+        path: 'about',
+        loadComponent: () =>
+          import('./features/About/about.component').then(
+            (m) => m.AboutComponent
           ),
       },
     ],

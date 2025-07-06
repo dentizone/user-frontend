@@ -6,7 +6,8 @@ import {
 } from '@angular/router';
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
@@ -44,6 +45,13 @@ export class AuthGuard implements CanActivate {
       return this.router.createUrlTree(['/']);
     }
 
-    return true;
+    // Fetch current user on every guarded route
+    return this.authService.fetchCurrentUserForGuard().pipe(
+      map((user) => {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        return true;
+      }),
+      catchError(() => of(this.router.createUrlTree(['/auth/login'])))
+    );
   }
 }

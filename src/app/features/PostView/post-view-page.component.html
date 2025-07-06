@@ -1,18 +1,8 @@
 <!-- Main Container -->
- <app-toast *ngIf="showToast" [isSuccess]="isSuccess" [message]="message"></app-toast>
- <!-- <div 
- 
-  class="fixed top-5 right-5 z-50 p-4 text-sm bg-green-100 text-green-700 rounded-lg shadow-md flex items-center space-x-2 dark:bg-green-800 dark:text-green-200 transition-opacity duration-300">
-  <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 bg-green-200 rounded-lg dark:bg-green-700">
-    <svg class="w-5 h-5 text-green-700 dark:text-green-200" fill="currentColor" viewBox="0 0 20 20">
-      <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-    </svg>
-  </div>
-  <span>Product added to favorites!</span>
-</div> -->
-<div class="min-h-screen bg-[#CAF0F861] p-4 sm:p-6 lg:p-8">
+<app-toast *ngIf="showToast" [isSuccess]="isSuccess" [message]="message"></app-toast>
+
+<div class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
   <div class="max-w-7xl mx-auto">
-    
     <!-- Product Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <!-- Image Gallery Section -->
@@ -24,6 +14,8 @@
           <img *ngFor="let image of images"
                [src]="image"
                (click)="mainImage = image"
+               alt="Product"
+               (keydown.enter)="mainImage = image"
                class="h-20 w-20 border border-gray-200 rounded-lg cursor-pointer object-contain hover:border-[#0077B6] transition-colors">
         </div>
       </div>
@@ -32,24 +24,24 @@
       <div class="bg-white border border-blue-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
         <div class="space-y-6">
           <div>
-            <div class="flex justify-between">
-            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">{{product.title}}</h2>
-            <button
-          type="button"
-          (click)="onSelectFav(productID)"
-          class=""
-          aria-label="Add to favorites"
-        >
-          <img
-            src="/assets/Icons/favorite.png"
-            class="w-16 h-16"
-            alt=""
-          />
-        </button>
-        </div>
+            <div class="flex justify-between items-center">
+              <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">{{product.title}}</h2>
+              <button
+                type="button"
+                (click)="toggleFavorite(productID)"
+                class="group p-2 rounded-full hover:bg-gray-100 transition-colors"
+                aria-label="Add to favorites"
+              >
+                <svg *ngIf="!isFavorite" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0077B6" class="w-8 h-8 group-hover:scale-110 transition-transform">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 7.592c-.637-2.062-2.527-3.592-4.752-3.592-1.61 0-3.063.805-3.999 2.021C11.063 4.805 9.61 4 8 4 5.775 4 3.885 5.53 3.248 7.592c-.635 2.06.06 4.21 1.72 5.77l7.032 6.638a.75.75 0 001.002 0l7.032-6.638c1.66-1.56 2.355-3.71 1.72-5.77z" />
+                </svg>
+                <svg *ngIf="isFavorite" xmlns="http://www.w3.org/2000/svg" fill="#0077B6" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0077B6" class="w-8 h-8 group-hover:scale-110 transition-transform">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 7.592c-.637-2.062-2.527-3.592-4.752-3.592-1.61 0-3.063.805-3.999 2.021C11.063 4.805 9.61 4 8 4 5.775 4 3.885 5.53 3.248 7.592c-.635 2.06.06 4.21 1.72 5.77l7.032 6.638a.75.75 0 001.002 0l7.032-6.638c1.66-1.56 2.355-3.71 1.72-5.77z" />
+                </svg>
+              </button>
+            </div>
             <div class="flex items-center space-x-2 mt-2">
               <span class="font-medium text-gray-700">{{product.seller.username}}</span>
-              <!-- <span class="text-yellow-400">★★★★☆</span> -->
             </div>
           </div>
 
@@ -58,7 +50,10 @@
               <span class="text-sm text-gray-600">Price:</span>
               <span class="text-2xl font-bold text-[#0077B6]">{{product.price}} EGP</span>
             </div>
-            <button (click)="onAddToCart(productID)" class="bg-[#0077B6] hover:bg-[#00B4D8] text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2">
+            <button (click)="onAddToCart(productID)" class="flex items-center gap-2 bg-[#0077B6] hover:bg-[#00B4D8] text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386a2.25 2.25 0 012.12 1.575l.347 1.04M6.75 6.75h14.25l-1.5 8.25a2.25 2.25 0 01-2.21 1.75H8.06a2.25 2.25 0 01-2.21-1.75l-1.5-8.25zm0 0L5.25 4.5m1.5 2.25l1.5 8.25m0 0a2.25 2.25 0 002.25 2.25h6a2.25 2.25 0 002.25-2.25m-10.5 0h10.5" />
+              </svg>
               Add To Cart
             </button>
           </div>
@@ -90,8 +85,6 @@
     </div>
 
     <app-qa-component (toastMessage)="handleToast($event)" [sellerID]="product.seller.id" ></app-qa-component>
-
-   
   </div>
 </div>
 

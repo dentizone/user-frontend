@@ -1,0 +1,95 @@
+<div *ngIf="loading" class="flex items-center justify-center min-h-screen">
+  <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+</div>
+<div *ngIf="!loading && kycStatus" class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-white via-blue-50 to-blue-100 px-4">
+  <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-10 max-w-md w-full text-center border border-blue-100">
+    <div class="flex flex-col items-center mb-6">
+      <!-- Approved -->
+      <svg *ngIf="kycStatus === 'Approved'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#22c55e" class="h-24 w-24 mb-2">
+        <circle cx="12" cy="12" r="10" stroke="#22c55e" stroke-width="2" fill="#d1fae5"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke="#22c55e" stroke-width="2" d="M7 13l3 3 7-7" />
+      </svg>
+      <!-- Not Submitted -->
+      <svg *ngIf="kycStatus === 'NotSubmitted'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0ea5e9" class="h-24 w-24 mb-2">
+        <rect x="3" y="5" width="18" height="14" rx="2" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9 6 9-6" stroke="#0ea5e9" stroke-width="2"/>
+      </svg>
+      <!-- Pending -->
+      <svg *ngIf="kycStatus === 'Pending'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#f59e42" class="h-24 w-24 mb-2">
+        <circle cx="12" cy="12" r="10" stroke="#fbbf24" stroke-width="2" fill="#fef9c3"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l2 2" stroke="#f59e42" stroke-width="2"/>
+      </svg>
+      <!-- Rejected -->
+      <svg *ngIf="kycStatus === 'Rejected'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ef4444" class="h-24 w-24 mb-2">
+        <circle cx="12" cy="12" r="10" stroke="#fecaca" stroke-width="2" fill="#fee2e2"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6m0-6l6 6" stroke="#ef4444" stroke-width="2"/>
+      </svg>
+      <!-- Expired -->
+      <svg *ngIf="kycStatus === 'Expired'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#a3a3a3" class="h-24 w-24 mb-2">
+        <circle cx="12" cy="12" r="10" stroke="#d4d4d4" stroke-width="2" fill="#f3f4f6"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2" stroke="#a3a3a3" stroke-width="2"/>
+      </svg>
+      <!-- Under Review -->
+      <svg *ngIf="kycStatus === 'UnderReview'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#6366f1" class="h-24 w-24 mb-2">
+        <circle cx="12" cy="12" r="10" stroke="#c7d2fe" stroke-width="2" fill="#e0e7ff"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4h4" stroke="#6366f1" stroke-width="2"/>
+      </svg>
+      <!-- Blocked -->
+      <svg *ngIf="kycStatus === 'Blocked'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" class="h-24 w-24 mb-2">
+        <rect x="6" y="10" width="12" height="8" rx="2" fill="#f3f4f6" stroke="#000" stroke-width="2"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 10V7a3 3 0 016 0v3" stroke="#000" stroke-width="2"/>
+      </svg>
+    </div>
+    <h2 class="text-3xl font-extrabold text-[#0077B6] mb-3 tracking-tight">
+      <ng-container [ngSwitch]="kycStatus">
+        <span *ngSwitchCase="'Approved'">Account Approved & Active</span>
+        <span *ngSwitchCase="'NotSubmitted'">KYC Not Submitted</span>
+        <span *ngSwitchCase="'Pending'">KYC Pending</span>
+        <span *ngSwitchCase="'Rejected'">KYC Rejected</span>
+        <span *ngSwitchCase="'Expired'">KYC Session Expired</span>
+        <span *ngSwitchCase="'UnderReview'">KYC Under Review</span>
+        <span *ngSwitchCase="'Blocked'">Account Blocked</span>
+      </ng-container>
+    </h2>
+    <div class="mb-5">
+      <p class="text-blue-900 text-base font-medium bg-blue-50/80 rounded-xl px-4 py-3 border border-blue-100 inline-block" *ngIf="kycStatus === 'Approved'">
+        Your account is successfully approved and active. Enjoy our services!
+      </p>
+      <p class="text-blue-900 text-base font-medium bg-blue-50/80 rounded-xl px-4 py-3 border border-blue-100 inline-block" *ngIf="kycStatus === 'NotSubmitted'">
+        We are waiting for you to complete your KYC. Please check your email for instructions.
+      </p>
+      <p class="text-blue-900 text-base font-medium bg-blue-50/80 rounded-xl px-4 py-3 border border-blue-100 inline-block" *ngIf="kycStatus === 'Pending'">
+        You can start your KYC process now to activate your account.
+      </p>
+      <p class="text-blue-900 text-base font-medium bg-blue-50/80 rounded-xl px-4 py-3 border border-blue-100 inline-block" *ngIf="kycStatus === 'Rejected'">
+        Your KYC was rejected. Please contact support for further assistance.
+      </p>
+      <p class="text-blue-900 text-base font-medium bg-blue-50/80 rounded-xl px-4 py-3 border border-blue-100 inline-block" *ngIf="kycStatus === 'Expired'">
+        Your KYC session has expired. Please start a new session.
+      </p>
+      <p class="text-blue-900 text-base font-medium bg-blue-50/80 rounded-xl px-4 py-3 border border-blue-100 inline-block" *ngIf="kycStatus === 'UnderReview'">
+        Your KYC is under manual review. Please wait for our team to complete the process.
+      </p>
+      <p class="text-blue-900 text-base font-medium bg-blue-50/80 rounded-xl px-4 py-3 border border-blue-100 inline-block" *ngIf="kycStatus === 'Blocked'">
+        Your account is blocked. Please contact support for more information.
+      </p>
+    </div>
+    <div class="flex flex-col gap-4 mt-6">
+      <button *ngIf="kycStatus === 'Pending' || kycStatus === 'Expired' || kycStatus === 'NotSubmitted'" (click)="startKyc()" class="bg-gradient-to-r from-[#0077B6] to-[#00B4D8] text-white px-8 py-3 rounded-2xl font-bold shadow-lg hover:from-[#005f87] hover:to-[#0096c7] transition flex items-center justify-center gap-2 text-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-300">
+        <span>Start KYC Process</span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 12H6.75m7.5-6l6 6-6 6" />
+        </svg>
+      </button>
+      <button *ngIf="kycStatus === 'Rejected' || kycStatus === 'Blocked'" (click)="contactSupport()" class="bg-red-100 hover:bg-red-200 text-red-700 px-8 py-3 rounded-2xl font-bold shadow-md transition flex items-center justify-center gap-2 text-lg w-full focus:outline-none focus:ring-2 focus:ring-red-400">
+        <span>Contact Support</span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1112.79 3a7.5 7.5 0 008.21 9.79z" />
+        </svg>
+      </button>
+      <button (click)="backToProfile()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-8 py-3 rounded-2xl font-bold shadow-md transition flex items-center justify-center gap-2 text-lg w-full focus:outline-none focus:ring-2 focus:ring-gray-400">
+        Back to Profile
+      </button>
+    </div>
+  </div>
+</div> 

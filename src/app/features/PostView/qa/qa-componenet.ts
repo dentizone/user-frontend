@@ -95,6 +95,7 @@ export class QaComponent implements OnInit {
           message: 'Your question has been submitted!',
           isSuccess: true,
         });
+        this.loadQuestions();
       },
       error: (err) => {
         console.log(err);
@@ -115,6 +116,7 @@ export class QaComponent implements OnInit {
           message: 'Your Answer has been submitted!',
           isSuccess: true,
         });
+        this.loadQuestions();
       },
       error: (err) => {
         console.log(err);
