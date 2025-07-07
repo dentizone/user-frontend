@@ -5,12 +5,12 @@
 /tmp
 /out-tsc
 /bazel-out
-
+.cursor
 # Node
 /node_modules
 npm-debug.log
 yarn-error.log
-
+userinput.py
 # IDEs and editors
 .idea/
 .project
