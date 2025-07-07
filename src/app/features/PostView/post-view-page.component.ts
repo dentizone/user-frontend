@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { QuillModule } from 'ngx-quill';
 import { CarouselModule } from 'primeng/carousel';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
 import { CartService } from '../Cart/cart.service';
 import { FavsService } from '../favorites/favs.service';
@@ -21,6 +22,7 @@ import { QAService } from './service/qa.service';
     QuillModule,
     ToastComponent,
     NotFoundComponent,
+    LoaderComponent,
   ],
   templateUrl: './post-view-page.component.html',
 })
@@ -30,6 +32,7 @@ export class PostViewPageComponent implements OnInit {
   message = '';
   isSuccess = true;
   notFound = false;
+  loading = false;
 
   images: string[] = [];
   product: any = {};
@@ -54,6 +57,7 @@ export class PostViewPageComponent implements OnInit {
   ngOnInit(): void {
     const slug = this.route.snapshot.paramMap.get('slug');
     if (slug) {
+      this.loading = true;
       this.loadPost(slug);
     }
   }
@@ -75,9 +79,11 @@ export class PostViewPageComponent implements OnInit {
         });
         this.isExpired = this.expirationDate.getTime() < new Date().getTime();
         this.notFound = false;
+        this.loading = false;
       },
       error: (err) => {
         this.notFound = true;
+        this.loading = false;
         console.error('Error:', err);
       },
     });
