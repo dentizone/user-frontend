@@ -79,6 +79,14 @@ export const routes: Routes = [
   },
 
   {
+    path: 'pricing',
+    loadComponent: () =>
+      import('./features/Pricing/pricing.component').then(
+        (m) => m.PricingComponent
+      ),
+  },
+
+  {
     path: '',
     children: [
       {
