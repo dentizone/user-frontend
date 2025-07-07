@@ -12,6 +12,7 @@ export interface Seller {
 
 export interface Post {
   id: string;
+  slug: string;
   title: string;
   description: string;
   price: number;

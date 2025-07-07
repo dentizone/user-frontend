@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CarouselModule } from 'primeng/carousel';
+import { AuthService } from '../../../core/services/auth.service';
 import { ProfileService } from '../../Profile/service/profile.service';
 import { QaSectionComponent } from '../components/qa-section/qa-section.component';
 import { QAService } from '../service/qa.service';
-import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-qa-component',
@@ -14,7 +14,7 @@ import { AuthService } from '../../../core/services/auth.service';
   templateUrl: 'qa-component.html',
 })
 export class QaComponent implements OnInit {
-  productID = '';
+  @Input() postId!: string;
   authorized = false;
   userID: any;
   @Input() sellerID!: string;
@@ -30,7 +30,6 @@ export class QaComponent implements OnInit {
     public readonly authService: AuthService
   ) {}
   ngOnInit(): void {
-    this.productID = this.route.snapshot.paramMap.get('id')!;
     this.loadQuestions();
     if (this.authService.isAuthenticated()) {
       this.profileService.getUserProfile().subscribe({
@@ -44,11 +43,10 @@ export class QaComponent implements OnInit {
     }
   }
   loadQuestions() {
-    this.qaService.getQaByPostId(this.productID).subscribe({
+    this.qaService.getQaByPostId(this.postId).subscribe({
       next: (data) => {
         this.questions = data;
       },
-      
     });
   }
   images: string[] = [
@@ -88,7 +86,7 @@ export class QaComponent implements OnInit {
 
   onQuestionSubmitted(question: string) {
     console.log('New question:', question);
-    this.qaService.addNewQuestion(this.productID, question).subscribe({
+    this.qaService.addNewQuestion(this.postId, question).subscribe({
       next: (data) => {
         console.log('question added');
         this.toastMessage.emit({

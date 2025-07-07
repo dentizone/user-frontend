@@ -49,16 +49,17 @@ export class PostViewPageComponent implements OnInit {
     this.Toast(event.message);
   }
   ngOnInit(): void {
-    this.productID = this.route.snapshot.paramMap.get('id')!;
-    if (this.productID) {
-      this.loadPost();
+    const slug = this.route.snapshot.paramMap.get('slug');
+    if (slug) {
+      this.loadPost(slug);
     }
   }
 
-  loadPost() {
-    this.posts.getPostById(this.productID).subscribe({
+  loadPost(slug: string) {
+    this.posts.getPostBySlug(slug).subscribe({
       next: (data) => {
         this.product = data;
+        this.productID = data.id;
         this.images = this.product.assets?.map((img: any) => img.url) ?? [];
         this.mainImage = this.images[0] ?? '';
         this.expirationDate = new Date(this.product.expireDate);
@@ -69,7 +70,6 @@ export class PostViewPageComponent implements OnInit {
           hour: '2-digit',
           minute: '2-digit',
         });
-
         this.isExpired = this.expirationDate.getTime() < new Date().getTime();
       },
       error: (err) => console.error('Error:', err),

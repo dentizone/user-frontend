@@ -56,7 +56,7 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'post/:id',
+    path: 'post/:slug',
     loadComponent: () =>
       import('./features/PostView/post-view-page.component').then(
         (m) => m.PostViewPageComponent
