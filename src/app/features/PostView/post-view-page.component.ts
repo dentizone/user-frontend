@@ -7,6 +7,7 @@ import { ToastComponent } from '../../shared/components/toast/toast.component';
 import { CartService } from '../Cart/cart.service';
 import { FavsService } from '../favorites/favs.service';
 import { ListingService } from '../ListingPage/listingService/listing.service';
+import { NotFoundComponent } from './components/not-found.component';
 import { QaComponent } from './qa/qa-componenet';
 import { QAService } from './service/qa.service';
 
@@ -19,6 +20,7 @@ import { QAService } from './service/qa.service';
     QaComponent,
     QuillModule,
     ToastComponent,
+    NotFoundComponent,
   ],
   templateUrl: './post-view-page.component.html',
 })
@@ -27,6 +29,7 @@ export class PostViewPageComponent implements OnInit {
   showToast = false;
   message = '';
   isSuccess = true;
+  notFound = false;
 
   images: string[] = [];
   product: any = {};
@@ -71,8 +74,12 @@ export class PostViewPageComponent implements OnInit {
           minute: '2-digit',
         });
         this.isExpired = this.expirationDate.getTime() < new Date().getTime();
+        this.notFound = false;
       },
-      error: (err) => console.error('Error:', err),
+      error: (err) => {
+        this.notFound = true;
+        console.error('Error:', err);
+      },
     });
   }
   constructor(
