@@ -1,57 +1,77 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { RatingModule } from 'primeng/rating';
 
 @Component({
   selector: 'app-feedback-section',
-  imports: [RatingModule, FormsModule],
+  imports: [CommonModule, RatingModule, FormsModule, CarouselModule],
   templateUrl: './feedback-section.component.html',
   styleUrl: './feedback-section.component.css',
 })
 export class FeedbackSectionComponent {
   usersFeedback = [
     {
-      userAvatar: '/assets/avatar/dentist.png',
+      id: '1',
       UserName: 'Ahmed',
       rating: 4,
       feedback: 'Great Experience',
     },
     {
-      userAvatar: '/assets/avatar/tooth-extraction.png',
+      id: '2',
       UserName: 'Nourhane',
       rating: 5,
       feedback: 'Great Experience',
     },
     {
-      userAvatar: '/assets/avatar/dentist.png',
+      id: '3',
       UserName: 'Mohamed',
       rating: 3,
       feedback: 'Great Experience',
     },
     {
-      userAvatar: '/assets/avatar/tooth-extraction.png',
+      id: '4',
       UserName: 'Narnoura',
       rating: 4,
       feedback: 'Great Experience',
     },
     {
-      userAvatar: '/assets/avatar/dentist.png',
+      id: '5',
       UserName: 'Mohamed',
       rating: 3,
       feedback: 'Great Experience',
     },
     {
-      userAvatar: '/assets/avatar/tooth-extraction.png',
+      id: '6',
       UserName: 'Yaryoura',
       rating: 4,
       feedback: 'Great Experience',
     },
     {
-      userAvatar: '/assets/avatar/tooth-extraction.png',
+      id: '7',
       UserName: 'Marioma',
       rating: 4,
       feedback: 'Great Experience',
     },
   ];
+
+  customOptions: OwlOptions = {
+    loop: true,
+    margin: 16,
+    autoplay: true,
+    autoplayTimeout: 3000,
+    autoplayHoverPause: false,
+    dots: true,
+    nav: false,
+    navSpeed: 700,
+    animateIn: 'fadeIn',
+    animateOut: 'fadeOut',
+    responsive: {
+      0: { items: 1 },
+      600: { items: 2 },
+      900: { items: 3 },
+      1200: { items: 4 },
+    },
+  };
 }

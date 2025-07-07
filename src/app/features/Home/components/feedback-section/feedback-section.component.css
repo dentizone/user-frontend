@@ -1,0 +1,99 @@
+.feedback-card {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1.5px 4px rgba(0, 0, 0, 0.04);
+    border-radius: 1.25rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+    transition: transform 0.3s cubic-bezier(.4, 2, .6, 1), box-shadow 0.3s;
+}
+
+.feedback-card:hover {
+    transform: scale(1.05) translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.owl-carousel .owl-nav button.owl-prev,
+.owl-carousel .owl-nav button.owl-next {
+    display: none !important;
+}
+
+.owl-carousel .owl-dots .owl-dot span {
+    background: #a5b4fc;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin: 0 6px;
+    transition: background 0.2s;
+}
+
+.owl-carousel .owl-dots .owl-dot.active span {
+    background: #2563eb;
+}
+
+.modern-feedback-card {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: transform 0.3s cubic-bezier(.4, 2, .6, 1), box-shadow 0.3s;
+    position: relative;
+}
+
+.modern-feedback-card:hover {
+    transform: scale(1.04) translateY(-6px);
+    box-shadow: 0 16px 40px 0 rgba(31, 38, 135, 0.22);
+}
+
+.modern-feedback-card .quote-icon {
+    font-family: serif;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.modern-feedback-card img {
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
+    background: #fff;
+}
+
+.modern-feedback-card h5 {
+    letter-spacing: 0.02em;
+}
+
+.modern-feedback-card p {
+    z-index: 2;
+}
+
+.relative.flex.flex-col.items-center {
+    background: linear-gradient(135deg, #e0e7ef 0%, #f0f6ff 100%);
+}
+
+.relative.flex.flex-col.items-center h5 {
+    color: #1e293b;
+}
+
+.relative.flex.flex-col.items-center p {
+    color: #334155;
+}
+
+/* Custom styles for PrimeNG p-rating stars in feedback section */
+:host ::ng-deep .p-rating .p-rating-icon {
+    font-size: 2rem;
+    margin: 0 0.15rem;
+    transition: color 0.2s;
+}
+
+:host ::ng-deep .p-rating .p-rating-icon.pi-star-fill {
+    color: #fbbf24 !important;
+    /* Amber-400 */
+    text-shadow: 0 2px 8px #fde68a55;
+}
+
+:host ::ng-deep .p-rating .p-rating-icon.pi-star {
+    color: #e5e7eb !important;
+    /* Gray-200 */
+}
+
+:host ::ng-deep .p-rating .p-rating-icon:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #2563eb44;
+}
