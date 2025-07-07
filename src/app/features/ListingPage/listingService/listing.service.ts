@@ -25,4 +25,10 @@ export class ListingService {
       params,
     });
   }
+
+  getPostBySlug(slug: string): Observable<any> {
+    return this.http.get<any>(`https://apit.gitnasr.com/api/Posts/by/${slug}`, {
+      headers: this.headers,
+    });
+  }
 }
