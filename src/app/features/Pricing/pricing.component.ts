@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-pricing',
@@ -109,4 +110,14 @@ import { RouterLink } from '@angular/router';
     </div>
   `,
 })
-export class PricingComponent {}
+export class PricingComponent implements OnInit {
+  constructor(private seo: SeoService) {}
+  ngOnInit() {
+    this.seo.setMetaTags({
+      title: 'Pricing | Dentizone',
+      description:
+        'Check out pricing for dental items and services on Dentizone.',
+      keywords: 'pricing, dentizone, dental items, services, Egypt',
+    });
+  }
+}

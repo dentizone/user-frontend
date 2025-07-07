@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { QuillModule } from 'ngx-quill';
 import { CarouselModule } from 'primeng/carousel';
+import { SeoService } from '../../core/services/seo.service';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
 import { CartService } from '../Cart/cart.service';
@@ -60,6 +61,11 @@ export class PostViewPageComponent implements OnInit {
       this.loading = true;
       this.loadPost(slug);
     }
+    this.seo.setMetaTags({
+      title: 'Post Details | Dentizone',
+      description: 'View details of this dental item on Dentizone.',
+      keywords: 'post, dental item, dentizone, Egypt',
+    });
   }
 
   loadPost(slug: string) {
@@ -93,7 +99,8 @@ export class PostViewPageComponent implements OnInit {
     private readonly posts: ListingService,
     private readonly cartService: CartService,
     private readonly favService: FavsService,
-    private readonly qaService: QAService
+    private readonly qaService: QAService,
+    private seo: SeoService
   ) {}
   mainImage: string = this.images[0];
   activeIndex: number = 0;

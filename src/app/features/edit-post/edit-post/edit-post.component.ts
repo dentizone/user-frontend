@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { QuillModule } from 'ngx-quill';
 import { Subject, takeUntil } from 'rxjs';
 import { ICategory, PostService } from '../../../core/services/post.service';
+import { SeoService } from '../../../core/services/seo.service';
 import { PostUnderReviewComponent } from '../../../shared/components/post-under-review/post-under-review.component';
 import { EditPostService } from '../edit-post.service';
 
@@ -85,10 +86,16 @@ export class EditPostComponent implements OnInit {
     private route: ActivatedRoute,
     private editPostService: EditPostService,
     private postService: PostService,
-    private router: Router
+    private router: Router,
+    private seo: SeoService
   ) {}
 
   ngOnInit(): void {
+    this.seo.setMetaTags({
+      title: 'Edit Post | Dentizone',
+      description: 'Edit your dental item listing on Dentizone.',
+      keywords: 'edit post, dental item, dentizone, Egypt',
+    });
     this.postId = this.route.snapshot.paramMap.get('id')!;
     this.initForm();
     this.loadCategories();

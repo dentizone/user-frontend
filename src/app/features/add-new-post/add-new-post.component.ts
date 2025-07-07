@@ -27,6 +27,7 @@ import {
   IPost,
   PostService,
 } from '../../core/services/post.service';
+import { SeoService } from '../../core/services/seo.service';
 
 import 'quill/dist/quill.core.css';
 import { PostUnderReviewComponent } from '../../shared/components/post-under-review/post-under-review.component';
@@ -121,13 +122,22 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
   constructor(
     private readonly postService: PostService,
     private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly router: Router,
+    private seo: SeoService
   ) {}
 
   ngOnInit(): void {
+    this.seo.setMetaTags({
+      title: 'Add New Post | Dentizone',
+      description: 'Add a new dental item for sale on Dentizone.',
+      keywords: 'add post, sell, dental item, dentizone, Egypt',
+    });
     this.authService.currentUser$.subscribe((user) => {
       this.userKycStatus = user?.kycStatus;
-      if (this.userKycStatus !== KycStatus.Approved || user?.status !== UserState.Active) {
+      if (
+        this.userKycStatus !== KycStatus.Approved ||
+        user?.status !== UserState.Active
+      ) {
         // Only users with KYC Approved status and Active user state can post
         this.showKycModal = true;
       }
@@ -391,7 +401,10 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
       city: formValue.city,
       categoryId: formValue.category,
       subCategoryId: formValue.subcategory,
-      expireDate: !formValue.expiryDate || formValue.expiryDate === '' ? null : formValue.expiryDate,
+      expireDate:
+        !formValue.expiryDate || formValue.expiryDate === ''
+          ? null
+          : formValue.expiryDate,
       assetIds: this.imageIDs,
     };
 

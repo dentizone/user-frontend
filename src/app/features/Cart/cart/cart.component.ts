@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { KycStatus, UserState } from '../../../core/models/auth.models';
 import { AuthService } from '../../../core/services/auth.service';
+import { SeoService } from '../../../core/services/seo.service';
 import { ToastComponent } from '../../../shared/components/toast/toast.component';
 import { KycRequiredModalComponent } from '../../Auth/KYC/kyc-required.component';
 import { Cart } from '../cart';
@@ -39,14 +40,23 @@ export class CartComponent implements OnInit {
   }
   constructor(
     private readonly _cartService: CartService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private seo: SeoService
   ) {}
 
   ngOnInit(): void {
+    this.seo.setMetaTags({
+      title: 'Cart | Dentizone',
+      description: 'View and manage your dental item cart on Dentizone.',
+      keywords: 'cart, dental item, dentizone, Egypt',
+    });
     this.authService.currentUser$.subscribe((user) => {
       this.userKycStatus = user?.kycStatus;
 
-      if (this.userKycStatus !== KycStatus.Approved || user?.status !== UserState.Active) {
+      if (
+        this.userKycStatus !== KycStatus.Approved ||
+        user?.status !== UserState.Active
+      ) {
         // Only users with KYC Approved status and Active user state can place orders
         this.showKycModal = true;
       }

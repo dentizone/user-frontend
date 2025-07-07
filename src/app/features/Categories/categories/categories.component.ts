@@ -8,6 +8,7 @@ import { Category } from '../category';
 
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SeoService } from '../../../core/services/seo.service';
 @Component({
   selector: 'app-categories',
   standalone: true,
@@ -21,10 +22,16 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly _categoriesService: CategoriesService,
-    private readonly router: Router
+    private readonly router: Router,
+    private seo: SeoService
   ) {}
 
   ngOnInit(): void {
+    this.seo.setMetaTags({
+      title: 'Catalog | Dentizone',
+      description: 'Explore dental categories and products on Dentizone.',
+      keywords: 'catalog, dentizone, dental categories, products, Egypt',
+    });
     this._categoriesService
       .getCategories()
       .pipe(takeUntil(this.destroy$))

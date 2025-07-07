@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
 import { Post, PostsResponse } from '../../core/models/posts';
+import { SeoService } from '../../core/services/seo.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
 import { SidebarComponent } from './components/sideBar/sidebar/sidebar.component';
@@ -66,6 +67,12 @@ export class ListingPageComponent implements OnInit {
         }, 1000);
       }
     });
+    this.seo.setMetaTags({
+      title: 'Marketplace | Dentizone',
+      description:
+        'Browse and find dental items in the Dentizone marketplace for dentist students in Egypt.',
+      keywords: 'marketplace, dentizone, dental items, Egypt',
+    });
   }
 
   loadItems() {
@@ -119,7 +126,6 @@ export class ListingPageComponent implements OnInit {
       SortDirection: sortDirection,
       keyword: this.sidebarComponent ? this.sidebarComponent.keyword : '',
       PageNumber: this.currentPage,
-  
     };
     this.posts.getPostsByCategory(body).subscribe({
       next: (data: PostsResponse) => {
@@ -144,7 +150,8 @@ export class ListingPageComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly posts: ListingService
+    private readonly posts: ListingService,
+    private seo: SeoService
   ) {
     this.updatePages(); // initialize pagination
   }

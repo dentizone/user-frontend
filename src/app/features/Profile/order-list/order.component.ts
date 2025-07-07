@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { OrderServiceService } from '../OrderService/order-service.service';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
+import { OrderServiceService } from '../OrderService/order-service.service';
 
 @Component({
   standalone: true,
