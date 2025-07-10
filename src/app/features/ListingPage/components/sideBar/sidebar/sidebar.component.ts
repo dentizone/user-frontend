@@ -67,6 +67,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
               category: 'all',
               city: 'all',
               toDate: today
+              // Explicitly not setting conditions to ensure none are selected by default
             },
             queryParamsHandling: 'merge',
           });
@@ -84,6 +85,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     const allCategory = this.sidebarData.categories.find(cat => cat.categoryName?.toLowerCase() === 'all');
     this.activeCategory = allCategory ? allCategory.categoryName : this.sidebarData.categories[0]?.categoryName ?? '';
     this.selectedCity = 'all';
+    // Ensure no conditions are selected by default
+    this.selectedConditions = [];
   }
 
   private loadFiltersFromUrl(): void {
@@ -121,6 +124,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
             .filter((condition: string) =>
               ['New', 'As New', 'Used'].includes(condition)
             );
+        } else {
+          // Ensure no conditions are selected if not specified in URL
+          this.selectedConditions = [];
         }
 
         if (
