@@ -42,28 +42,39 @@ export class ReviewComponent implements OnInit {
 
   userComment = '';
   userPointOfView = ''; //nininnininnin
-  value = 5;
+  value = 0; // Start with 0 stars selected
   hovered = 0;
   stars = Array(5).fill(0);
 
   rate(star: number) {
+    console.log('Star clicked:', star);
     this.value = star;
+    console.log('Value updated to:', this.value);
   }
 
   hover(star: number) {
     this.hovered = star;
   }
   SubmitReview() {
+    console.log('Submitting review with star value:', this.value);
     if (!this.orderId) {
       this.isSuccess = false;
       this.Toast('order ID not found');
       return;
     }
+    
+    if (this.value === 0) {
+      this.isSuccess = false;
+      this.Toast('Please select a star rating');
+      return;
+    }
+    
     let comment =
       'User comment is ' +
       this.userComment +
       ' User improvement is ' +
       this.userPointOfView;
+    console.log('Sending to backend - orderID:', this.orderId, 'stars:', this.value, 'comment:', comment);
     this.service.postNewReview(this.orderId, this.value, comment).subscribe({
       next: () => this.Toast('Review Submited Successfully'),
       error: (err) => {
