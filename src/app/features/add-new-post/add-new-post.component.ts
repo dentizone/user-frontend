@@ -94,7 +94,7 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
   // Price calculation
   netPrice = 0;
   commissionValue = 0;
-  commissionRate = 0.02;
+  commissionRate = 0.10;
 
   // Cities list
   cities = [
