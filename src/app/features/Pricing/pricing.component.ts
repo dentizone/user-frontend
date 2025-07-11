@@ -20,7 +20,7 @@ import { SeoService } from '../../core/services/seo.service';
           <span class="font-bold text-green-600">100% FREE</span> for buyers to
           shop.<br />
           Sellers keep
-          <span class="text-3xl font-bold text-blue-700">98%</span> of every
+          <span class="text-3xl font-bold text-blue-700">90%</span> of every
           sale —
           <span class="font-semibold text-blue-700"
             >industry-leading rates!</span
@@ -44,8 +44,8 @@ import { SeoService } from '../../core/services/seo.service';
           <div class="relative z-10 flex flex-col items-center">
             <div class="flex items-baseline gap-2 mb-3">
               <span class="text-white/60 text-xl font-medium">Only</span>
-              <span class="text-6xl font-black text-white tracking-tight"
-                >2</span
+              <span class="text-6xl font-black text-green-400 tracking-tight"
+                >10</span
               >
               <span class="text-3xl font-bold text-blue-300">%</span>
             </div>
@@ -55,7 +55,7 @@ import { SeoService } from '../../core/services/seo.service';
               <span class="text-white font-semibold">Success Fee</span>
             </div>
             <div class="text-blue-200 text-lg font-medium mb-1">
-              You Keep 98%
+              You Keep 90%
             </div>
             <div class="flex gap-4 text-sm text-white/70">
               <span class="flex items-center gap-1">
