@@ -26,7 +26,7 @@ export class ListingPageComponent implements OnInit {
   toDate: Date = new Date();
   sortby = '';
   SortDirection!: boolean;
-  selectedConditions: string = '';
+  selectedConditions: string[] = [];
 
   waitLoading = true;
   title = '';
@@ -54,7 +54,14 @@ export class ListingPageComponent implements OnInit {
       this.desiredPrice = params['price'];
       this.toDate = params['toDate'];
       this.sortby = params['sortBy'];
-      this.selectedConditions = params['conditions'];
+      
+      // Handle conditions parameter - it should be an array
+      if (params['conditions']) {
+        this.selectedConditions = params['conditions'].split(',');
+      } else {
+        this.selectedConditions = [];
+      }
+      
       this.title = params['category'] ?? 'All Categories';
 
       if (this.selectedCategory && this.desiredPrice) {
@@ -78,11 +85,18 @@ export class ListingPageComponent implements OnInit {
   loadItems() {
     this.waitLoading = true;
     let condition;
-    if (this.selectedConditions == 'New') {
-      condition = 0;
-    } else {
-      condition = 1;
+    // Only apply condition filter if conditions are selected
+    if (this.selectedConditions.length > 0) {
+      if (this.selectedConditions.includes('New')) {
+        condition = 0;
+      } else if (this.selectedConditions.includes('Used')) {
+        condition = 1;
+      }
+      // If both or other conditions are selected, we might need different logic
+      // For now, prioritize 'New' if both are selected
     }
+    // If no conditions are selected, don't filter by condition (undefined will not be sent to backend)
+    
     if (this.selectedCity == 'all' || this.selectedCity == undefined) {
       this.selectedCity = '';
     }
@@ -117,16 +131,21 @@ export class ListingPageComponent implements OnInit {
     }
 
     // Include pagination in request
-    const body = {
+    const body: any = {
       category: this.selectedCategory,
       city: this.selectedCity,
       MaxPrice: this.desiredPrice,
-      Condition: condition,
       SortBy: sortField,
       SortDirection: sortDirection,
       keyword: this.sidebarComponent ? this.sidebarComponent.keyword : '',
       PageNumber: this.currentPage,
     };
+    
+    // Only include Condition if a condition is actually selected
+    if (condition !== undefined) {
+      body.Condition = condition;
+    }
+    
     this.posts.getPostsByCategory(body).subscribe({
       next: (data: PostsResponse) => {
         this.Products = data.items;
