@@ -390,7 +390,7 @@ export class AddNewPostComponent implements OnInit, OnDestroy {
     const formValue = this.userForm.value;
 
     // Convert condition string to numeric value
-    const conditionValue = formValue.condition === 'new' ? 1 : 0;
+    const conditionValue = formValue.condition === 'new' ? 0 : 1;
 
     const postData: IPost = {
       title: formValue.title,

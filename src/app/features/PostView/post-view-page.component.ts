@@ -38,7 +38,7 @@ export class PostViewPageComponent implements OnInit {
   images: string[] = [];
   product: any = {};
   productID = '';
-  expirationDate!: Date;
+  expirationDate!: Date | null;
   formattedDate!: any;
   isExpired!: boolean;
 
@@ -75,15 +75,33 @@ export class PostViewPageComponent implements OnInit {
         this.productID = data.id;
         this.images = this.product.assets?.map((img: any) => img.url) ?? [];
         this.mainImage = this.images[0] ?? '';
-        this.expirationDate = new Date(this.product.expireDate);
-        this.formattedDate = this.expirationDate.toLocaleDateString('en-GB', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        });
-        this.isExpired = this.expirationDate.getTime() < new Date().getTime();
+        
+        // Handle expiration date - check if it exists and is valid
+        if (this.product.expireDate && this.product.expireDate !== null) {
+          this.expirationDate = new Date(this.product.expireDate);
+          // Check if the date is valid
+          if (!isNaN(this.expirationDate.getTime())) {
+            this.formattedDate = this.expirationDate.toLocaleDateString('en-GB', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            });
+            this.isExpired = this.expirationDate.getTime() < new Date().getTime();
+          } else {
+            // Invalid date
+            this.expirationDate = null;
+            this.formattedDate = 'No Expire Date Provided';
+            this.isExpired = false;
+          }
+        } else {
+          // No expiration date provided
+          this.expirationDate = null;
+          this.formattedDate = 'No Expire Date Provided';
+          this.isExpired = false;
+        }
+        
         this.notFound = false;
         this.loading = false;
       },
