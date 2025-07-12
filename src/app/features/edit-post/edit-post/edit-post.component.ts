@@ -212,7 +212,7 @@ export class EditPostComponent implements OnInit {
       city: formValue.city,
       categoryId: formValue.category,
       subCategoryId: formValue.subcategory,
-      expireDate: formValue.expiryDate ?? undefined,
+      expireDate: formValue.expiryDate || null,
       assetIds: this.imageIDs,
     };
     this.isLoading = true;
