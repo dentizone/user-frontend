@@ -106,17 +106,19 @@ export class ListingPageComponent implements OnInit {
     switch (this.sortby) {
       case 'createdAtAsc':
         sortField = 'createdAt';
+        sortDirection = false; // Oldest First (ascending by date should be false)
         break;
       case 'createdAtDesc':
         sortField = 'createdAt';
-        sortDirection = false;
+        sortDirection = true; // Newest First (descending by date should be true)
         break;
       case 'priceAsc':
         sortField = 'price';
+        sortDirection = true; // Lowest First
         break;
       case 'priceDesc':
         sortField = 'price';
-        sortDirection = false;
+        sortDirection = false; // Highest First
         break;
       default:
         // No additional sorting, use default sortField and sortDirection
