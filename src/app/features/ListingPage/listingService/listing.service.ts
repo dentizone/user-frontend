@@ -6,7 +6,7 @@ import { PostsResponse } from '../../../core/models/posts';
   providedIn: 'root',
 })
 export class ListingService {
-  private readonly apiUrl = 'https://apit.gitnasr.com/api/Posts/search';
+  private readonly apiUrl = 'https://api.dentizone.store/api/Posts/search';
   private readonly token = 'YOUR_SECRET_TOKEN';
   headers = new HttpHeaders({
     Authorization: `Bearer ${this.token}`,
@@ -14,7 +14,7 @@ export class ListingService {
   constructor(private readonly http: HttpClient) {}
 
   getPostById(id: string): Observable<any> {
-    return this.http.get<any>(`https://apit.gitnasr.com/api/Posts/${id}`, {
+    return this.http.get<any>(`https://api.dentizone.store/api/Posts/${id}`, {
       headers: this.headers,
     });
   }
@@ -27,7 +27,7 @@ export class ListingService {
   }
 
   getPostBySlug(slug: string): Observable<any> {
-    return this.http.get<any>(`https://apit.gitnasr.com/api/Posts/by/${slug}`, {
+    return this.http.get<any>(`https://api.dentizone.store/api/Posts/by/${slug}`, {
       headers: this.headers,
     });
   }

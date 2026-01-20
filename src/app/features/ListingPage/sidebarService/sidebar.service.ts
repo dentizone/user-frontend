@@ -10,7 +10,7 @@ export class SidebarService {
 
   async getSidebar(): Promise<SidebarData> {
     try {
-      const response = await fetch('https://apit.gitnasr.com/api/Posts/sidebar', {
+      const response = await fetch('https://api.dentizone.store/api/Posts/sidebar', {
         headers: {
           Authorization: 'Bearer YOUR_SECRET_TOKEN',
           'Content-Type': 'application/json'

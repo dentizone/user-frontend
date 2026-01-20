@@ -8,7 +8,7 @@ import { ProfileService } from '../../Profile/service/profile.service';
   providedIn: 'root',
 })
 export class QAService {
-  private baseUrl = 'https://apit.gitnasr.com/api/Qa/questions';
+  private baseUrl = 'https://api.dentizone.store/api/Qa/questions';
 
   token;
   headers;
@@ -36,7 +36,7 @@ export class QAService {
   }
 
   addNewQuestion(postId: string, text: string): Observable<any> {
-    const url = 'https://apit.gitnasr.com/api/Qa';
+    const url = 'https://api.dentizone.store/api/Qa';
     const body = {
       postId: postId,
       text: text,
@@ -44,7 +44,7 @@ export class QAService {
     return this.http.post(url, body, { headers: this.headers });
   }
   addAnswer(questionId: string, text: string): Observable<any> {
-    const url = `https://apit.gitnasr.com/api/Qa/answer/${questionId}`;
+    const url = `https://api.dentizone.store/api/Qa/answer/${questionId}`;
     const body = {
       text: text,
     };

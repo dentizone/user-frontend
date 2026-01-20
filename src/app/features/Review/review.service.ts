@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ReviewService {
-  private readonly apiUrl = 'https://apit.gitnasr.com/api/Review';
+  private readonly apiUrl = 'https://api.dentizone.store/api/Review';
 
   constructor(private readonly http: HttpClient) {}
   

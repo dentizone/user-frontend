@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private readonly baseUrl = 'https://apit.gitnasr.com/api'; 
+  private readonly baseUrl = 'https://api.dentizone.store/api'; 
 
   constructor(private readonly http: HttpClient) {}
 

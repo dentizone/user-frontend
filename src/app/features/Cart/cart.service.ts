@@ -12,19 +12,19 @@ export class CartService {
   constructor(private readonly _httpClient: HttpClient) { }
 
   getCart():Observable<Cart[]>{
-    return this._httpClient.get<Cart[]>('https://apit.gitnasr.com/api/Cart');
+    return this._httpClient.get<Cart[]>('https://api.dentizone.store/api/Cart');
   }
   addToCart(postId:string):Observable<Cart>{
-    return this._httpClient.post<Cart>('https://apit.gitnasr.com/api/Cart',{postId});
+    return this._httpClient.post<Cart>('https://api.dentizone.store/api/Cart',{postId});
   }
   removeFromCart(cartId:string):Observable<void>{
-    return this._httpClient.delete<void>(`https://apit.gitnasr.com/api/Cart/${cartId}`)
+    return this._httpClient.delete<void>(`https://api.dentizone.store/api/Cart/${cartId}`)
   }
   clearCart():Observable<void>{
-    return this._httpClient.delete<void>('https://apit.gitnasr.com/api/Cart/clear')
+    return this._httpClient.delete<void>('https://api.dentizone.store/api/Cart/clear')
   }
 
   checkOut(order: OrderRequest): Observable<any> {
-    return this._httpClient.post('https://apit.gitnasr.com/api/Order', order);
+    return this._httpClient.post('https://api.dentizone.store/api/Order', order);
  }
 }

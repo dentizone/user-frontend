@@ -10,12 +10,12 @@ export class EditPostService {
   constructor(private readonly _httpClient: HttpClient) {}
 
   getPostById(id: string): Observable<any> {
-    return this._httpClient.get(`https://apit.gitnasr.com/api/Posts/${id}`);
+    return this._httpClient.get(`https://api.dentizone.store/api/Posts/${id}`);
   }
 
   updatePost(id: string, postData: any): Observable<any> {
     return this._httpClient
-      .put(`https://apit.gitnasr.com/api/Posts/${id}`, postData)
+      .put(`https://api.dentizone.store/api/Posts/${id}`, postData)
       .pipe(
         catchError((error) => {
           return throwError(() => error);

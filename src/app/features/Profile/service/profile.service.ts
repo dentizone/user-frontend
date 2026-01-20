@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ProfileService {
-  private apiUrl = 'https://apit.gitnasr.com/api/Users/me';
+  private apiUrl = 'https://api.dentizone.store/api/Users/me';
 
   constructor(private readonly http: HttpClient) {}
 
@@ -26,7 +26,7 @@ export class ProfileService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.get<any>(`https://apit.gitnasr.com/api/Posts/`, {
+    return this.http.get<any>(`https://api.dentizone.store/api/Posts/`, {
       headers,
     });
   }

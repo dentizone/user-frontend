@@ -8,11 +8,11 @@ import { Observable } from 'rxjs';
 export class WalletService {
   constructor(private readonly httpClient: HttpClient) {}
   getBalance(): Observable<any> {
-    return this.httpClient.get('https://apit.gitnasr.com/api/Wallet/balance');
+    return this.httpClient.get('https://api.dentizone.store/api/Wallet/balance');
   }
   withdarawalRequest(amount: any): Observable<any> {
     return this.httpClient.post(
-      'https://apit.gitnasr.com/api/Wallet/withdraw',
+      'https://api.dentizone.store/api/Wallet/withdraw',
       amount
     );
   }

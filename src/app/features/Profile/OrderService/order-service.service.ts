@@ -14,9 +14,9 @@ headers = new HttpHeaders({
       Authorization: `Bearer ${this.token}`
     });
   GetAllOrders(): Observable<any> {
-    return this.http.get<any>('https://apit.gitnasr.com/api/Order/my-orders', {headers: this.headers})
+    return this.http.get<any>('https://api.dentizone.store/api/Order/my-orders', {headers: this.headers})
   }
     GetOrderDetails(id:string ): Observable<any> {
-    return this.http.get<any>(`https://apit.gitnasr.com/api/Order/${id}`, {headers: this.headers})
+    return this.http.get<any>(`https://api.dentizone.store/api/Order/${id}`, {headers: this.headers})
   }
 }
